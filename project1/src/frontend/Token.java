@@ -13,8 +13,8 @@ public class Token
 {
     public enum TokenType
     {
-        PROGRAM, BEGIN, END, REPEAT, UNTIL, WRITE, WRITELN, 
-        PERIOD, COLON, COLON_EQUALS, SEMICOLON,
+        PROGRAM, BEGIN, END, REPEAT, UNTIL, CASE, OF, WRITE, WRITELN, 
+        PERIOD, DOT_DOT, DOT_DOT_EQUALS, COLON, COLON_EQUALS, SEMICOLON, COMMA,
         PLUS, MINUS, STAR, SLASH, LPAREN, RPAREN, 
         EQUALS, LESS_THAN,
         IDENTIFIER, INTEGER, REAL, STRING, END_OF_FILE, ERROR
@@ -33,6 +33,8 @@ public class Token
         reservedWords.put("END",     TokenType.END);
         reservedWords.put("REPEAT",  TokenType.REPEAT);
         reservedWords.put("UNTIL",   TokenType.UNTIL);
+        reservedWords.put("CASE",    TokenType.CASE);
+        reservedWords.put("OF",      TokenType.OF);
         reservedWords.put("WRITE",   TokenType.WRITE);
         reservedWords.put("WRITELN", TokenType.WRITELN);
     }
@@ -95,7 +97,20 @@ public class Token
              Character.isDigit(ch) || (ch == '.');
              ch = source.nextChar())
         {
-            if (ch == '.') pointCount++;
+            if (ch == '.')
+            {
+                // A decimal point in a real constant must be followed by a digit.
+                // Otherwise, stop at the integer so tokens like 1..5 can be scanned.
+                if ((pointCount == 0) && Character.isDigit(source.peekChar()))
+                {
+                    pointCount++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            
             token.text += ch;
         }
         
@@ -158,7 +173,27 @@ public class Token
         
         switch (firstChar)
         {
-            case '.' : token.type = TokenType.PERIOD;     break;
+            case '.' :
+            {
+                if (source.peekChar() == '.')
+                {
+                    source.nextChar();  // consume the 2nd '.'
+                    token.text += '.';
+                    
+                    if (source.peekChar() == '=')
+                    {
+                        source.nextChar();  // consume '='
+                        token.text += '=';
+                        token.type = TokenType.DOT_DOT_EQUALS;
+                    }
+                    else token.type = TokenType.DOT_DOT;
+                }
+                else token.type = TokenType.PERIOD;
+                
+                source.nextChar();  // consume ., .., or ..=
+                return token;
+            }
+            case ',' : token.type = TokenType.COMMA;      break;
             case ';' : token.type = TokenType.SEMICOLON;  break;
             case '+' : token.type = TokenType.PLUS;       break;
             case '-' : token.type = TokenType.MINUS;      break;

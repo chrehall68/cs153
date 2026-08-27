@@ -1,0 +1,13 @@
+PROGRAM TestCaseRange;
+
+BEGIN
+    i := 4;
+    j := 0;
+    
+    CASE i OF
+        1..4:  j := 10;
+        4..=6: j := 20
+    END;
+    
+    writeln(j:2:0)
+END.
