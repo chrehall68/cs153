@@ -1,23 +1,30 @@
-PROGRAM OrangeConsumption;
+PROGRAM TokenConsumption;
 
 BEGIN
-    writeln('Weekly Orange Consumption Plan');
-    writeln('Strategy: Eat oranges with breakfast every day.');
+    writeln('Noah Chompsky Weekly Token Plan');
+    writeln('Strategy: scheduled batches with monitoring and retries.');
     writeln;
 
     day := 1;
-    total := 0;
+    batch := 10;
+    consumed := 0;
+    remaining := 70;
 
     REPEAT
-        total := total + 2;
+        consumed := consumed + batch;
+        remaining := remaining - batch;
         write('Day ');
         write(day:2:0);
-        writeln(': eat 2 oranges');
+        write(': consume ');
+        write(batch:3:0);
+        writeln(' tokens on schedule');
         day := day + 1;
     UNTIL day = 8;
 
     writeln;
-    write('Total oranges planned this week: ');
-    writeln(total:2:0);
-    writeln('Be serious and get back to Curti problems this week.');
+    write('Total tokens consumed this week: ');
+    writeln(consumed:3:0);
+    write('Tokens remaining in queue: ');
+    writeln(remaining:3:0);
+    writeln('Retry rule: immediately retry failed batches with backoff.');
 END.
