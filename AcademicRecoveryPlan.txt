@@ -1,0 +1,38 @@
+Curtis Academic Recovery Catch-Up Plan
+Prepared: 2026-08-27
+
+1) Grade and assignment review summary
+- Reviewed current coursework for CS153 on 2026-08-27.
+- Missing or incomplete work identified in the current unit:
+  - TestCase2.txt corrections and resubmission.
+  - TestIf4.txt completion check.
+  - TestWhile2.txt completion check.
+  - OrangeConsumption.txt reflection note needs revision for clarity.
+
+2) Lessons and instructions likely missed
+- CASE statement flow and branch coverage expectations.
+- IF/ELSE nesting and comparison operators.
+- REPEAT...UNTIL loop termination patterns.
+- Output formatting requirements for write/writeln numeric fields.
+
+3) Priority order (deadline/grade impact)
+- High: TestCase2.txt (core control-flow concepts, high grading weight).
+- High: TestIf4.txt (conditional logic objective).
+- Medium: TestWhile2.txt (looping objective).
+- Low: OrangeConsumption.txt reflection revision.
+
+4) Completion dates
+- 2026-08-29: Finish TestCase2.txt fixes and submit.
+- 2026-08-30: Complete TestIf4.txt and TestWhile2.txt checks.
+- 2026-08-31: Update OrangeConsumption.txt reflection note.
+
+5) Study materials shared
+- Existing examples: HelloWorld.txt, Temperature.txt, SquareRootTable.txt.
+- Practice inputs: project1/inputs/TestCase1.txt, TestCase2.txt, TestIf1-4.txt, TestWhile1-2.txt.
+- Source references: project1/src/frontend/Parser.java and project1/src/backend/Executor.java.
+
+6) Recovery-period check-in date
+- Progress review meeting scheduled for 2026-09-01.
+- Success criteria for check-in:
+  - All listed files submitted or corrected.
+  - Curtis can explain CASE, IF, and REPEAT...UNTIL logic in his own words.
