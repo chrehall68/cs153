@@ -1,0 +1,23 @@
+PROGRAM OrangeConsumption;
+
+BEGIN
+    writeln('Weekly Orange Consumption Plan');
+    writeln('Strategy: Eat oranges with breakfast every day.');
+    writeln;
+
+    day := 1;
+    total := 0;
+
+    REPEAT
+        total := total + 2;
+        write('Day ');
+        write(day:2:0);
+        writeln(': eat 2 oranges');
+        day := day + 1;
+    UNTIL day = 8;
+
+    writeln;
+    write('Total oranges planned this week: ');
+    writeln(total:2:0);
+    writeln('Be serious and get back to Curti problems this week.');
+END.
