@@ -91,7 +91,6 @@ public class Parser
         statementStarters.add(BEGIN);
         statementStarters.add(IDENTIFIER);
         statementStarters.add(REPEAT);
-        statementStarters.add(Token.TokenType.CASE);
         statementStarters.add(Token.TokenType.WRITE);
         statementStarters.add(Token.TokenType.WRITELN);
         
@@ -122,7 +121,6 @@ public class Parser
             case IDENTIFIER : stmtNode = parseAssignmentStatement(); break;
             case BEGIN :      stmtNode = parseCompoundStatement();   break;
             case REPEAT :     stmtNode = parseRepeatStatement();     break;
-            case CASE :       stmtNode = parseCaseStatement();       break;
             case WRITE :      stmtNode = parseWriteStatement();      break;
             case WRITELN :    stmtNode = parseWritelnStatement();    break;
             case SEMICOLON :  stmtNode = null; break;  // empty statement
@@ -244,143 +242,6 @@ public class Parser
         else syntaxError("Expecting UNTIL");
         
         return loopNode;
-    }
-    
-    private Node parseCaseStatement()
-    {
-        // The current token should now be CASE.
-        
-        // Create a CASE node.
-        Node caseNode = new Node(Node.NodeType.CASE);
-        
-        // Consume CASE.
-        currentToken = scanner.nextToken();
-        
-        // CASE expression
-        caseNode.adopt(parseExpression());
-        
-        if (currentToken.type == OF)
-        {
-            // Consume OF.
-            currentToken = scanner.nextToken();
-        }
-        else syntaxError("Expecting OF");
-        
-        while (   (currentToken.type != END)
-               && (currentToken.type != END_OF_FILE))
-        {
-            caseNode.adopt(parseCaseBranch());
-            
-            // A semicolon separates branches.
-            if (currentToken.type == SEMICOLON)
-            {
-                while (currentToken.type == SEMICOLON)
-                {
-                    currentToken = scanner.nextToken();
-                }
-            }
-            else if (isCaseConstantStarter(currentToken.type))
-            {
-                syntaxError("Missing ;");
-            }
-        }
-        
-        if (currentToken.type == END)
-        {
-            // Consume END.
-            currentToken = scanner.nextToken();
-        }
-        else syntaxError("Expecting END");
-        
-        return caseNode;
-    }
-    
-    private Node parseCaseBranch()
-    {
-        Node branchNode = new Node(CASE_BRANCH);
-        
-        branchNode.adopt(parseCaseLabel());
-        while (currentToken.type == COMMA)
-        {
-            // Consume comma.
-            currentToken = scanner.nextToken();
-            branchNode.adopt(parseCaseLabel());
-        }
-        
-        if (currentToken.type == COLON)
-        {
-            // Consume colon.
-            currentToken = scanner.nextToken();
-        }
-        else syntaxError("Missing :");
-        
-        branchNode.adopt(parseStatement());
-        return branchNode;
-    }
-    
-    private Node parseCaseLabel()
-    {
-        Node startNode = parseCaseConstant();
-        
-        if (currentToken.type == DOT_DOT || currentToken.type == DOT_DOT_EQUALS)
-        {
-            boolean inclusiveUpper = currentToken.type == DOT_DOT_EQUALS;
-            
-            // Consume .. or ..=
-            currentToken = scanner.nextToken();
-            
-            Node rangeNode = new Node(RANGE);
-            rangeNode.value = inclusiveUpper;
-            rangeNode.adopt(startNode);
-            rangeNode.adopt(parseCaseConstant());
-            return rangeNode;
-        }
-        
-        return startNode;
-    }
-    
-    private Node parseCaseConstant()
-    {
-        boolean negative = false;
-        
-        if (currentToken.type == PLUS || currentToken.type == MINUS)
-        {
-            negative = currentToken.type == MINUS;
-            currentToken = scanner.nextToken();
-        }
-        
-        Node constantNode = null;
-        
-        if (currentToken.type == INTEGER) constantNode = parseIntegerConstant();
-        else if (currentToken.type == REAL) constantNode = parseRealConstant();
-        else if (currentToken.type == STRING) constantNode = parseStringConstant();
-        else syntaxError("Invalid CASE constant");
-        
-        if (negative && constantNode != null)
-        {
-            if (constantNode.type == INTEGER_CONSTANT)
-            {
-                long value = (Long) constantNode.value;
-                constantNode.value = -value;
-            }
-            else if (constantNode.type == REAL_CONSTANT)
-            {
-                double value = (Double) constantNode.value;
-                constantNode.value = -value;
-            }
-            else syntaxError("Invalid CASE constant");
-        }
-        
-        return constantNode;
-    }
-    
-    private boolean isCaseConstantStarter(Token.TokenType tokenType)
-    {
-        return    tokenType == PLUS
-               || tokenType == MINUS
-               || tokenType == INTEGER
-               || tokenType == REAL
-               || tokenType == STRING;
     }
     
     private Node parseWriteStatement()

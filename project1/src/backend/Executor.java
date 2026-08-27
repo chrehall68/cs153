@@ -49,7 +49,6 @@ public class Executor
             case COMPOUND : 
             case ASSIGN :   
             case LOOP : 
-            case CASE :
             case WRITE :
             case WRITELN :  return visitStatement(node);
             
@@ -74,7 +73,6 @@ public class Executor
             case COMPOUND :  return visitCompound(statementNode);
             case ASSIGN :    return visitAssign(statementNode);
             case LOOP :      return visitLoop(statementNode);
-            case CASE :      return visitCase(statementNode);
             case WRITE :     return visitWrite(statementNode);
             case WRITELN :   return visitWriteln(statementNode);
             
@@ -126,94 +124,6 @@ public class Executor
     private Object visitTest(Node testNode)
     {
         return (Boolean) visit(testNode.children.get(0));
-    }
-    
-    private Object visitCase(Node caseNode)
-    {
-        Object selectorValue = visit(caseNode.children.get(0));
-        
-        for (int i = 1; i < caseNode.children.size(); i++)
-        {
-            Node branchNode = caseNode.children.get(i);
-            if (branchNode.children.size() == 0) continue;
-            
-            int statementIndex = branchNode.children.size() - 1;
-            Node statementNode = branchNode.children.get(statementIndex);
-            
-            if (matchesBranch(selectorValue, branchNode, statementIndex))
-            {
-                visit(statementNode);
-                break;
-            }
-        }
-        
-        return null;
-    }
-    
-    private boolean matchesBranch(Object selectorValue, Node branchNode, int statementIndex)
-    {
-        for (int i = 0; i < statementIndex; i++)
-        {
-            Node labelNode = branchNode.children.get(i);
-            
-            if (labelNode.type == RANGE)
-            {
-                if (matchesRange(selectorValue, labelNode)) return true;
-            }
-            else if (matchesValue(selectorValue, visit(labelNode))) return true;
-        }
-        
-        return false;
-    }
-    
-    private boolean matchesRange(Object selectorValue, Node rangeNode)
-    {
-        Object startValue = visit(rangeNode.children.get(0));
-        Object endValue   = visit(rangeNode.children.get(1));
-        boolean inclusiveUpper = (Boolean) rangeNode.value;
-        
-        if (   (selectorValue instanceof String)
-            && (startValue instanceof String)
-            && (endValue instanceof String))
-        {
-            String selector = (String) selectorValue;
-            String start = (String) startValue;
-            String end = (String) endValue;
-            
-            return (selector.compareTo(start) >= 0)
-                   && (inclusiveUpper ? selector.compareTo(end) <= 0
-                                      : selector.compareTo(end) < 0);
-        }
-        
-        if (   (selectorValue instanceof Double)
-            && (startValue instanceof Double)
-            && (endValue instanceof Double))
-        {
-            double selector = (Double) selectorValue;
-            double start = (Double) startValue;
-            double end = (Double) endValue;
-            
-            return (selector >= start)
-                   && (inclusiveUpper ? selector <= end : selector < end);
-        }
-        
-        return false;
-    }
-    
-    private boolean matchesValue(Object selectorValue, Object labelValue)
-    {
-        if ((selectorValue instanceof String) && (labelValue instanceof String))
-        {
-            return ((String) selectorValue).equals((String) labelValue);
-        }
-        
-        if ((selectorValue instanceof Double) && (labelValue instanceof Double))
-        {
-            return ((Double) selectorValue).doubleValue()
-                   == ((Double) labelValue).doubleValue();
-        }
-        
-        return false;
     }
     
     private Object visitWrite(Node writeNode)
