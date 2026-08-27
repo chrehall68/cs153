@@ -54,28 +54,6 @@ public class Source
     public char currentChar() { return currentChar; }
     
     /**
-     * Peek at the next input source character without consuming it.
-     * @return the next character, or EOF if at the end of the file.
-     */
-    public char peekChar()
-    {
-        try
-        {
-            source.mark(1);
-            int value = source.read();
-            source.reset();
-            return value > -1 ? (char) value : EOF;
-        }
-        catch (IOException ex)
-        {
-            ex.printStackTrace();
-            System.exit(-1);
-        }
-        
-        return EOF;
-    }
-    
-    /**
      * Read and return the next input source character.
      * @return the character, or EOF if at the end of the file.
      */
