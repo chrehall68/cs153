@@ -7,17 +7,21 @@
  */
 package intermediate;
 
+import static intermediate.Node.NodeType.INTEGER_CONSTANT;
+import static intermediate.Node.NodeType.PROGRAM;
+import static intermediate.Node.NodeType.REAL_CONSTANT;
+import static intermediate.Node.NodeType.STRING_CONSTANT;
+import static intermediate.Node.NodeType.VARIABLE;
+
 import java.util.ArrayList;
 
-import static intermediate.Node.NodeType.*;
-
-public class Node
-{
-    public enum NodeType
-    {
+public class Node {
+    public enum NodeType {
         PROGRAM, COMPOUND, ASSIGN, LOOP, TEST, WRITE, WRITELN,
         ADD, SUBTRACT, MULTIPLY, DIVIDE, EQ, LT,
-        VARIABLE, INTEGER_CONSTANT, REAL_CONSTANT, STRING_CONSTANT
+        VARIABLE, INTEGER_CONSTANT, REAL_CONSTANT, STRING_CONSTANT,
+        // used by CASE
+        SELECT, SELECT_BRANCH, SELECT_CONSTANTS
     }
 
     public NodeType type;
@@ -26,35 +30,40 @@ public class Node
     public SymtabEntry entry;
     public Object value;
     public ArrayList<Node> children;
-    
-    public Node(NodeType type)
-    {
+
+    public Node(NodeType type) {
         this.type = type;
         this.lineNumber = 0;
         this.text = null;
         this.value = null;
         this.children = new ArrayList<>();
     }
-    
-    public void adopt(Node child) 
-    { 
-        children.add(child); 
+
+    public void adopt(Node child) {
+        children.add(child);
     }
-    
-    public ArrayList<Node> getChildren() { return children; }
-    
-    public String getDisplay() 
-    {
+
+    public ArrayList<Node> getChildren() {
+        return children;
+    }
+
+    public String getDisplay() {
         String str = type.name() + " ";
-        
-        if      (type == PROGRAM)          str += text;
-        else if (type == VARIABLE)         str += text;
-        else if (type == INTEGER_CONSTANT) str += (long) value;
-        else if (type == REAL_CONSTANT)    str += value;
-        else if (type == STRING_CONSTANT)  str += "'" + (String) value + "'";
-        
-        if (lineNumber > 0) str = lineNumber + ": " + str;
-        
+
+        if (type == PROGRAM)
+            str += text;
+        else if (type == VARIABLE)
+            str += text;
+        else if (type == INTEGER_CONSTANT)
+            str += (long) value;
+        else if (type == REAL_CONSTANT)
+            str += value;
+        else if (type == STRING_CONSTANT)
+            str += "'" + (String) value + "'";
+
+        if (lineNumber > 0)
+            str = lineNumber + ": " + str;
+
         return str;
     }
 }
