@@ -271,20 +271,34 @@ public class Parser {
             syntaxError("Expecting END");
         }
         // now parse branches
-        if (currentToken.type != END) {
-            // the fact that it wasn't end immediately means
-            // there must be at least one case branch
+        while (currentToken.type != END) {
+            // there must be a statement
             caseNode.adopt(parseCaseBranch());
-            while ((currentToken.type != END)
-                    && (currentToken.type != END_OF_FILE)) {
-                System.out.println("inside loop with" + currentToken.type.toString());
-                if (currentToken.type == SEMICOLON) {
-                    // consume ;
-                    currentToken = scanner.nextToken();
-                }
-                // then we should have another case branch
-                caseNode.adopt(parseCaseBranch());
+            // consume semicolon, if any
+            if (currentToken.type == SEMICOLON) {
+                currentToken = scanner.nextToken();
             }
+        }
+        // this is implemented exactly
+        // if (currentToken.type != END) {
+        // // the fact that it wasn't end immediately means
+        // // there must be at least one case branch
+        // caseNode.adopt(parseCaseBranch());
+        // while ((currentToken.type != END)
+        // && (currentToken.type != END_OF_FILE)) {
+        // if (currentToken.type == SEMICOLON) {
+        // // consume ;
+        // currentToken = scanner.nextToken();
+        // }
+        // // then we should have another case branch
+        // caseNode.adopt(parseCaseBranch());
+        // }
+        // }
+        // consume end
+        if (currentToken.type == END) {
+            currentToken = scanner.nextToken();
+        } else {
+            syntaxError("Expected END after last select branch");
         }
 
         return caseNode;
