@@ -1,0 +1,7 @@
+PROGRAM TestCaseFail3;
+
+BEGIN
+    CASE 4 OF
+        -'hi': writeln('Failed 1')
+    END;
+END.
