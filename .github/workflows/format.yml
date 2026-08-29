@@ -18,7 +18,7 @@ jobs:
       - name: Format java files with google-java-format
         run: |
           wget https://github.com/google/google-java-format/releases/download/v1.36.1/google-java-format-1.36.1-all-deps.jar
-          java -jar google-java-format-1.36.1-all-deps.jar --replace --skip-javadoc-formatting **/*.java
+          find . -name "*.java" -type f -print0 | xargs -0 java -jar google-java-format-1.36.1-all-deps.jar --replace --skip-javadoc-formatting
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Format java files"
