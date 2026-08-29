@@ -7,30 +7,9 @@
  */
 package backend;
 
-import static intermediate.Node.NodeType.ADD;
-import static intermediate.Node.NodeType.ASSIGN;
-import static intermediate.Node.NodeType.COMPOUND;
-import static intermediate.Node.NodeType.DIVIDE;
-import static intermediate.Node.NodeType.EQ;
-import static intermediate.Node.NodeType.INTEGER_CONSTANT;
-import static intermediate.Node.NodeType.LOOP;
-import static intermediate.Node.NodeType.LT;
-import static intermediate.Node.NodeType.MULTIPLY;
-import static intermediate.Node.NodeType.PROGRAM;
-import static intermediate.Node.NodeType.REAL_CONSTANT;
-import static intermediate.Node.NodeType.STRING_CONSTANT;
-import static intermediate.Node.NodeType.SUBTRACT;
-import static intermediate.Node.NodeType.TEST;
-import static intermediate.Node.NodeType.VARIABLE;
-import static intermediate.Node.NodeType.WRITE;
-import static intermediate.Node.NodeType.WRITELN;
-
-import intermediate.Node;
-import intermediate.Symtab;
-import intermediate.SymtabEntry;
-
-import java.util.ArrayList;
-import java.util.HashSet;
+import static intermediate.Node.NodeType.*;
+import intermediate.*;
+import java.util.*;
 
 public class Executor {
     private int lineNumber;
