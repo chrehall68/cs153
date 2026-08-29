@@ -12,6 +12,7 @@ permissions:
 jobs:
   formatting:
     runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v6

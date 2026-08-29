@@ -21,7 +21,7 @@ public class Simple {
     }
 
     String operation = args[0]; // -scan, -parse, or -execute
-    String sourceFileName = args[1];
+    String sourceFileName = args[1];    
 
     Source source = new Source(sourceFileName);
 
