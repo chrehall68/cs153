@@ -157,17 +157,17 @@ public class Parser {
         // trailing identifier or number
         Node value = null;
         if (currentToken.type == IDENTIFIER) {
-            value= parseVariable();
+            value = parseVariable();
         } else if (currentToken.type == REAL) {
             value = parseRealConstant();
         } else if (currentToken.type == INTEGER) {
             value = parseIntegerConstant();
-            System.out.println("Parsed constant with value "  + value.value);
+            System.out.println("Parsed constant with value " + value.value);
         } else {
             syntaxError("Expected identifier or number as constant");
             return null;
         }
-        if (isPositive){
+        if (isPositive) {
             return value;
         }
         Node negated = new Node(NEGATE);
