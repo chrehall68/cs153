@@ -21,7 +21,7 @@ public class Simple
         if (args.length != 2)
         {
             System.out.println("Usage: simple -{scan, parse, execute} " +
-                               "sourceFileName");
+                               "sourceFileName");     
             System.exit(-1);
         }
         
