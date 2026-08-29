@@ -1,19 +1,14 @@
 /**
  * Parse tree node class for a simple interpreter.
- * 
+ *
  * (c) 2020 by Ronald Mak
  * Department of Computer Science
  * San Jose State University
  */
 package intermediate;
 
-import static intermediate.Node.NodeType.INTEGER_CONSTANT;
-import static intermediate.Node.NodeType.PROGRAM;
-import static intermediate.Node.NodeType.REAL_CONSTANT;
-import static intermediate.Node.NodeType.STRING_CONSTANT;
-import static intermediate.Node.NodeType.VARIABLE;
-
-import java.util.ArrayList;
+import static intermediate.Node.NodeType.*;
+import java.util.*;
 
 public class Node {
     public enum NodeType {
@@ -48,19 +43,13 @@ public class Node {
     public String getDisplay() {
         String str = type.name() + " ";
 
-        if (type == PROGRAM)
-            str += text;
-        else if (type == VARIABLE)
-            str += text;
-        else if (type == INTEGER_CONSTANT)
-            str += (long) value;
-        else if (type == REAL_CONSTANT)
-            str += value;
-        else if (type == STRING_CONSTANT)
-            str += "'" + (String) value + "'";
+        if (type == PROGRAM) str += text;
+        else if (type == VARIABLE) str += text;
+        else if (type == INTEGER_CONSTANT) str += (long) value;
+        else if (type == REAL_CONSTANT) str += value;
+        else if (type == STRING_CONSTANT) str += "'" + (String) value + "'";
 
-        if (lineNumber > 0)
-            str = lineNumber + ": " + str;
+        if (lineNumber > 0) str = lineNumber + ": " + str;
 
         return str;
     }

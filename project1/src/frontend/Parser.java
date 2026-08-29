@@ -1,59 +1,19 @@
 /**
  * Parser class for a simple interpreter.
- * 
+ *
  * (c) 2026 by Ronald Mak
  * Department of Computer Science
  * San Jose State University
  */
 package frontend;
 
-import static frontend.Token.TokenType.BEGIN;
-import static frontend.Token.TokenType.CASE;
-import static frontend.Token.TokenType.COLON;
-import static frontend.Token.TokenType.COLON_EQUALS;
-import static frontend.Token.TokenType.COMMA;
-import static frontend.Token.TokenType.END;
-import static frontend.Token.TokenType.END_OF_FILE;
-import static frontend.Token.TokenType.EQUALS;
-import static frontend.Token.TokenType.IDENTIFIER;
-import static frontend.Token.TokenType.INTEGER;
-import static frontend.Token.TokenType.LESS_THAN;
-import static frontend.Token.TokenType.LPAREN;
-import static frontend.Token.TokenType.MINUS;
-import static frontend.Token.TokenType.OF;
-import static frontend.Token.TokenType.PERIOD;
-import static frontend.Token.TokenType.PLUS;
-import static frontend.Token.TokenType.REAL;
-import static frontend.Token.TokenType.REPEAT;
-import static frontend.Token.TokenType.RPAREN;
-import static frontend.Token.TokenType.SEMICOLON;
-import static frontend.Token.TokenType.SLASH;
-import static frontend.Token.TokenType.STAR;
-import static frontend.Token.TokenType.STRING;
-import static frontend.Token.TokenType.UNTIL;
-import static intermediate.Node.NodeType.ADD;
-import static intermediate.Node.NodeType.ASSIGN;
-import static intermediate.Node.NodeType.COMPOUND;
-import static intermediate.Node.NodeType.DIVIDE;
-import static intermediate.Node.NodeType.EQ;
-import static intermediate.Node.NodeType.INTEGER_CONSTANT;
-import static intermediate.Node.NodeType.LOOP;
-import static intermediate.Node.NodeType.LT;
-import static intermediate.Node.NodeType.MULTIPLY;
-import static intermediate.Node.NodeType.REAL_CONSTANT;
-import static intermediate.Node.NodeType.SELECT;
-import static intermediate.Node.NodeType.SELECT_BRANCH;
-import static intermediate.Node.NodeType.SELECT_CONSTANTS;
-import static intermediate.Node.NodeType.STRING_CONSTANT;
-import static intermediate.Node.NodeType.SUBTRACT;
-import static intermediate.Node.NodeType.TEST;
-import static intermediate.Node.NodeType.VARIABLE;
+import static frontend.Token.TokenType.*;
+
+import static intermediate.Node.NodeType.*;
+
+import intermediate.*;
 
 import java.util.HashSet;
-
-import intermediate.Node;
-import intermediate.Symtab;
-import intermediate.SymtabEntry;
 
 public class Parser {
     private Scanner scanner;
@@ -83,8 +43,7 @@ public class Parser {
         if (currentToken.type == Token.TokenType.PROGRAM) {
             // Consume PROGRAM.
             currentToken = scanner.nextToken();
-        } else
-            syntaxError("Expecting PROGRAM");
+        } else syntaxError("Expecting PROGRAM");
 
         if (currentToken.type == IDENTIFIER) {
             String programName = currentToken.text;
@@ -93,23 +52,19 @@ public class Parser {
 
             // Consume program name.
             currentToken = scanner.nextToken();
-        } else
-            syntaxError("Expecting program name");
+        } else syntaxError("Expecting program name");
 
         if (currentToken.type == SEMICOLON) {
             // Consume ;
             currentToken = scanner.nextToken();
-        } else
-            syntaxError("Missing ;");
+        } else syntaxError("Missing ;");
 
-        if (currentToken.type != BEGIN)
-            syntaxError("Expecting BEGIN");
+        if (currentToken.type != BEGIN) syntaxError("Expecting BEGIN");
 
         // The PROGRAM node adopts the COMPOUND tree.
         programNode.adopt(parseCompoundStatement());
 
-        if (currentToken.type != PERIOD)
-            syntaxError("Expecting .");
+        if (currentToken.type != PERIOD) syntaxError("Expecting .");
         return programNode;
     }
 
@@ -154,18 +109,32 @@ public class Parser {
         Node stmtNode = null;
         int savedLineNumber = currentToken.lineNumber;
         lineNumber = savedLineNumber;
-        
-        switch (currentToken.type)
-        {
-            case IDENTIFIER : stmtNode = parseAssignmentStatement(); break;
-            case BEGIN :      stmtNode = parseCompoundStatement();   break;
-            case REPEAT :     stmtNode = parseRepeatStatement();     break;
-            case FOR :        stmtNode = parseForStatement();        break;
-            case WRITE :      stmtNode = parseWriteStatement();      break;
-            case WRITELN :    stmtNode = parseWritelnStatement();    break;
-            case SEMICOLON :  stmtNode = null; break;  // empty statement
-            
-            default : syntaxError("Unexpected token");
+
+        switch (currentToken.type) {
+            case IDENTIFIER:
+                stmtNode = parseAssignmentStatement();
+                break;
+            case BEGIN:
+                stmtNode = parseCompoundStatement();
+                break;
+            case REPEAT:
+                stmtNode = parseRepeatStatement();
+                break;
+            case FOR:
+                stmtNode = parseForStatement();
+                break;
+            case WRITE:
+                stmtNode = parseWriteStatement();
+                break;
+            case WRITELN:
+                stmtNode = parseWritelnStatement();
+                break;
+            case SEMICOLON:
+                stmtNode = null;
+                break; // empty statement
+
+            default:
+                syntaxError("Unexpected token");
         }
 
         if (stmtNode != null)
@@ -310,8 +279,7 @@ public class Parser {
         if (currentToken.type == COLON_EQUALS) {
             // Consume :=
             currentToken = scanner.nextToken();
-        } else
-            syntaxError("Missing :=");
+        } else syntaxError("Missing :=");
 
         // The assignment node adopts the expression node
         // as its second child.
@@ -333,19 +301,15 @@ public class Parser {
         if (currentToken.type == END) {
             // Consume END
             currentToken = scanner.nextToken();
-        } else
-            syntaxError("Expecting END");
+        } else syntaxError("Expecting END");
 
         return compoundNode;
     }
 
-    private void parseStatementList(Node parentNode,
-            Token.TokenType terminalType) {
-        while ((currentToken.type != terminalType)
-                && (currentToken.type != END_OF_FILE)) {
+    private void parseStatementList(Node parentNode, Token.TokenType terminalType) {
+        while ((currentToken.type != terminalType) && (currentToken.type != END_OF_FILE)) {
             Node stmtNode = parseStatement();
-            if (stmtNode != null)
-                parentNode.adopt(stmtNode);
+            if (stmtNode != null) parentNode.adopt(stmtNode);
 
             // A semicolon separates statements.
             if (currentToken.type == SEMICOLON) {
@@ -385,14 +349,12 @@ public class Parser {
             // The LOOP node adopts the TEST node
             // as its final child.
             loopNode.adopt(testNode);
-        } else
-            syntaxError("Expecting UNTIL");
+        } else syntaxError("Expecting UNTIL");
 
         return loopNode;
     }
 
-    private Node parseForStatement()
-    {
+    private Node parseForStatement() {
         // the current token should now be FOR.
 
         // Create a loop node.
@@ -425,17 +387,15 @@ public class Parser {
         Node loopVariable = initialAssignment.getChildren().get(0);
         cmp.adopt(loopVariable);
         cmp.adopt(rangeEnd);
-        
+
         Node test = new Node(TEST);
         test.adopt(cmp);
         loopNode.adopt(test);
 
-        
         if (currentToken.type != DO) {
             syntaxError("Expected DO");
         }
         currentToken = scanner.nextToken();
-
 
         // loop body
         Node body = parseStatement();
@@ -444,22 +404,21 @@ public class Parser {
         // increment/decrement instruction
         Node updateStatement = new Node(ASSIGN);
         updateStatement.adopt(loopVariable);
-        
+
         Node op = new Node(increasing ? ADD : SUBTRACT);
         op.adopt(loopVariable);
         Node changeBy = new Node(INTEGER_CONSTANT);
         changeBy.value = 1l;
         op.adopt(changeBy);
-        
+
         updateStatement.adopt(op);
         loopNode.adopt(updateStatement);
 
         compound.adopt(loopNode);
         return compound;
     }
-    
-    private Node parseWriteStatement()
-    {
+
+    private Node parseWriteStatement() {
         // The current token should now be WRITE.
 
         // Create a WRITE node.
@@ -487,8 +446,7 @@ public class Parser {
         // Consume WRITELN.
         currentToken = scanner.nextToken();
 
-        if (currentToken.type == LPAREN)
-            parseWriteArguments(writelnNode);
+        if (currentToken.type == LPAREN) parseWriteArguments(writelnNode);
         return writelnNode;
     }
 
@@ -500,8 +458,7 @@ public class Parser {
         if (currentToken.type == LPAREN) {
             // Consume (
             currentToken = scanner.nextToken();
-        } else
-            syntaxError("Missing left parenthesis");
+        } else syntaxError("Missing left parenthesis");
 
         if (currentToken.type == IDENTIFIER) {
             node.adopt(parseVariable());
@@ -509,8 +466,7 @@ public class Parser {
         } else if (currentToken.type == STRING) {
             node.adopt(parseStringConstant());
             hasArgument = true;
-        } else
-            syntaxError("Invalid WRITE or WRITELN statement");
+        } else syntaxError("Invalid WRITE or WRITELN statement");
 
         // Look for a field width and a count of decimal places.
         if (hasArgument) {
@@ -529,19 +485,16 @@ public class Parser {
                         if (currentToken.type == INTEGER) {
                             // Count of decimal places.
                             node.adopt(parseIntegerConstant());
-                        } else
-                            syntaxError("Invalid count of decimal places");
+                        } else syntaxError("Invalid count of decimal places");
                     }
-                } else
-                    syntaxError("Invalid field width");
+                } else syntaxError("Invalid field width");
             }
         }
 
         if (currentToken.type == RPAREN) {
             // Consume )
             currentToken = scanner.nextToken();
-        } else
-            syntaxError("Missing right parenthesis");
+        } else syntaxError("Missing right parenthesis");
     }
 
     private Node parseExpression() {
@@ -553,9 +506,10 @@ public class Parser {
         // The current token might now be a relational operator.
         if (relationalOperators.contains(currentToken.type)) {
             Token.TokenType tokenType = currentToken.type;
-            Node opNode = tokenType == EQUALS ? new Node(EQ)
-                    : tokenType == LESS_THAN ? new Node(LT)
-                            : null;
+            Node opNode =
+                    tokenType == EQUALS
+                            ? new Node(EQ)
+                            : tokenType == LESS_THAN ? new Node(LT) : null;
 
             // Consume relational operator.
             currentToken = scanner.nextToken();
@@ -583,8 +537,7 @@ public class Parser {
         // Keep parsing more terms as long as the current token
         // is a + or - operator.
         while (simpleExpressionOperators.contains(currentToken.type)) {
-            Node opNode = currentToken.type == PLUS ? new Node(ADD)
-                    : new Node(SUBTRACT);
+            Node opNode = currentToken.type == PLUS ? new Node(ADD) : new Node(SUBTRACT);
             // Consume the operator.
             currentToken = scanner.nextToken();
 
@@ -608,8 +561,7 @@ public class Parser {
         // Keep parsing more factor as long as the current token
         // is a * or / operator.
         while (termOperators.contains(currentToken.type)) {
-            Node opNode = currentToken.type == STAR ? new Node(MULTIPLY)
-                    : new Node(DIVIDE);
+            Node opNode = currentToken.type == STAR ? new Node(MULTIPLY) : new Node(DIVIDE);
             // Consume the operator.
             currentToken = scanner.nextToken();
 
@@ -627,13 +579,9 @@ public class Parser {
     private Node parseFactor() {
         // The current token should now be an identifier or a number or (
 
-        if (currentToken.type == IDENTIFIER)
-            return parseVariable();
-        else if (currentToken.type == INTEGER)
-            return parseIntegerConstant();
-        else if (currentToken.type == REAL)
-            return parseRealConstant();
-
+        if (currentToken.type == IDENTIFIER) return parseVariable();
+        else if (currentToken.type == INTEGER) return parseIntegerConstant();
+        else if (currentToken.type == REAL) return parseRealConstant();
         else if (currentToken.type == LPAREN) {
             // Consume (
             currentToken = scanner.nextToken();
@@ -643,14 +591,10 @@ public class Parser {
             if (currentToken.type == RPAREN) {
                 // Consume )
                 currentToken = scanner.nextToken();
-            } else
-                syntaxError("Expecting )");
+            } else syntaxError("Expecting )");
 
             return exprNode;
-        }
-
-        else
-            syntaxError("Unexpected token");
+        } else syntaxError("Unexpected token");
         return null;
     }
 
@@ -660,8 +604,7 @@ public class Parser {
         // Has the variable been "declared"?
         String variableName = currentToken.text;
         SymtabEntry variableEntry = symtab.lookup(variableName.toLowerCase());
-        if (variableEntry == null)
-            semanticError("Undeclared identifier");
+        if (variableEntry == null) semanticError("Undeclared identifier");
 
         Node node = new Node(VARIABLE);
         node.text = variableName;
@@ -709,8 +652,14 @@ public class Parser {
     }
 
     private void syntaxError(String message) {
-        System.out.println("SYNTAX ERROR at line " + lineNumber
-                + ": " + message + " at '" + currentToken.text + "'");
+        System.out.println(
+                "SYNTAX ERROR at line "
+                        + lineNumber
+                        + ": "
+                        + message
+                        + " at '"
+                        + currentToken.text
+                        + "'");
         errorCount++;
 
         // Recover by skipping the rest of the statement.
@@ -721,8 +670,14 @@ public class Parser {
     }
 
     private void semanticError(String message) {
-        System.out.println("SEMANTIC ERROR at line " + lineNumber
-                + ": " + message + " at '" + currentToken.text + "'");
+        System.out.println(
+                "SEMANTIC ERROR at line "
+                        + lineNumber
+                        + ": "
+                        + message
+                        + " at '"
+                        + currentToken.text
+                        + "'");
         errorCount++;
     }
 }

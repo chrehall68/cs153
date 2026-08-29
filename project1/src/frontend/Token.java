@@ -1,6 +1,6 @@
 /**
  * Token class for a simple interpreter.
- * 
+ *
  * (c) 2020 by Ronald Mak
  * Department of Computer Science
  * San Jose State University
@@ -30,15 +30,15 @@ public class Token
         reservedWords = new HashMap<String, TokenType>();
 
         reservedWords.put("PROGRAM", TokenType.PROGRAM);
-        reservedWords.put("BEGIN",   TokenType.BEGIN);
-        reservedWords.put("END",     TokenType.END);
-        reservedWords.put("REPEAT",  TokenType.REPEAT);
-        reservedWords.put("UNTIL",   TokenType.UNTIL);
-        reservedWords.put("FOR",     TokenType.FOR);
-        reservedWords.put("TO",      TokenType.TO);
-        reservedWords.put("DOWNTO",  TokenType.DOWNTO);
-        reservedWords.put("DO",      TokenType.DO);
-        reservedWords.put("WRITE",   TokenType.WRITE);
+        reservedWords.put("BEGIN", TokenType.BEGIN);
+        reservedWords.put("END", TokenType.END);
+        reservedWords.put("REPEAT", TokenType.REPEAT);
+        reservedWords.put("UNTIL", TokenType.UNTIL);
+        reservedWords.put("FOR", TokenType.FOR);
+        reservedWords.put("TO", TokenType.TO);
+        reservedWords.put("DOWNTO", TokenType.DOWNTO);
+        reservedWords.put("DO", TokenType.DO);
+        reservedWords.put("WRITE", TokenType.WRITE);
         reservedWords.put("WRITELN", TokenType.WRITELN);
         reservedWords.put("CASE", TokenType.CASE);
         reservedWords.put("OF", TokenType.OF);
@@ -96,9 +96,10 @@ public class Token
 
         // Loop to get the rest of the characters of the number token.
         // Append digits to the token.
-        for (char ch = source.nextChar(); Character.isDigit(ch) || (ch == '.'); ch = source.nextChar()) {
-            if (ch == '.')
-                pointCount++;
+        for (char ch = source.nextChar();
+                Character.isDigit(ch) || (ch == '.');
+                ch = source.nextChar()) {
+            if (ch == '.') pointCount++;
             token.text += ch;
         }
 
@@ -112,10 +113,7 @@ public class Token
         else if (pointCount == 1) {
             token.type = TokenType.REAL;
             token.value = Double.parseDouble(token.text);
-        }
-
-        else
-            tokenError(token, "Invalid number");
+        } else tokenError(token, "Invalid number");
 
         return token;
     }
@@ -189,26 +187,24 @@ public class Token
                 token.type = TokenType.RPAREN;
                 break;
 
-            case ':': {
-                char nextChar = source.nextChar();
-                token.text += nextChar;
+            case ':':
+                {
+                    char nextChar = source.nextChar();
+                    token.text += nextChar;
 
-                // Is it the := symbol?
-                if (nextChar == '=') {
-                    token.type = TokenType.COLON_EQUALS;
+                    // Is it the := symbol?
+                    if (nextChar == '=') {
+                        token.type = TokenType.COLON_EQUALS;
+                    }
+
+                    // No, it's just the : symbol.
+                    else {
+                        token.type = TokenType.COLON;
+                        return token; // already consumed :
+                    }
+
+                    break;
                 }
-
-                // No, it's just the : symbol.
-                else {
-                    token.type = TokenType.COLON;
-                    return token; // already consumed :
-                }
-
-                break;
-            }
-            case ',':
-                token.type = TokenType.COMMA;
-                break;
 
             case Source.EOF:
                 token.type = TokenType.END_OF_FILE;
@@ -229,7 +225,13 @@ public class Token
      * @param message the error message.
      */
     private static void tokenError(Token token, String message) {
-        System.out.println("TOKEN ERROR at line " + token.lineNumber
-                + ": " + message + " at '" + token.text + "'");
+        System.out.println(
+                "TOKEN ERROR at line "
+                        + token.lineNumber
+                        + ": "
+                        + message
+                        + " at '"
+                        + token.text
+                        + "'");
     }
 }
