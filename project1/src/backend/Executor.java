@@ -7,12 +7,28 @@
  */
 package backend;
 
-import static intermediate.Node.NodeType.*;
-
-import intermediate.*;
-
+import static intermediate.Node.NodeType.ADD;
+import static intermediate.Node.NodeType.ASSIGN;
+import static intermediate.Node.NodeType.COMPOUND;
+import static intermediate.Node.NodeType.DIVIDE;
+import static intermediate.Node.NodeType.EQ;
+import static intermediate.Node.NodeType.INTEGER_CONSTANT;
+import static intermediate.Node.NodeType.LOOP;
+import static intermediate.Node.NodeType.LT;
+import static intermediate.Node.NodeType.MULTIPLY;
+import static intermediate.Node.NodeType.PROGRAM;
+import static intermediate.Node.NodeType.REAL_CONSTANT;
+import static intermediate.Node.NodeType.STRING_CONSTANT;
+import static intermediate.Node.NodeType.SUBTRACT;
+import static intermediate.Node.NodeType.TEST;
+import static intermediate.Node.NodeType.VARIABLE;
+import static intermediate.Node.NodeType.WRITE;
+import static intermediate.Node.NodeType.WRITELN;
 import java.util.ArrayList;
 import java.util.HashSet;
+import intermediate.Node;
+import intermediate.Symtab;
+import intermediate.SymtabEntry;
 
 public class Executor {
     private int lineNumber;
@@ -32,6 +48,7 @@ public class Executor {
 
         relationals.add(EQ);
         relationals.add(LT);
+        relationals.add(GT);
     }
 
     public Executor(Symtab symtab) {
@@ -196,17 +213,14 @@ public class Executor {
         // Relational expressions.
         if (relationals.contains(expressionNode.type)) {
             boolean value = false;
-
-            switch (expressionNode.type) {
-                case EQ:
-                    value = value1 == value2;
-                    break;
-                case LT:
-                    value = value1 < value2;
-                    break;
-
-                default:
-                    break;
+            
+            switch (expressionNode.type)
+            {
+                case EQ : value = value1 == value2; break;
+                case LT : value = value1 <  value2; break;
+                case GT : value = value1 > value2; break;
+                
+                default : break;
             }
 
             return value;

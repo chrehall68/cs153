@@ -9,33 +9,15 @@ package frontend;
 
 import java.util.HashMap;
 
-public class Token {
-    public enum TokenType {
-        PROGRAM,
-        BEGIN,
-        END,
-        REPEAT,
-        UNTIL,
-        WRITE,
-        WRITELN,
-        PERIOD,
-        COLON,
-        COLON_EQUALS,
-        SEMICOLON,
-        PLUS,
-        MINUS,
-        STAR,
-        SLASH,
-        LPAREN,
-        RPAREN,
-        EQUALS,
-        LESS_THAN,
-        IDENTIFIER,
-        INTEGER,
-        REAL,
-        STRING,
-        END_OF_FILE,
-        ERROR
+public class Token
+{
+    public enum TokenType
+    {
+        PROGRAM, BEGIN, END, REPEAT, UNTIL, FOR, TO, DOWNTO, DO, WRITE, WRITELN, 
+        PERIOD, COLON, COLON_EQUALS, SEMICOLON,
+        PLUS, MINUS, STAR, SLASH, LPAREN, RPAREN, 
+        EQUALS, LESS_THAN,
+        IDENTIFIER, INTEGER, REAL, STRING, END_OF_FILE, ERROR
     }
 
     /**
@@ -47,11 +29,15 @@ public class Token {
         reservedWords = new HashMap<String, TokenType>();
 
         reservedWords.put("PROGRAM", TokenType.PROGRAM);
-        reservedWords.put("BEGIN", TokenType.BEGIN);
-        reservedWords.put("END", TokenType.END);
-        reservedWords.put("REPEAT", TokenType.REPEAT);
-        reservedWords.put("UNTIL", TokenType.UNTIL);
-        reservedWords.put("WRITE", TokenType.WRITE);
+        reservedWords.put("BEGIN",   TokenType.BEGIN);
+        reservedWords.put("END",     TokenType.END);
+        reservedWords.put("REPEAT",  TokenType.REPEAT);
+        reservedWords.put("UNTIL",   TokenType.UNTIL);
+        reservedWords.put("FOR",     TokenType.FOR);
+        reservedWords.put("TO",      TokenType.TO);
+        reservedWords.put("DOWNTO",  TokenType.DOWNTO);
+        reservedWords.put("DO",      TokenType.DO);
+        reservedWords.put("WRITE",   TokenType.WRITE);
         reservedWords.put("WRITELN", TokenType.WRITELN);
     }
 
