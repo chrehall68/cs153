@@ -228,12 +228,12 @@ public class Parser {
         }
         // there should be at least one branch
         caseNode.adopt(parseCaseBranch());
-        while (currentToken.type == SEMICOLON){
+        while (currentToken.type == SEMICOLON) {
             // read the semicolon and then repeat
-            if (currentToken.type == SEMICOLON){
+            if (currentToken.type == SEMICOLON) {
                 currentToken = scanner.nextToken();
             }
-            if (currentToken.type == END || currentToken.type == END_OF_FILE){
+            if (currentToken.type == END || currentToken.type == END_OF_FILE) {
                 break;
             }
             // otherwise, we expect another branch
