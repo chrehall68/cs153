@@ -292,7 +292,7 @@ public class Parser
 
 
         // loop body
-        Node body = parseCompoundStatement();
+        Node body = parseStatement();
         loopNode.adopt(body);
 
         // increment/decrement instruction
