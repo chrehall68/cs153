@@ -15,9 +15,8 @@ jobs:
         with:
           distribution: temurin
           java-version: "21"
-      - name: Format java files with google-java-format and
+      - name: Format java files with google-java-format
         run: |
-          cd cs153 
           wget https://github.com/google/google-java-format/releases/download/v1.36.1/google-java-format-1.36.1-all-deps.jar
           java -jar google-java-format-1.36.1-all-deps.jar --replace --skip-javadoc-formatting **/*.java
       - uses: stefanzweifel/git-auto-commit-action@v5
