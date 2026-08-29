@@ -4,6 +4,7 @@ begin
     for i := 1 to 3 do begin
         for j := 4 downto 1 do begin
             k := i + j;
+            writeln(k);
         END
     end;
 end.
