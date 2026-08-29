@@ -162,7 +162,6 @@ public class Parser {
             value = parseRealConstant();
         } else if (currentToken.type == INTEGER) {
             value = parseIntegerConstant();
-            System.out.println("Parsed constant with value " + value.value);
         } else {
             syntaxError("Expected identifier or number as constant");
             return null;
@@ -201,7 +200,6 @@ public class Parser {
         Node branchNode = new Node(SELECT_BRANCH);
         branchNode.adopt(parseSelectConstants());
         // consume :
-        System.out.println("Parsing case branch with " + currentToken.type);
         if (currentToken.type == COLON) {
             currentToken = scanner.nextToken();
         } else {
@@ -228,30 +226,19 @@ public class Parser {
         } else {
             syntaxError("Expecting END");
         }
-        // now parse branches
-        while (currentToken.type != END) {
-            // there must be a statement
-            caseNode.adopt(parseCaseBranch());
-            // consume semicolon, if any
-            if (currentToken.type == SEMICOLON) {
+        // there should be at least one branch
+        caseNode.adopt(parseCaseBranch());
+        while (currentToken.type == SEMICOLON){
+            // read the semicolon and then repeat
+            if (currentToken.type == SEMICOLON){
                 currentToken = scanner.nextToken();
             }
+            if (currentToken.type == END || currentToken.type == END_OF_FILE){
+                break;
+            }
+            // otherwise, we expect another branch
+            caseNode.adopt(parseCaseBranch());
         }
-        // this is implemented exactly
-        // if (currentToken.type != END) {
-        // // the fact that it wasn't end immediately means
-        // // there must be at least one case branch
-        // caseNode.adopt(parseCaseBranch());
-        // while ((currentToken.type != END)
-        // && (currentToken.type != END_OF_FILE)) {
-        // if (currentToken.type == SEMICOLON) {
-        // // consume ;
-        // currentToken = scanner.nextToken();
-        // }
-        // // then we should have another case branch
-        // caseNode.adopt(parseCaseBranch());
-        // }
-        // }
         // consume end
         if (currentToken.type == END) {
             currentToken = scanner.nextToken();
