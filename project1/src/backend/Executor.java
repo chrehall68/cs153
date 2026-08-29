@@ -24,11 +24,13 @@ import static intermediate.Node.NodeType.TEST;
 import static intermediate.Node.NodeType.VARIABLE;
 import static intermediate.Node.NodeType.WRITE;
 import static intermediate.Node.NodeType.WRITELN;
-import java.util.ArrayList;
-import java.util.HashSet;
+
 import intermediate.Node;
 import intermediate.Symtab;
 import intermediate.SymtabEntry;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Executor {
     private int lineNumber;
@@ -213,14 +215,20 @@ public class Executor {
         // Relational expressions.
         if (relationals.contains(expressionNode.type)) {
             boolean value = false;
-            
-            switch (expressionNode.type)
-            {
-                case EQ : value = value1 == value2; break;
-                case LT : value = value1 <  value2; break;
-                case GT : value = value1 > value2; break;
-                
-                default : break;
+
+            switch (expressionNode.type) {
+                case EQ:
+                    value = value1 == value2;
+                    break;
+                case LT:
+                    value = value1 < value2;
+                    break;
+                case GT:
+                    value = value1 > value2;
+                    break;
+
+                default:
+                    break;
             }
 
             return value;

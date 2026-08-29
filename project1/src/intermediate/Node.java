@@ -9,13 +9,26 @@ package intermediate;
 
 import static intermediate.Node.NodeType.*;
 
-public class Node
-{
-    public enum NodeType
-    {
-        PROGRAM, COMPOUND, ASSIGN, LOOP, TEST, WRITE, WRITELN,
-        ADD, SUBTRACT, MULTIPLY, DIVIDE, EQ, LT, GT,
-        VARIABLE, INTEGER_CONSTANT, REAL_CONSTANT, STRING_CONSTANT
+public class Node {
+    public enum NodeType {
+        PROGRAM,
+        COMPOUND,
+        ASSIGN,
+        LOOP,
+        TEST,
+        WRITE,
+        WRITELN,
+        ADD,
+        SUBTRACT,
+        MULTIPLY,
+        DIVIDE,
+        EQ,
+        LT,
+        GT,
+        VARIABLE,
+        INTEGER_CONSTANT,
+        REAL_CONSTANT,
+        STRING_CONSTANT
     }
 
     public NodeType type;

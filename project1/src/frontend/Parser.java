@@ -108,18 +108,32 @@ public class Parser {
         Node stmtNode = null;
         int savedLineNumber = currentToken.lineNumber;
         lineNumber = savedLineNumber;
-        
-        switch (currentToken.type)
-        {
-            case IDENTIFIER : stmtNode = parseAssignmentStatement(); break;
-            case BEGIN :      stmtNode = parseCompoundStatement();   break;
-            case REPEAT :     stmtNode = parseRepeatStatement();     break;
-            case FOR :        stmtNode = parseForStatement();        break;
-            case WRITE :      stmtNode = parseWriteStatement();      break;
-            case WRITELN :    stmtNode = parseWritelnStatement();    break;
-            case SEMICOLON :  stmtNode = null; break;  // empty statement
-            
-            default : syntaxError("Unexpected token");
+
+        switch (currentToken.type) {
+            case IDENTIFIER:
+                stmtNode = parseAssignmentStatement();
+                break;
+            case BEGIN:
+                stmtNode = parseCompoundStatement();
+                break;
+            case REPEAT:
+                stmtNode = parseRepeatStatement();
+                break;
+            case FOR:
+                stmtNode = parseForStatement();
+                break;
+            case WRITE:
+                stmtNode = parseWriteStatement();
+                break;
+            case WRITELN:
+                stmtNode = parseWritelnStatement();
+                break;
+            case SEMICOLON:
+                stmtNode = null;
+                break; // empty statement
+
+            default:
+                syntaxError("Unexpected token");
         }
 
         if (stmtNode != null) stmtNode.lineNumber = savedLineNumber;
@@ -221,8 +235,7 @@ public class Parser {
         return loopNode;
     }
 
-    private Node parseForStatement()
-    {
+    private Node parseForStatement() {
         // the current token should now be FOR.
 
         // Create a loop node.
@@ -255,17 +268,15 @@ public class Parser {
         Node loopVariable = initialAssignment.getChildren().get(0);
         cmp.adopt(loopVariable);
         cmp.adopt(rangeEnd);
-        
+
         Node test = new Node(TEST);
         test.adopt(cmp);
         loopNode.adopt(test);
 
-        
         if (currentToken.type != DO) {
             syntaxError("Expected DO");
         }
         currentToken = scanner.nextToken();
-
 
         // loop body
         Node body = parseStatement();
@@ -274,22 +285,21 @@ public class Parser {
         // increment/decrement instruction
         Node updateStatement = new Node(ASSIGN);
         updateStatement.adopt(loopVariable);
-        
+
         Node op = new Node(increasing ? ADD : SUBTRACT);
         op.adopt(loopVariable);
         Node changeBy = new Node(INTEGER_CONSTANT);
         changeBy.value = 1l;
         op.adopt(changeBy);
-        
+
         updateStatement.adopt(op);
         loopNode.adopt(updateStatement);
 
         compound.adopt(loopNode);
         return compound;
     }
-    
-    private Node parseWriteStatement()
-    {
+
+    private Node parseWriteStatement() {
         // The current token should now be WRITE.
 
         // Create a WRITE node.
