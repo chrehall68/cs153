@@ -18,10 +18,8 @@ import java.util.ArrayList;
 public class Node {
     public enum NodeType {
         PROGRAM, COMPOUND, ASSIGN, LOOP, TEST, WRITE, WRITELN,
-        ADD, SUBTRACT, MULTIPLY, DIVIDE, EQ, LT,
-        VARIABLE, INTEGER_CONSTANT, REAL_CONSTANT, STRING_CONSTANT,
-        // used by CASE
-        SELECT, SELECT_BRANCH, SELECT_CONSTANTS
+        ADD, SUBTRACT, MULTIPLY, DIVIDE, EQ, LT, GT,
+        VARIABLE, INTEGER_CONSTANT, REAL_CONSTANT, STRING_CONSTANT
     }
 
     public NodeType type;
