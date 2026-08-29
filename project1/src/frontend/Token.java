@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class Token {
   public enum TokenType {
-    PROGRAM,
+    PROGRAM,   
     BEGIN,
     END,
     REPEAT,
