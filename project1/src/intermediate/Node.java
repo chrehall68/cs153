@@ -30,7 +30,9 @@ public class Node {
         VARIABLE,
         INTEGER_CONSTANT,
         REAL_CONSTANT,
-        STRING_CONSTANT
+        STRING_CONSTANT,
+        // used by CASE
+        SELECT, SELECT_BRANCH, SELECT_CONSTANTS, NEGATE
     }
 
     public NodeType type;

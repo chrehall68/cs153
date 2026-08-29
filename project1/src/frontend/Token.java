@@ -210,6 +210,9 @@ public class Token {
             case ')':
                 token.type = TokenType.RPAREN;
                 break;
+            case ',':
+                token.type = TokenType.COMMA;
+                break;
 
             case ':':
                 {

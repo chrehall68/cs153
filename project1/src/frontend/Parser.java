@@ -129,6 +129,9 @@ public class Parser {
             case WRITELN:
                 stmtNode = parseWritelnStatement();
                 break;
+            case CASE:
+                stmtNode = parseCaseStatement();
+                break;
             case SEMICOLON:
                 stmtNode = null;
                 break; // empty statement
@@ -152,24 +155,24 @@ public class Parser {
             currentToken = scanner.nextToken();
         }
         // trailing identifier or number
+        Node value = null;
         if (currentToken.type == IDENTIFIER) {
-            return parseVariable();
+            value= parseVariable();
         } else if (currentToken.type == REAL) {
-            Node realConstant = parseRealConstant();
-            if (!isPositive) {
-                realConstant.value = -(double) realConstant.value;
-            }
-            return realConstant;
+            value = parseRealConstant();
         } else if (currentToken.type == INTEGER) {
-            Node integerConstant = parseIntegerConstant();
-            if (!isPositive) {
-                integerConstant.value = -(long) integerConstant.value;
-            }
-            return integerConstant;
+            value = parseIntegerConstant();
+            System.out.println("Parsed constant with value "  + value.value);
         } else {
             syntaxError("Expected identifier or number as constant");
             return null;
         }
+        if (isPositive){
+            return value;
+        }
+        Node negated = new Node(NEGATE);
+        negated.adopt(value);
+        return negated;
     }
 
     // never returns null
@@ -198,6 +201,7 @@ public class Parser {
         Node branchNode = new Node(SELECT_BRANCH);
         branchNode.adopt(parseSelectConstants());
         // consume :
+        System.out.println("Parsing case branch with " + currentToken.type);
         if (currentToken.type == COLON) {
             currentToken = scanner.nextToken();
         } else {
