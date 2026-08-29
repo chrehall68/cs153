@@ -137,8 +137,7 @@ public class Parser {
                 syntaxError("Unexpected token");
         }
 
-        if (stmtNode != null)
-            stmtNode.lineNumber = savedLineNumber;
+        if (stmtNode != null) stmtNode.lineNumber = savedLineNumber;
         return stmtNode;
     }
 

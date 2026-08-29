@@ -9,23 +9,48 @@ package frontend;
 
 import java.util.HashMap;
 
-public class Token
-{
-    public enum TokenType
-    {
-        PROGRAM, BEGIN, END, REPEAT, UNTIL, FOR, TO, DOWNTO, DO, WRITE, WRITELN, 
-        PERIOD, COLON, COLON_EQUALS, SEMICOLON,
-        PLUS, MINUS, STAR, SLASH, LPAREN, RPAREN, COMMA,
-        EQUALS, LESS_THAN,
-        IDENTIFIER, INTEGER, REAL, STRING, END_OF_FILE, ERROR,
+public class Token {
+    public enum TokenType {
+        PROGRAM,
+        BEGIN,
+        END,
+        REPEAT,
+        UNTIL,
+        FOR,
+        TO,
+        DOWNTO,
+        DO,
+        WRITE,
+        WRITELN,
+        PERIOD,
+        COLON,
+        COLON_EQUALS,
+        SEMICOLON,
+        PLUS,
+        MINUS,
+        STAR,
+        SLASH,
+        LPAREN,
+        RPAREN,
+        COMMA,
+        EQUALS,
+        LESS_THAN,
+        IDENTIFIER,
+        INTEGER,
+        REAL,
+        STRING,
+        END_OF_FILE,
+        ERROR,
         // used by CASE
-        CASE, OF
+        CASE,
+        OF
     }
 
     /**
      * The table (as a hashmap) of reserved words. Initialize the table.
      */
     private static HashMap<String, TokenType> reservedWords;
+
     static {
         reservedWords = new HashMap<String, TokenType>();
 
@@ -51,7 +76,7 @@ public class Token
 
     /**
      * Constructor.
-     * 
+     *
      * @param firstChar the first character of the token.
      */
     private Token(char firstChar) {
@@ -60,7 +85,7 @@ public class Token
 
     /**
      * Construct a word token.
-     * 
+     *
      * @param firstChar the first character of the token.
      * @param source    the input source.
      * @return the word token.
@@ -77,15 +102,14 @@ public class Token
 
         // Is it a reserved word or an identifier?
         token.type = reservedWords.get(token.text.toUpperCase());
-        if (token.type == null)
-            token.type = TokenType.IDENTIFIER;
+        if (token.type == null) token.type = TokenType.IDENTIFIER;
 
         return token;
     }
 
     /**
      * Construct a number token and set its value.
-     * 
+     *
      * @param firstChar the first character of the token.
      * @param source    the input source.
      * @return the number token.
@@ -120,7 +144,7 @@ public class Token
 
     /**
      * Construct a string token and set its value.
-     * 
+     *
      * @param firstChar the first character of the token.
      * @param source    the input source.
      * @return the string token.
@@ -147,7 +171,7 @@ public class Token
 
     /**
      * Construct a special symbol token and set its value.
-     * 
+     *
      * @param firstChar the first character of the token.
      * @param source    the input source.
      * @return the special symbol token.
@@ -220,7 +244,7 @@ public class Token
 
     /**
      * Handle a token error.
-     * 
+     *
      * @param token   the bad token.
      * @param message the error message.
      */
