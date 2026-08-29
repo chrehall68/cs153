@@ -15,6 +15,8 @@ jobs:
         with:
           distribution: temurin
           java-version: "21"
-      - uses: axel-op/googlejavaformat-action@v4
+      - run: wget https://github.com/google/google-java-format/releases/download/v1.36.1/google-java-format-1.36.1.jar
+      - run: java -jar google-java-format-1.36.1.jar --replace --skip-javadoc-formatting **/*.java
+      - uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          args: "--skip-sorting-imports --replace"
+          commit_message: "Format java files"
