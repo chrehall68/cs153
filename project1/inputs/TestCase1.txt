@@ -8,4 +8,5 @@ BEGIN
         -8:      j := 8*i;
         5, 7, 4: j := 574*i;
     END;
+    writeln(j);
 END.
