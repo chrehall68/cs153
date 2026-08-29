@@ -8,6 +8,7 @@
 package intermediate;
 
 import static intermediate.Node.NodeType.*;
+
 import java.util.*;
 
 public class Node {
