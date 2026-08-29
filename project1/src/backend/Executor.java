@@ -85,9 +85,10 @@ public class Executor {
                 return null;
         }
     }
-    private HashSet<Object> visitSelectConstants(Node selectConstants){
+
+    private HashSet<Object> visitSelectConstants(Node selectConstants) {
         HashSet<Object> values = new HashSet<>();
-        for (Node option : selectConstants.children){
+        for (Node option : selectConstants.children) {
             switch (option.type) {
                 case REAL_CONSTANT -> values.add(visitRealConstant(option));
                 case INTEGER_CONSTANT -> values.add(visitIntegerConstant(option));
@@ -99,12 +100,12 @@ public class Executor {
         return values;
     }
 
-    private Object visitSelect(Node selectNode){
+    private Object visitSelect(Node selectNode) {
         Object value = visitExpression(selectNode.children.get(0));
-        for (int i = 1; i < selectNode.children.size(); ++i){
+        for (int i = 1; i < selectNode.children.size(); ++i) {
             Node branch = selectNode.children.get(i);
             HashSet<Object> possibilities = visitSelectConstants(branch.children.get(0));
-            if (possibilities.contains(value)){
+            if (possibilities.contains(value)) {
                 return visitStatement(branch.children.get(1));
             }
         }
@@ -283,15 +284,16 @@ public class Executor {
 
         return value;
     }
-    private Object visitNegateNode(Node negateNode){
+
+    private Object visitNegateNode(Node negateNode) {
         Node child = negateNode.children.get(0);
-        if (child.type == INTEGER_CONSTANT){
-            return -(double)(visitIntegerConstant(child));
-        } else if (child.type == REAL_CONSTANT){
-            return -(double)(visitRealConstant(child));
+        if (child.type == INTEGER_CONSTANT) {
+            return -(double) (visitIntegerConstant(child));
+        } else if (child.type == REAL_CONSTANT) {
+            return -(double) (visitRealConstant(child));
         } else {
             // identifier
-            return -(double)(visitVariable(child));
+            return -(double) (visitVariable(child));
         }
     }
 
