@@ -133,7 +133,7 @@ public class Parser {
                 stmtNode = parseCaseStatement();
                 break;
             case SEMICOLON:
-                stmtNode = null;
+                stmtNode = new Node(EMPTY);
                 break; // empty statement
 
             default:
@@ -159,7 +159,12 @@ public class Parser {
         if (currentToken.type == IDENTIFIER) {
             value = parseVariable();
         } else if (currentToken.type == REAL) {
-            value = parseRealConstant();
+          // technically, real numbers conform to the pascal grammar
+          // but are rejected by the compiler's backend:
+          // "The case statement consists of an expression (the selector) and a list of
+          // statements, each being associated with one or more constant values of
+          // the type of the selector. The selector type must be an ordinal type."
+          value = parseRealConstant();
         } else if (currentToken.type == INTEGER) {
             value = parseIntegerConstant();
         } else {
@@ -182,7 +187,7 @@ public class Parser {
             constants.adopt(firstConstant);
         }
 
-        while (currentToken.type != END_OF_FILE && currentToken.type == COMMA) {
+        while (currentToken.type == COMMA) {
             // consume comma
             currentToken = scanner.nextToken();
             // consume next constant
@@ -206,8 +211,17 @@ public class Parser {
             syntaxError("Expected colon after select constants");
         }
         // consume statement
-        Node statement = parseStatement();
-        if (statement != null) {
+        // be careful about the last statement
+        // the last case branch could be an empty statement. If it's an empty
+        // statement and there's no semicolon, then the next token will be "END"
+        Node statement;
+        if (currentToken.type == END){
+            // it is an empty statement not followed by a semicolon
+            statement = new Node(EMPTY);
+        } else {
+            statement = parseStatement();
+        }
+        if (statement != null) {  // statement returned by parseStatement can be null
             branchNode.adopt(statement);
         }
 
@@ -224,16 +238,14 @@ public class Parser {
         if (currentToken.type == OF) {
             currentToken = scanner.nextToken();
         } else {
-            syntaxError("Expecting END");
+            syntaxError("Expecting OF");
         }
         // there should be at least one branch
         caseNode.adopt(parseCaseBranch());
         while (currentToken.type == SEMICOLON) {
             // read the semicolon and then repeat
-            if (currentToken.type == SEMICOLON) {
-                currentToken = scanner.nextToken();
-            }
-            if (currentToken.type == END || currentToken.type == END_OF_FILE) {
+            currentToken = scanner.nextToken();
+            if (currentToken.type == END) {
                 break;
             }
             // otherwise, we expect another branch

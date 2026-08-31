@@ -1,0 +1,14 @@
+PROGRAM TestCase4;
+
+BEGIN
+  writeln ('Hello World');
+  CASE 4 OF
+    3: ;
+    4: ;
+    5: writeln('Hl');
+    6:
+  END;
+  ;
+  ;
+  ;
+END.

@@ -81,7 +81,7 @@ public class Executor {
             case SELECT:
                 return visitSelect(statementNode);
 
-            default:
+            default:  // include EMPTY nodes
                 return null;
         }
     }

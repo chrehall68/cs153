@@ -35,7 +35,8 @@ public class Node {
         SELECT,
         SELECT_BRANCH,
         SELECT_CONSTANTS,
-        NEGATE
+        NEGATE,
+        EMPTY
     }
 
     public NodeType type;
