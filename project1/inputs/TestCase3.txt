@@ -1,0 +1,13 @@
+PROGRAM TestCase3;
+
+BEGIN
+    writeln('testing if constants and identifiers work');
+    i := 3;
+    j := 0-4;
+    CASE 4 OF
+        i: writeln('Failed 1');
+        j: writeln('Failed 2');
+        'hi', 'there', 'strings', -45, 256: writeln('Failed 2');
+        -j: CASE j+1 OF -i: writeln('success') END
+    END;
+END.

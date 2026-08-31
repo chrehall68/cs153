@@ -87,6 +87,7 @@ public class Parser {
         statementStarters.add(REPEAT);
         statementStarters.add(Token.TokenType.WRITE);
         statementStarters.add(Token.TokenType.WRITELN);
+        statementStarters.add(CASE);
 
         // Tokens that can immediately follow a statement.
         statementFollowers.add(SEMICOLON);
@@ -128,8 +129,11 @@ public class Parser {
             case WRITELN:
                 stmtNode = parseWritelnStatement();
                 break;
+            case CASE:
+                stmtNode = parseCaseStatement();
+                break;
             case SEMICOLON:
-                stmtNode = null;
+                stmtNode = new Node(EMPTY);
                 break; // empty statement
 
             default:
@@ -138,6 +142,123 @@ public class Parser {
 
         if (stmtNode != null) stmtNode.lineNumber = savedLineNumber;
         return stmtNode;
+    }
+
+    private Node parseConstant() {
+        if (currentToken.type == STRING) {
+            return parseStringConstant();
+        }
+        // leading +/-
+        boolean isPositive = true;
+        if (currentToken.type == PLUS || currentToken.type == MINUS) {
+            isPositive = currentToken.type == PLUS;
+            currentToken = scanner.nextToken();
+        }
+        // trailing identifier or number
+        Node value = null;
+        if (currentToken.type == IDENTIFIER) {
+            value = parseVariable();
+        } else if (currentToken.type == REAL) {
+            // technically, real numbers conform to the pascal grammar
+            // but are rejected by the compiler's backend:
+            // "The case statement consists of an expression (the selector) and a list of
+            // statements, each being associated with one or more constant values of
+            // the type of the selector. The selector type must be an ordinal type."
+            value = parseRealConstant();
+        } else if (currentToken.type == INTEGER) {
+            value = parseIntegerConstant();
+        } else {
+            syntaxError("Expected identifier or number as constant");
+            return null;
+        }
+        if (isPositive) {
+            return value;
+        }
+        Node negated = new Node(NEGATE);
+        negated.adopt(value);
+        return negated;
+    }
+
+    // never returns null
+    private Node parseSelectConstants() {
+        Node constants = new Node(SELECT_CONSTANTS);
+        Node firstConstant = parseConstant();
+        if (firstConstant != null) {
+            constants.adopt(firstConstant);
+        }
+
+        while (currentToken.type == COMMA) {
+            // consume comma
+            currentToken = scanner.nextToken();
+            // consume next constant
+            Node nextConstant = parseConstant();
+            if (nextConstant != null) {
+                constants.adopt(nextConstant);
+            }
+        }
+
+        return constants;
+    }
+
+    // never returns null, and its children are non-null
+    private Node parseCaseBranch() {
+        Node branchNode = new Node(SELECT_BRANCH);
+        branchNode.adopt(parseSelectConstants());
+        // consume :
+        if (currentToken.type == COLON) {
+            currentToken = scanner.nextToken();
+        } else {
+            syntaxError("Expected colon after select constants");
+        }
+        // consume statement
+        // be careful about the last statement
+        // the last case branch could be an empty statement. If it's an empty
+        // statement and there's no semicolon, then the next token will be "END"
+        Node statement;
+        if (currentToken.type == END) {
+            // it is an empty statement not followed by a semicolon
+            statement = new Node(EMPTY);
+        } else {
+            statement = parseStatement();
+        }
+        if (statement != null) { // statement returned by parseStatement can be null
+            branchNode.adopt(statement);
+        }
+
+        return branchNode;
+    }
+
+    // never returns null, and its children are non-null
+    private Node parseCaseStatement() {
+        Node caseNode = new Node(SELECT);
+        // go past the case
+        currentToken = scanner.nextToken();
+        // parse expression
+        caseNode.adopt(parseExpression());
+        if (currentToken.type == OF) {
+            currentToken = scanner.nextToken();
+        } else {
+            syntaxError("Expecting OF");
+        }
+        // there should be at least one branch
+        caseNode.adopt(parseCaseBranch());
+        while (currentToken.type == SEMICOLON) {
+            // read the semicolon and then repeat
+            currentToken = scanner.nextToken();
+            if (currentToken.type == END) {
+                break;
+            }
+            // otherwise, we expect another branch
+            caseNode.adopt(parseCaseBranch());
+        }
+        // consume end
+        if (currentToken.type == END) {
+            currentToken = scanner.nextToken();
+        } else {
+            syntaxError("Expected END after last select branch");
+        }
+
+        return caseNode;
     }
 
     private Node parseAssignmentStatement() {

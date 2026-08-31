@@ -75,6 +75,7 @@ public class Simple {
             System.out.println();
 
             var ppt = new PrettyPrintTree<Node>(Node::getChildren, Node::getDisplay);
+            ppt.setColor(Color.NONE);
             ppt.display(programNode);
         } else {
             System.out.println();

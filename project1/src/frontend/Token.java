@@ -32,6 +32,7 @@ public class Token {
         SLASH,
         LPAREN,
         RPAREN,
+        COMMA,
         EQUALS,
         LESS_THAN,
         IDENTIFIER,
@@ -39,7 +40,10 @@ public class Token {
         REAL,
         STRING,
         END_OF_FILE,
-        ERROR
+        ERROR,
+        // used by CASE
+        CASE,
+        OF
     }
 
     /**
@@ -61,6 +65,8 @@ public class Token {
         reservedWords.put("DO", TokenType.DO);
         reservedWords.put("WRITE", TokenType.WRITE);
         reservedWords.put("WRITELN", TokenType.WRITELN);
+        reservedWords.put("CASE", TokenType.CASE);
+        reservedWords.put("OF", TokenType.OF);
     }
 
     public TokenType type; // what type of token
@@ -70,6 +76,7 @@ public class Token {
 
     /**
      * Constructor.
+     *
      * @param firstChar the first character of the token.
      */
     private Token(char firstChar) {
@@ -78,8 +85,9 @@ public class Token {
 
     /**
      * Construct a word token.
+     *
      * @param firstChar the first character of the token.
-     * @param source the input source.
+     * @param source    the input source.
      * @return the word token.
      */
     public static Token word(char firstChar, Source source) {
@@ -101,8 +109,9 @@ public class Token {
 
     /**
      * Construct a number token and set its value.
+     *
      * @param firstChar the first character of the token.
-     * @param source the input source.
+     * @param source    the input source.
      * @return the number token.
      */
     public static Token number(char firstChar, Source source) {
@@ -135,8 +144,9 @@ public class Token {
 
     /**
      * Construct a string token and set its value.
+     *
      * @param firstChar the first character of the token.
-     * @param source the input source.
+     * @param source    the input source.
      * @return the string token.
      */
     public static Token string(char firstChar, Source source) {
@@ -161,8 +171,9 @@ public class Token {
 
     /**
      * Construct a special symbol token and set its value.
+     *
      * @param firstChar the first character of the token.
-     * @param source the input source.
+     * @param source    the input source.
      * @return the special symbol token.
      */
     public static Token specialSymbol(char firstChar, Source source) {
@@ -199,6 +210,9 @@ public class Token {
             case ')':
                 token.type = TokenType.RPAREN;
                 break;
+            case ',':
+                token.type = TokenType.COMMA;
+                break;
 
             case ':':
                 {
@@ -233,7 +247,8 @@ public class Token {
 
     /**
      * Handle a token error.
-     * @param token the bad token.
+     *
+     * @param token   the bad token.
      * @param message the error message.
      */
     private static void tokenError(Token token, String message) {

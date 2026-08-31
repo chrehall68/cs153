@@ -44,6 +44,7 @@ public class Executor {
                 return visitProgram(node);
 
             case COMPOUND:
+            case SELECT:
             case ASSIGN:
             case LOOP:
             case WRITE:
@@ -77,10 +78,38 @@ public class Executor {
                 return visitWrite(statementNode);
             case WRITELN:
                 return visitWriteln(statementNode);
+            case SELECT:
+                return visitSelect(statementNode);
 
-            default:
+            default: // include EMPTY nodes
                 return null;
         }
+    }
+
+    private HashSet<Object> visitSelectConstants(Node selectConstants) {
+        HashSet<Object> values = new HashSet<>();
+        for (Node option : selectConstants.children) {
+            switch (option.type) {
+                case REAL_CONSTANT -> values.add(visitRealConstant(option));
+                case INTEGER_CONSTANT -> values.add(visitIntegerConstant(option));
+                case VARIABLE -> values.add(visitVariable(option));
+                case STRING_CONSTANT -> values.add(visitStringConstant(option));
+                case NEGATE -> values.add(visitNegateNode(option));
+            }
+        }
+        return values;
+    }
+
+    private Object visitSelect(Node selectNode) {
+        Object value = visitExpression(selectNode.children.get(0));
+        for (int i = 1; i < selectNode.children.size(); ++i) {
+            Node branch = selectNode.children.get(i);
+            HashSet<Object> possibilities = visitSelectConstants(branch.children.get(0));
+            if (possibilities.contains(value)) {
+                return visitStatement(branch.children.get(1));
+            }
+        }
+        return null;
     }
 
     private Object visitCompound(Node compoundNode) {
@@ -254,6 +283,18 @@ public class Executor {
         Double value = variableEntry.getValue();
 
         return value;
+    }
+
+    private Object visitNegateNode(Node negateNode) {
+        Node child = negateNode.children.get(0);
+        if (child.type == INTEGER_CONSTANT) {
+            return -(double) (visitIntegerConstant(child));
+        } else if (child.type == REAL_CONSTANT) {
+            return -(double) (visitRealConstant(child));
+        } else {
+            // identifier
+            return -(double) (visitVariable(child));
+        }
     }
 
     private Object visitIntegerConstant(Node integerConstantNode) {
