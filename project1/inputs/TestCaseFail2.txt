@@ -1,0 +1,7 @@
+PROGRAM TestCaseFail2;
+
+BEGIN
+    CASE 4 OF
+        3*2: writeln('Failed 1')
+    END;
+END.

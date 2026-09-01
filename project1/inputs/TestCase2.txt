@@ -8,9 +8,10 @@ BEGIN
         -4, -2, 0, 4, 6, 8, 10, 12, 14: even := i;
         -5, -3, -1, 1, 3, 5, 
         7, 9, 11, 13, 15:  BEGIN
+                               writeln('i is odd');
                                odd := i;
                                CASE i OF
-                                   2, 3, 5, 7, 11, 13: prime := i
+                                   2, 3, 5, 7, 11, 13: BEGIN prime := i; writeln('i is prime'); END;
                                END
                            END
     END;
