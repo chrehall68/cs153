@@ -16,7 +16,10 @@ public class Token
         PROGRAM, BEGIN, END, REPEAT, UNTIL, WRITE, WRITELN, 
         PERIOD, COLON, COLON_EQUALS, SEMICOLON,
         PLUS, MINUS, STAR, SLASH, LPAREN, RPAREN, 
-        EQUALS, LESS_THAN,
+        EQUALS, LESS_THAN, GREATER_THAN, 
+        LESS_THAN_OR_EQUAL,
+        GREATER_THAN_OR_EQUAL,
+        NOT_EQUALS, WHILE, DO,
         IDENTIFIER, INTEGER, REAL, STRING, END_OF_FILE, ERROR
     }
     
@@ -33,6 +36,8 @@ public class Token
         reservedWords.put("END",     TokenType.END);
         reservedWords.put("REPEAT",  TokenType.REPEAT);
         reservedWords.put("UNTIL",   TokenType.UNTIL);
+        reservedWords.put("WHILE",   TokenType.WHILE);
+        reservedWords.put("DO",      TokenType.DO);
         reservedWords.put("WRITE",   TokenType.WRITE);
         reservedWords.put("WRITELN", TokenType.WRITELN);
     }
