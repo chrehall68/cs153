@@ -25,8 +25,11 @@ public class Node {
         MULTIPLY,
         DIVIDE,
         EQ,
+        NEQ,
         LT,
         GT,
+        LT_OR_EQ,
+        GT_OR_EQ,
         VARIABLE,
         INTEGER_CONSTANT,
         REAL_CONSTANT,
@@ -36,7 +39,9 @@ public class Node {
         SELECT_BRANCH,
         SELECT_CONSTANTS,
         NEGATE,
-        EMPTY
+        EMPTY,
+        // used by WHILE
+        NOT
     }
 
     public NodeType type;
