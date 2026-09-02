@@ -36,7 +36,7 @@ public class Token {
         EQUALS,
         NOT_EQUALS,
         LESS_THAN,
-        GREATER_THAN, 
+        GREATER_THAN,
         LESS_THAN_OR_EQUAL,
         GREATER_THAN_OR_EQUAL,
         IDENTIFIER,
@@ -216,8 +216,8 @@ public class Token {
                     // Is it the <= symbol?
                     if (nextChar == '=') {
                         token.type = TokenType.LESS_THAN_OR_EQUAL;
-                    } 
-                    
+                    }
+
                     // Is it the <> symbol?
                     else if (nextChar == '>') {
                         token.type = TokenType.NOT_EQUALS;

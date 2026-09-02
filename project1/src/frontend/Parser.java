@@ -102,7 +102,7 @@ public class Parser {
         relationalOperators.add(LESS_THAN_OR_EQUAL);
         relationalOperators.add(GREATER_THAN_OR_EQUAL);
         relationalOperators.add(NOT_EQUALS);
-        
+
         simpleExpressionOperators.add(PLUS);
         simpleExpressionOperators.add(MINUS);
 
@@ -125,7 +125,7 @@ public class Parser {
             case REPEAT:
                 stmtNode = parseRepeatStatement();
                 break;
-            case WHILE :
+            case WHILE:
                 stmtNode = parseWhileStatement();
                 break;
             case FOR:
@@ -359,19 +359,17 @@ public class Parser {
             // The LOOP node adopts the TEST node
             // as its final child.
             loopNode.adopt(testNode);
-        }
-        else syntaxError("Expecting UNTIL");
-        
+        } else syntaxError("Expecting UNTIL");
+
         return loopNode;
     }
 
-    private Node parseWhileStatement()
-    {
+    private Node parseWhileStatement() {
         // The current token should now be WHILE.
-        
+
         // Create a LOOP node.
         Node loopNode = new Node(LOOP);
-        
+
         // Consume WHILE
         currentToken = scanner.nextToken();
 
@@ -384,9 +382,9 @@ public class Parser {
         Node notNode = new Node(NOT);
         notNode.lineNumber = lineNumber;
         testNode.adopt(notNode);
-        
+
         notNode.adopt(parseExpression());
-        
+
         // The LOOP node adopts the TEST node
         // as its first child.
         loopNode.adopt(testNode);
@@ -395,11 +393,11 @@ public class Parser {
 
             // Consume DO
             currentToken = scanner.nextToken();
-            
+
             // loopNode adopts statementNode as
             // its last child
             Node statementNode = parseStatement();
-            if(statementNode != null) {
+            if (statementNode != null) {
                 loopNode.adopt(statementNode);
             }
         } else syntaxError("Expecting DO");
@@ -560,7 +558,7 @@ public class Parser {
         if (relationalOperators.contains(currentToken.type)) {
             Token.TokenType tokenType = currentToken.type;
             Node opNode;
-            switch(tokenType) {
+            switch (tokenType) {
                 case EQUALS:
                     opNode = new Node(EQ);
                     break;
