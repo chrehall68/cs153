@@ -54,6 +54,9 @@ public class Executor {
             case TEST:
                 return visitTest(node);
 
+            case EMPTY:
+                return null;
+
             default:
                 return visitExpression(node);
         }
