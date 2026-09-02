@@ -618,6 +618,18 @@ public class Parser {
     private Node parseFactor() {
         // The current token should now be an identifier or a number or (
 
+        if (currentToken.type == PLUS || currentToken.type == MINUS) {
+            boolean isPositive = currentToken.type == PLUS;
+            currentToken = scanner.nextToken();
+
+            Node factorNode = parseFactor();
+            if (isPositive) return factorNode;
+
+            Node negateNode = new Node(NEGATE);
+            negateNode.adopt(factorNode);
+            return negateNode;
+        }
+
         if (currentToken.type == IDENTIFIER) return parseVariable();
         else if (currentToken.type == INTEGER) return parseIntegerConstant();
         else if (currentToken.type == REAL) return parseRealConstant();
