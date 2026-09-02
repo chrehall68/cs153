@@ -16,6 +16,7 @@ public class Node {
         PROGRAM,
         COMPOUND,
         ASSIGN,
+        IF,
         LOOP,
         TEST,
         WRITE,

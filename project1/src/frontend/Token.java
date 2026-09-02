@@ -16,6 +16,9 @@ public class Token {
         END,
         REPEAT,
         UNTIL,
+        IF,
+        THEN,
+        ELSE,
         FOR,
         TO,
         DOWNTO,
@@ -59,6 +62,9 @@ public class Token {
         reservedWords.put("END", TokenType.END);
         reservedWords.put("REPEAT", TokenType.REPEAT);
         reservedWords.put("UNTIL", TokenType.UNTIL);
+        reservedWords.put("IF", TokenType.IF);
+        reservedWords.put("THEN", TokenType.THEN);
+        reservedWords.put("ELSE", TokenType.ELSE);
         reservedWords.put("FOR", TokenType.FOR);
         reservedWords.put("TO", TokenType.TO);
         reservedWords.put("DOWNTO", TokenType.DOWNTO);

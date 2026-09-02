@@ -46,6 +46,7 @@ public class Executor {
             case COMPOUND:
             case SELECT:
             case ASSIGN:
+            case IF:
             case LOOP:
             case WRITE:
             case WRITELN:
@@ -72,6 +73,8 @@ public class Executor {
                 return visitCompound(statementNode);
             case ASSIGN:
                 return visitAssign(statementNode);
+            case IF:
+                return visitIf(statementNode);
             case LOOP:
                 return visitLoop(statementNode);
             case WRITE:
@@ -129,6 +132,14 @@ public class Executor {
         String variableName = lhs.text;
         SymtabEntry variableEntry = symtab.lookup(variableName);
         variableEntry.setValue(value);
+
+        return null;
+    }
+
+    private Object visitIf(Node ifNode) {
+        boolean test = (Boolean) visit(ifNode.children.get(0));
+        if (test) return visitStatement(ifNode.children.get(1));
+        if (ifNode.children.size() > 2) return visitStatement(ifNode.children.get(2));
 
         return null;
     }
