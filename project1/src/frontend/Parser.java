@@ -151,7 +151,12 @@ public class Parser {
                 break; // empty statement
 
             default:
-                syntaxError("Unexpected token");
+                if (statementFollowers.contains(currentToken.type)) {
+                    stmtNode = new Node(EMPTY);
+                    // Don't advance - let caller handle the follower token
+                } else {
+                    syntaxError("Unexpected token");
+                }
         }
 
         if (stmtNode != null) stmtNode.lineNumber = savedLineNumber;
@@ -228,13 +233,8 @@ public class Parser {
         // be careful about the last statement
         // the last case branch could be an empty statement. If it's an empty
         // statement and there's no semicolon, then the next token will be "END"
-        Node statement;
-        if (currentToken.type == END) {
-            // it is an empty statement not followed by a semicolon
-            statement = new Node(EMPTY);
-        } else {
-            statement = parseStatement();
-        }
+        // which is why that's now covered in statementFollowers
+        Node statement = parseStatement();
         if (statement != null) { // statement returned by parseStatement can be null
             branchNode.adopt(statement);
         }
@@ -323,11 +323,9 @@ public class Parser {
         }
 
         // Adopt the then-statement.
-        Node thenNode = new Node(EMPTY);
         // it's possible for the "THEN" to have an empty statement after it and before the ELSE
-        if (currentToken.type != ELSE) {
-            thenNode = parseStatement();
-        }
+        // but this is now handled by parseStatement
+        Node thenNode = parseStatement();
         if (thenNode != null) ifNode.adopt(thenNode);
 
         // Optional ELSE part.
@@ -335,7 +333,7 @@ public class Parser {
             // Consume ELSE.
             currentToken = scanner.nextToken();
 
-            Node elseNode = parseStatement();
+            Node elseNode = parseStatement();  // handles empty parseStatements too
             if (elseNode != null) ifNode.adopt(elseNode);
         }
 
@@ -372,6 +370,9 @@ public class Parser {
                 }
             } else if (statementStarters.contains(currentToken.type)) {
                 syntaxError("Missing ;");
+            } else if (statementFollowers.contains(currentToken.type)) {
+                // Hit a statement follower - stop parsing statements to prevent infinite loop of empties
+                break;
             }
         }
     }
