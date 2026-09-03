@@ -1,0 +1,4 @@
+PROGRAM TestIfThenFail;
+BEGIN
+  IF x = 1 THEN
+END.

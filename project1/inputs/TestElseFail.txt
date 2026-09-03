@@ -1,0 +1,4 @@
+PROGRAM TestElseFail;
+BEGIN
+  ELSE
+END.

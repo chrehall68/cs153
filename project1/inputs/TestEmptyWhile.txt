@@ -1,0 +1,4 @@
+PROGRAM TestWhileFail;
+BEGIN
+  WHILE x > 0 DO
+END.
