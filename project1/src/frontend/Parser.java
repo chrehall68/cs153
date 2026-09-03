@@ -789,6 +789,10 @@ public class Parser {
 
         // Recover by skipping the rest of the statement.
         // Skip to a statement follower token.
+        // but first, clear the current token (this prevents infinite loops)
+        // ie if parseStatement sees a token in statementFollowers and calls syntaxError
+        // we need to advance otherwise we will infinitely syntaxError on the same token
+        currentToken = scanner.nextToken();
         while (!statementFollowers.contains(currentToken.type)) {
             currentToken = scanner.nextToken();
         }
