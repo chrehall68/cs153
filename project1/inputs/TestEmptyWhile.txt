@@ -1,4 +1,4 @@
-PROGRAM TestWhileFail;
+PROGRAM TestEmptyWhile;
 BEGIN
-  WHILE x > 0 DO
+  WHILE 1 > 0 DO
 END.

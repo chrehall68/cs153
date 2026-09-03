@@ -1,4 +1,4 @@
-PROGRAM TestIfThenFail;
+PROGRAM TestEmptyThen;
 BEGIN
-  IF x = 1 THEN
+  IF 1 = 1 THEN
 END.
