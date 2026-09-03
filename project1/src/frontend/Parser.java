@@ -89,6 +89,9 @@ public class Parser {
         statementStarters.add(Token.TokenType.WRITE);
         statementStarters.add(Token.TokenType.WRITELN);
         statementStarters.add(CASE);
+        statementStarters.add(Token.TokenType.IF);
+        statementStarters.add(FOR);
+        statementStarters.add(WHILE);
 
         // Tokens that can immediately follow a statement.
         statementFollowers.add(SEMICOLON);
