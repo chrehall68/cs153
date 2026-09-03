@@ -1,4 +1,4 @@
-PROGRAM TestIfFail1;
+PROGRAM TestIfFail2;
 
 BEGIN
     ELSE
