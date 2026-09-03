@@ -333,7 +333,7 @@ public class Parser {
             // Consume ELSE.
             currentToken = scanner.nextToken();
 
-            Node elseNode = parseStatement();  // handles empty parseStatements too
+            Node elseNode = parseStatement(); // handles empty parseStatements too
             if (elseNode != null) ifNode.adopt(elseNode);
         }
 
@@ -371,7 +371,8 @@ public class Parser {
             } else if (statementStarters.contains(currentToken.type)) {
                 syntaxError("Missing ;");
             } else if (statementFollowers.contains(currentToken.type)) {
-                // Hit a statement follower - stop parsing statements to prevent infinite loop of empties
+                // Hit a statement follower - stop parsing statements to prevent infinite loop of
+                // empties
                 break;
             }
         }
