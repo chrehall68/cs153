@@ -3,6 +3,8 @@ PROGRAM TestIf1;
 BEGIN
     i := 1;
     j := 2;
-    
-    IF i <= j THEN x := 3.14;
+
+    x := 1;
+    IF i <= j THEN x := 314;
+    writeln(x);
 END.

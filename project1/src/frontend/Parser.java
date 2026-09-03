@@ -136,6 +136,7 @@ public class Parser {
                 stmtNode = parseCaseStatement();
                 break;
             case SEMICOLON:
+            case ELSE:
                 stmtNode = new Node(EMPTY);
                 break; // empty statement
 

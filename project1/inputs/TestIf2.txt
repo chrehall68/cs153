@@ -1,9 +1,10 @@
-PROGRAM TestIf1;
+PROGRAM TestIf2;
     
 BEGIN
     i := 1;
     j := 2;
     
-    IF i = j THEN x := 3.14
+    IF i = j THEN x := 314
              ELSE x := -5;
+    writeln(x);
 END.

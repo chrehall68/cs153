@@ -8,4 +8,5 @@ BEGIN
              else if i <= j then i := 44 
                             else if i = j then i := 55 
                                           else i := 6;
+    writeln(i);
 END.
