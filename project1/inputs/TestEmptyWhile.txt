@@ -1,0 +1,4 @@
+PROGRAM TestEmptyWhile;
+BEGIN
+  WHILE 1 > 0 DO
+END.
