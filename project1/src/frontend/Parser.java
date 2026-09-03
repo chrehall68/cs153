@@ -325,7 +325,7 @@ public class Parser {
         // Adopt the then-statement.
         Node thenNode = new Node(EMPTY);
         // it's possible for the "THEN" to have an empty statement after it and before the ELSE
-        if (currentToken.type != ELSE){
+        if (currentToken.type != ELSE) {
             thenNode = parseStatement();
         }
         if (thenNode != null) ifNode.adopt(thenNode);
