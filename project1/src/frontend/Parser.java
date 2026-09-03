@@ -89,12 +89,15 @@ public class Parser {
         statementStarters.add(Token.TokenType.WRITE);
         statementStarters.add(Token.TokenType.WRITELN);
         statementStarters.add(CASE);
+        statementStarters.add(Token.TokenType.IF);
+        statementStarters.add(FOR);
 
         // Tokens that can immediately follow a statement.
         statementFollowers.add(SEMICOLON);
         statementFollowers.add(END);
         statementFollowers.add(UNTIL);
         statementFollowers.add(END_OF_FILE);
+        statementFollowers.add(ELSE);
 
         relationalOperators.add(EQUALS);
         relationalOperators.add(LESS_THAN);
@@ -144,7 +147,6 @@ public class Parser {
                 stmtNode = parseCaseStatement();
                 break;
             case SEMICOLON:
-            case ELSE:
                 stmtNode = new Node(EMPTY);
                 break; // empty statement
 
@@ -305,7 +307,6 @@ public class Parser {
 
     private Node parseIfStatement() {
         // The current token should now be IF.
-
         Node ifNode = new Node(Node.NodeType.IF);
 
         // Consume IF.
@@ -322,7 +323,11 @@ public class Parser {
         }
 
         // Adopt the then-statement.
-        Node thenNode = parseStatement();
+        Node thenNode = new Node(EMPTY);
+        // it's possible for the "THEN" to have an empty statement after it and before the ELSE
+        if (currentToken.type != ELSE) {
+            thenNode = parseStatement();
+        }
         if (thenNode != null) ifNode.adopt(thenNode);
 
         // Optional ELSE part.
@@ -784,6 +789,10 @@ public class Parser {
 
         // Recover by skipping the rest of the statement.
         // Skip to a statement follower token.
+        // but first, clear the current token (this prevents infinite loops)
+        // ie if parseStatement sees a token in statementFollowers and calls syntaxError
+        // we need to advance otherwise we will infinitely syntaxError on the same token
+        currentToken = scanner.nextToken();
         while (!statementFollowers.contains(currentToken.type)) {
             currentToken = scanner.nextToken();
         }

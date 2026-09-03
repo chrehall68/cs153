@@ -1,0 +1,7 @@
+PROGRAM TestIfFail1;
+
+BEGIN
+    x := 1
+
+    IF 1 <= 2 THEN x := 2 ELSE ;
+END.
