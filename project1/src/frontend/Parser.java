@@ -97,6 +97,7 @@ public class Parser {
         statementFollowers.add(END);
         statementFollowers.add(UNTIL);
         statementFollowers.add(END_OF_FILE);
+        statementFollowers.add(ELSE);
 
         relationalOperators.add(EQUALS);
         relationalOperators.add(LESS_THAN);
