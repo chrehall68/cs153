@@ -147,7 +147,6 @@ public class Parser {
                 stmtNode = parseCaseStatement();
                 break;
             case SEMICOLON:
-            case ELSE:
                 stmtNode = new Node(EMPTY);
                 break; // empty statement
 
@@ -308,7 +307,6 @@ public class Parser {
 
     private Node parseIfStatement() {
         // The current token should now be IF.
-
         Node ifNode = new Node(Node.NodeType.IF);
 
         // Consume IF.
@@ -325,7 +323,11 @@ public class Parser {
         }
 
         // Adopt the then-statement.
-        Node thenNode = parseStatement();
+        Node thenNode = new Node(EMPTY);
+        // it's possible for the "THEN" to have an empty statement after it and before the ELSE
+        if (currentToken.type != ELSE){
+            thenNode = parseStatement();
+        }
         if (thenNode != null) ifNode.adopt(thenNode);
 
         // Optional ELSE part.
