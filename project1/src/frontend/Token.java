@@ -37,7 +37,11 @@ public class Token {
         RPAREN,
         COMMA,
         EQUALS,
+        NOT_EQUALS,
         LESS_THAN,
+        GREATER_THAN,
+        LESS_THAN_OR_EQUAL,
+        GREATER_THAN_OR_EQUAL,
         IDENTIFIER,
         INTEGER,
         REAL,
@@ -46,7 +50,9 @@ public class Token {
         ERROR,
         // used by CASE
         CASE,
-        OF
+        OF,
+        // used by WHILE
+        WHILE
     }
 
     /**
@@ -70,6 +76,7 @@ public class Token {
         reservedWords.put("DOWNTO", TokenType.DOWNTO);
         reservedWords.put("DO", TokenType.DO);
         reservedWords.put("WRITE", TokenType.WRITE);
+        reservedWords.put("WHILE", TokenType.WHILE);
         reservedWords.put("WRITELN", TokenType.WRITELN);
         reservedWords.put("CASE", TokenType.CASE);
         reservedWords.put("OF", TokenType.OF);
@@ -208,8 +215,46 @@ public class Token {
                 token.type = TokenType.EQUALS;
                 break;
             case '<':
-                token.type = TokenType.LESS_THAN;
-                break;
+                {
+                    char nextChar = source.nextChar();
+                    token.text += nextChar;
+
+                    // Is it the <= symbol?
+                    if (nextChar == '=') {
+                        token.type = TokenType.LESS_THAN_OR_EQUAL;
+                    }
+
+                    // Is it the <> symbol?
+                    else if (nextChar == '>') {
+                        token.type = TokenType.NOT_EQUALS;
+                    }
+
+                    // No, it's just the < symbol.
+                    else {
+                        token.type = TokenType.LESS_THAN;
+                        return token; // already consumed :
+                    }
+
+                    break;
+                }
+            case '>':
+                {
+                    char nextChar = source.nextChar();
+                    token.text += nextChar;
+
+                    // Is it the >= symbol?
+                    if (nextChar == '=') {
+                        token.type = TokenType.GREATER_THAN_OR_EQUAL;
+                    }
+
+                    // No, it's just the > symbol.
+                    else {
+                        token.type = TokenType.GREATER_THAN;
+                        return token; // already consumed :
+                    }
+
+                    break;
+                }
             case '(':
                 token.type = TokenType.LPAREN;
                 break;
