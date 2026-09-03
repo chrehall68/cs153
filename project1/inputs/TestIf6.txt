@@ -1,0 +1,8 @@
+PROGRAM TestIf6;
+    
+BEGIN
+    x := 1;
+    
+    IF 1 <= 2 THEN x := 2 ELSE ;
+    writeln(x);
+END.

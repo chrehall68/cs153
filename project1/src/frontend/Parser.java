@@ -131,6 +131,9 @@ public class Parser {
             case FOR:
                 stmtNode = parseForStatement();
                 break;
+            case IF:
+                stmtNode = parseIfStatement();
+                break;
             case WRITE:
                 stmtNode = parseWriteStatement();
                 break;
@@ -141,6 +144,7 @@ public class Parser {
                 stmtNode = parseCaseStatement();
                 break;
             case SEMICOLON:
+            case ELSE:
                 stmtNode = new Node(EMPTY);
                 break; // empty statement
 
@@ -297,6 +301,40 @@ public class Parser {
         assignmentNode.adopt(rhsNode);
 
         return assignmentNode;
+    }
+
+    private Node parseIfStatement() {
+        // The current token should now be IF.
+
+        Node ifNode = new Node(Node.NodeType.IF);
+
+        // Consume IF.
+        currentToken = scanner.nextToken();
+
+        // Adopt the test expression.
+        ifNode.adopt(parseExpression());
+
+        if (currentToken.type == THEN) {
+            // Consume THEN.
+            currentToken = scanner.nextToken();
+        } else {
+            syntaxError("Expecting THEN");
+        }
+
+        // Adopt the then-statement.
+        Node thenNode = parseStatement();
+        if (thenNode != null) ifNode.adopt(thenNode);
+
+        // Optional ELSE part.
+        if (currentToken.type == ELSE) {
+            // Consume ELSE.
+            currentToken = scanner.nextToken();
+
+            Node elseNode = parseStatement();
+            if (elseNode != null) ifNode.adopt(elseNode);
+        }
+
+        return ifNode;
     }
 
     private Node parseCompoundStatement() {
@@ -648,6 +686,18 @@ public class Parser {
 
     private Node parseFactor() {
         // The current token should now be an identifier or a number or (
+
+        if (currentToken.type == PLUS || currentToken.type == MINUS) {
+            boolean isPositive = currentToken.type == PLUS;
+            currentToken = scanner.nextToken();
+
+            Node factorNode = parseFactor();
+            if (isPositive) return factorNode;
+
+            Node negateNode = new Node(NEGATE);
+            negateNode.adopt(factorNode);
+            return negateNode;
+        }
 
         if (currentToken.type == IDENTIFIER) return parseVariable();
         else if (currentToken.type == INTEGER) return parseIntegerConstant();
