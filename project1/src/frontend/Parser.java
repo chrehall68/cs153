@@ -117,41 +117,43 @@ public class Parser {
         Node stmtNode = null;
         int savedLineNumber = currentToken.lineNumber;
         lineNumber = savedLineNumber;
-
-        switch (currentToken.type) {
-            case IDENTIFIER:
-                stmtNode = parseAssignmentStatement();
-                break;
-            case BEGIN:
-                stmtNode = parseCompoundStatement();
-                break;
-            case REPEAT:
-                stmtNode = parseRepeatStatement();
-                break;
-            case WHILE:
-                stmtNode = parseWhileStatement();
-                break;
-            case FOR:
-                stmtNode = parseForStatement();
-                break;
-            case IF:
-                stmtNode = parseIfStatement();
-                break;
-            case WRITE:
-                stmtNode = parseWriteStatement();
-                break;
-            case WRITELN:
-                stmtNode = parseWritelnStatement();
-                break;
-            case CASE:
-                stmtNode = parseCaseStatement();
-                break;
-            case SEMICOLON:
-                stmtNode = new Node(EMPTY);
-                break; // empty statement
-
-            default:
-                syntaxError("Unexpected token");
+        
+        // If the token is statement follower, return a empty node
+        if(statementFollowers.contains(currentToken.type)) {
+            stmtNode = new Node(EMPTY);
+        } else {
+            // Otherwise parse the statement
+            switch (currentToken.type) {
+                case IDENTIFIER:
+                    stmtNode = parseAssignmentStatement();
+                    break;
+                case BEGIN:
+                    stmtNode = parseCompoundStatement();
+                    break;
+                case REPEAT:
+                    stmtNode = parseRepeatStatement();
+                    break;
+                case WHILE:
+                    stmtNode = parseWhileStatement();
+                    break;
+                case FOR:
+                    stmtNode = parseForStatement();
+                    break;
+                case IF:
+                    stmtNode = parseIfStatement();
+                    break;
+                case WRITE:
+                    stmtNode = parseWriteStatement();
+                    break;
+                case WRITELN:
+                    stmtNode = parseWritelnStatement();
+                    break;
+                case CASE:
+                    stmtNode = parseCaseStatement();
+                    break;
+                default:
+                    syntaxError("Unexpected token");
+            }
         }
 
         if (stmtNode != null) stmtNode.lineNumber = savedLineNumber;
@@ -325,7 +327,7 @@ public class Parser {
         // Adopt the then-statement.
         Node thenNode = new Node(EMPTY);
         // it's possible for the "THEN" to have an empty statement after it and before the ELSE
-        if (currentToken.type != ELSE) {
+        if (currentToken.type != ELSE&& currentToken.type != END) {
             thenNode = parseStatement();
         }
         if (thenNode != null) ifNode.adopt(thenNode);
@@ -337,6 +339,9 @@ public class Parser {
 
             Node elseNode = parseStatement();
             if (elseNode != null) ifNode.adopt(elseNode);
+            if (currentToken.type != END && currentToken.type != SEMICOLON && currentToken.type != ELSE){
+                syntaxError("Expecting ; or END");
+            }
         }
 
         return ifNode;
@@ -443,6 +448,9 @@ public class Parser {
             if (statementNode != null) {
                 loopNode.adopt(statementNode);
             }
+            if (currentToken.type != END && currentToken.type != SEMICOLON){
+                syntaxError("Expecting ; or END");
+            }
         } else syntaxError("Expecting DO");
 
         return loopNode;
@@ -494,6 +502,9 @@ public class Parser {
         // loop body
         Node body = parseStatement();
         loopNode.adopt(body);
+        if (currentToken.type != END && currentToken.type != SEMICOLON){
+            syntaxError("Expecting ; or END");
+        }
 
         // increment/decrement instruction
         Node updateStatement = new Node(ASSIGN);
