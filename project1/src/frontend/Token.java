@@ -52,7 +52,9 @@ public class Token {
         CASE,
         OF,
         // used by WHILE
-        WHILE
+        WHILE,
+        // general purpose for factors
+        NOT
     }
 
     /**
@@ -80,6 +82,7 @@ public class Token {
         reservedWords.put("WRITELN", TokenType.WRITELN);
         reservedWords.put("CASE", TokenType.CASE);
         reservedWords.put("OF", TokenType.OF);
+        reservedWords.put("NOT", TokenType.NOT);
     }
 
     public TokenType type; // what type of token

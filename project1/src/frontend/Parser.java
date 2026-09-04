@@ -424,7 +424,7 @@ public class Parser {
         lineNumber = currentToken.lineNumber;
         testNode.lineNumber = lineNumber;
 
-        Node notNode = new Node(NOT);
+        Node notNode = new Node(Node.NodeType.NOT);
         notNode.lineNumber = lineNumber;
         testNode.adopt(notNode);
 
@@ -692,7 +692,13 @@ public class Parser {
     }
 
     private Node parseFactor() {
-        // The current token should now be an identifier or a number or (
+        // factor could produce NOT (factor)
+        if (currentToken.type == Token.TokenType.NOT){
+            Node node= new Node(Node.NodeType.NOT);
+            currentToken = scanner.nextToken();  // consume NOT
+            node.adopt(parseFactor());
+            return node;
+        }
 
         if (currentToken.type == PLUS || currentToken.type == MINUS) {
             boolean isPositive = currentToken.type == PLUS;
@@ -706,6 +712,7 @@ public class Parser {
             return negateNode;
         }
 
+        // The current token should now be an identifier or a number or (
         if (currentToken.type == IDENTIFIER) return parseVariable();
         else if (currentToken.type == INTEGER) return parseIntegerConstant();
         else if (currentToken.type == REAL) return parseRealConstant();
