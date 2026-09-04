@@ -230,7 +230,7 @@ public class Executor {
                 case STRING_CONSTANT:
                     return visitStringConstant(expressionNode);
                 case NOT:
-                    return !(Boolean)visitExpression(expressionNode.children.get(0));
+                    return !(Boolean) visitExpression(expressionNode.children.get(0));
 
                 default:
                     return null;

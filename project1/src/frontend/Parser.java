@@ -693,9 +693,9 @@ public class Parser {
 
     private Node parseFactor() {
         // factor could produce NOT (factor)
-        if (currentToken.type == Token.TokenType.NOT){
-            Node node= new Node(Node.NodeType.NOT);
-            currentToken = scanner.nextToken();  // consume NOT
+        if (currentToken.type == Token.TokenType.NOT) {
+            Node node = new Node(Node.NodeType.NOT);
+            currentToken = scanner.nextToken(); // consume NOT
             node.adopt(parseFactor());
             return node;
         }
