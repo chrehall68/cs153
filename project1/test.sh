@@ -33,9 +33,9 @@ for test_file in inputs/*.txt; do
     filename=$(basename $test_file)
     file_stem=${filename%.*}
     
-	cp $test_file $GEN_DIR/$filename
+	cp "$test_file" "$GEN_DIR/$filename"
 	
-	java -cp bin:ajs.printutils.jar Simple -scan $test_file > scan.txt
+	java -cp bin:ajs.printutils.jar Simple -scan "$test_file" > scan.txt
 
     # find all variables followed by an assignment operator
     # hardcode types to integer (type deduction is TODO)
@@ -70,16 +70,16 @@ for test_file in inputs/*.txt; do
 
     compiler_output=compiler_output.txt
 	touch $compiler_output
-	fpc $GEN_DIR/$filename &> $compiler_output
+	fpc $GEN_DIR/$filename > $compiler_output 2>&1
 
 	binary=$GEN_DIR/$file_stem
 	compiled=false
 	if [ -f $binary ]; then
 	    compiled=true
-	    ./$binary &> $expected_output
+	    ./$binary > $expected_output 2>&1
 	fi
 
-    java -cp bin:ajs.printutils.jar Simple -execute $test_file &> $actual_output
+    java -cp bin:ajs.printutils.jar Simple -execute $test_file > $actual_output 2>&1
     test_status=$?
 	if [ $test_status -ne 0 ]; then
 	    echo "❌ FAIL: bad exit code: $test_status"
