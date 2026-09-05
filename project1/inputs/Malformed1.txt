@@ -1,0 +1,7 @@
+PROGRAM Malformed1;
+
+BEGIN
+    x := 1;
+    UNTIL
+    x := 2;
+END.
