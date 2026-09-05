@@ -1,0 +1,15 @@
+PROGRAM TestIfOperators;
+
+BEGIN
+    i := 6;
+    j := 2;
+    k := 0;
+
+    IF (1 = 1) AND (1 = 1) THEN ;
+    IF (1 = 0) OR (1 = 1) THEN ;
+
+    IF (i div 3 = j) AND (i > j) THEN k := 1 ELSE k := 0;
+    writeln(k:1);
+
+    IF (i < j) OR (k = 1) THEN writeln('ok') ELSE writeln('bad')
+END.

@@ -54,7 +54,11 @@ public class Token {
         // used by WHILE
         WHILE,
         // general purpose for factors
-        NOT
+        NOT,
+        // boolean and integer division operators
+        AND,
+        OR,
+        DIV
     }
 
     /**
@@ -83,6 +87,9 @@ public class Token {
         reservedWords.put("CASE", TokenType.CASE);
         reservedWords.put("OF", TokenType.OF);
         reservedWords.put("NOT", TokenType.NOT);
+        reservedWords.put("AND", TokenType.AND);
+        reservedWords.put("OR", TokenType.OR);
+        reservedWords.put("DIV", TokenType.DIV);
     }
 
     public TokenType type; // what type of token

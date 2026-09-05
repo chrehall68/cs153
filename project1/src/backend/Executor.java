@@ -241,6 +241,12 @@ public class Executor {
             }
         }
 
+        if (expressionNode.type == AND || expressionNode.type == OR) {
+            boolean value1 = (Boolean) visit(expressionNode.children.get(0));
+            boolean value2 = (Boolean) visit(expressionNode.children.get(1));
+            return expressionNode.type == AND ? value1 && value2 : value1 || value2;
+        }
+
         // Binary expressions.
         double value1 = (Double) visit(expressionNode.children.get(0));
         double value2 = (Double) visit(expressionNode.children.get(1));
@@ -289,6 +295,16 @@ public class Executor {
             case MULTIPLY:
                 value = value1 * value2;
                 break;
+            case INTEGER_DIVIDE:
+                {
+                    if (value2 != 0.0) value = (long) value1 / (long) value2;
+                    else {
+                        runtimeError(expressionNode, "Division by zero");
+                        return 0.0;
+                    }
+
+                    break;
+                }
 
             case DIVIDE:
                 {
