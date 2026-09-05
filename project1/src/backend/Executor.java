@@ -29,8 +29,10 @@ public class Executor {
         singletons.add(REAL_CONSTANT);
         singletons.add(STRING_CONSTANT);
         singletons.add(NOT);
+        singletons.add(NEGATE);
 
         relationals.add(EQ);
+        relationals.add(NEQ);
         relationals.add(LT_OR_EQ);
         relationals.add(LT);
         relationals.add(GT_OR_EQ);
@@ -231,6 +233,8 @@ public class Executor {
                     return visitStringConstant(expressionNode);
                 case NOT:
                     return !(Boolean) visitExpression(expressionNode.children.get(0));
+                case NEGATE:
+                    return -(double)visitExpression(expressionNode.children.get(0));
 
                 default:
                     return null;
@@ -248,6 +252,9 @@ public class Executor {
             switch (expressionNode.type) {
                 case EQ:
                     value = value1 == value2;
+                    break;
+                case NEQ:
+                    value = value1 != value2;
                     break;
                 case LT:
                     value = value1 < value2;
