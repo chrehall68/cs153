@@ -654,7 +654,7 @@ public class Parser {
         // The current token should now be an identifier or a number.
         // The simple expression's root node.
         Node simpExprNode = parseTerm();
-        if (!isPositive){
+        if (!isPositive) {
             Node negateNode = new Node(NEGATE);
             negateNode.adopt(simpExprNode);
             simpExprNode = negateNode;
@@ -710,7 +710,6 @@ public class Parser {
             node.adopt(parseFactor());
             return node;
         }
-
 
         // The current token should now be an identifier or a number or (
         if (currentToken.type == IDENTIFIER) return parseVariable();

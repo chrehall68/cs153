@@ -234,7 +234,7 @@ public class Executor {
                 case NOT:
                     return !(Boolean) visitExpression(expressionNode.children.get(0));
                 case NEGATE:
-                    return -(double)visitExpression(expressionNode.children.get(0));
+                    return -(double) visitExpression(expressionNode.children.get(0));
 
                 default:
                     return null;
