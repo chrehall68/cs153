@@ -3,10 +3,10 @@ name: Test Interpreter
 on:
   push:
     branches: ["main"]
-    paths: ["project1", ".github/workflows/interpreter_tester.yml"]
+    paths: ["project1/**", ".github/workflows/interpreter_tester.yml"]
   pull_request:
     branches: ["main"]
-    paths: ["project1", ".github/workflows/interpreter_tester.yml"]
+    paths: ["project1/**", ".github/workflows/interpreter_tester.yml"]
 
 permissions:
   contents: read
