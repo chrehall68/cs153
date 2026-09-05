@@ -644,10 +644,21 @@ public class Parser {
     }
 
     private Node parseSimpleExpression() {
-        // The current token should now be an identifier or a number.
+        // a simple expression is optionally a +/- followed by a term
+        boolean isPositive = true;
+        if (currentToken.type == PLUS || currentToken.type == MINUS) {
+            isPositive = currentToken.type == PLUS;
+            currentToken = scanner.nextToken();
+        }
 
+        // The current token should now be an identifier or a number.
         // The simple expression's root node.
         Node simpExprNode = parseTerm();
+        if (!isPositive) {
+            Node negateNode = new Node(NEGATE);
+            negateNode.adopt(simpExprNode);
+            simpExprNode = negateNode;
+        }
 
         // Keep parsing more terms as long as the current token
         // is a + or - operator.
@@ -698,18 +709,6 @@ public class Parser {
             currentToken = scanner.nextToken(); // consume NOT
             node.adopt(parseFactor());
             return node;
-        }
-
-        if (currentToken.type == PLUS || currentToken.type == MINUS) {
-            boolean isPositive = currentToken.type == PLUS;
-            currentToken = scanner.nextToken();
-
-            Node factorNode = parseFactor();
-            if (isPositive) return factorNode;
-
-            Node negateNode = new Node(NEGATE);
-            negateNode.adopt(factorNode);
-            return negateNode;
         }
 
         // The current token should now be an identifier or a number or (
