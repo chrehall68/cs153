@@ -1,0 +1,5 @@
+program TestNots;
+
+begin
+    IF NOT NOT NOT (1 = 0) THEN writeln('hi')
+end.
