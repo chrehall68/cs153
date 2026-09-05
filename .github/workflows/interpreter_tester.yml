@@ -20,8 +20,9 @@ jobs:
         with:
           distribution: temurin
           java-version: "21"
+      - name: Install Pascal compiler
+        run: sudo apt install fpc
       - name: Test input files against reference Pascal
         run: |
-          sudo apt install fpc
           cd project1/
           ./test.sh
