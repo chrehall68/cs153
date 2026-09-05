@@ -1,0 +1,27 @@
+name: Test Interpreter
+
+on:
+  push:
+    branches: ["main"]
+    paths: ["project1", ".github/workflows/interpreter_tester.yml"]
+  pull_request:
+    branches: ["main"]
+    paths: ["project1", ".github/workflows/interpreter_tester.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  tester:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Test input files against reference Pascal
+        run: |
+          sudo apt install fpc
+          cd project1/
+          ./test.sh
