@@ -1,0 +1,6 @@
+program TestForFail1;
+    
+begin
+    x := 5
+    for i := 1 to 3 do ;
+end.
