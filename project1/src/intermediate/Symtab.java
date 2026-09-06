@@ -29,6 +29,6 @@ public class Symtab {
      * @return the entry or null if it's not in the symbol table.
      */
     public SymtabEntry lookup(String name) {
-        return contents.get(name);
+        return contents.get(String.toLowerCase(name));
     }
 }
