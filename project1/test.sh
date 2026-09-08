@@ -7,13 +7,39 @@
 # for each test case in ./inputs/
 # copy to ./generated_tests/
 # run java -scan
-# for each (identifier, colon_equals) pair, add a var declaration after the program identifier
+# for each (identifier, colon_equals) pair, 
+# add a var declaration after the program identifier
 
 # for each generated test, run fpc
 # run and the binary, write to expected output file
 
 # for each of the original tests, run -execute
 # compare actual vs. expected outputs
+
+
+# map_get map_name key
+# $ret will have the value
+map_get() {
+    local map=$1
+    local key=$2
+    ret=`eval echo '$'$map$key`
+}
+
+# map_set map_name key value
+map_set() {
+    local map=$1
+    local key=$2
+    local value=$3
+    eval "$map$key='$value'"
+}
+
+# map_del map_name key
+map_del() {
+    local map=$1
+    local key=$2
+    eval "unset $map$key"
+}
+
 
 src_files=$(find . -name *.java)
 javac $src_files -cp ./ajs.printutils.jar -d bin
@@ -37,30 +63,122 @@ for test_file in inputs/*.txt; do
 	
 	java -cp bin:ajs.printutils.jar Simple -scan "$test_file" > scan.txt
 
-    # find all variables followed by an assignment operator
-    # hardcode types to integer (type deduction is TODO)
+    # find all assignmentment statements
+    # the type is greedily chosen
     vars=$(awk '
+        assignStatement && /(INTEGER|REAL|STRING) :/ {
+            type = $0
+            sub(/ : .*/, "", type)
+            sub(/^[[:blank:]]*/, "", type)
+            
+            # printf "   %s : %s;\n", var_name, type
+            printf "%s:%s;", var_name, type
+            assignStatement = 0
+        }
+        assignStatement && /IDENTIFIER :/ {
+            src_name = $0
+            sub(/[[:blank:]]*IDENTIFIER : /, "", src_name)
+            
+            printf "%s:IDENTIFIER:%s;", var_name, src_name
+            assignStatement = 0
+        }
+        
         pending && /COLON_EQUALS :/ {
-            print "    " value " : Integer;"
+            assignStatement = 1
         }
 
         { pending = 0 }
 
         /IDENTIFIER : / {
-            value = $0
-            sub(/[[:blank:]]*IDENTIFIER : /, "", value)
+            var_name = $0
+            sub(/[[:blank:]]*IDENTIFIER : /, "", var_name)
             
             pending = 1
         }
-    ' scan.txt | sort | uniq)
+    ' scan.txt)
+
+    # search for explicit types
+    IFS=';' read -ra LINES <<< "$vars"
+    for decl in "${LINES[@]}"; do
+        var_name=$(echo $decl | cut -d ":" -f 1)
+        var_type=$(echo $decl | cut -d ":" -f 2)
+
+        if [ "$var_type" = "IDENTIFIER" ]; then
+            continue
+        fi
+
+        map_get "var_map_" "$var_name"
+        value=$ret
+        if [ -z ${value} ]; then
+            map_set "var_map_" "$var_name" "$var_type"
+        else
+            map_get "var_map_" $var_name
+            found_type=$ret
+
+            # override integer types with floating point
+            if [ "$found_type" = "INTEGER" ] && [ "$var_type" = "REAL" ]; then
+                map_set "var_map_" $var_name $var_type
+            fi
+        fi
+    done
+
+    # resolve the type if RHS is a variable
+    # occurrence of IDENTIFIER declarations should already be sorted (from the scanner)
+    # therefore, we don't need to perform topo-sort or multiple passes
+    for decl in "${LINES[@]}"; do
+        var_name=$(echo $decl | cut -d ":" -f 1)
+        var_type=$(echo $decl | cut -d ":" -f 2)
+
+        if [ "$var_type" != "IDENTIFIER" ]; then
+            continue
+        fi
+
+        src_var=$(echo $decl | cut -d ":" -f 3)
+
+        map_get "var_map_" $var_name
+        value=$ret
+        if [ -z ${value} ]; then
+            map_get "var_map_" $src_var
+            src_type=$ret
+            map_set "var_map_" $var_name $src_type
+        else
+            map_get "var_map_" $var_name
+            found_type=$ret
+
+            map_get "var_map_" $src_var
+            src_type=$ret
+
+            if [ "$found_type" = "INTEGER" ] && [ "$src_type" = "REAL" ]; then
+                map_set "var_map_" $var_name $src_type
+            fi
+        fi
+    done
+
+    # format the statements for output
+    typed_vars=""
+    for decl in "${LINES[@]}"; do
+        var_name=$(echo $decl | cut -d ":" -f 1)
+
+        map_get "var_map_" $var_name
+        var_type=$ret
+
+        typed_vars="$typed_vars\n    $var_name : $var_type;"
+    done
+
+    # clear the map
+    for decl in "${LINES[@]}"; do
+        var_name=$(echo $decl | cut -d ":" -f 1)
+        map_del "var_map_" $var_name
+    done
+
+    typed_vars=$(echo "$typed_vars" | sort | uniq)
 
     # inject variable declarations
-    if [ -n "$vars" ]; then
-        INSERT_TEXT="$vars" awk '
+    if [ -n "$typed_vars" ]; then
+        INSERT_TEXT="$typed_vars" awk '
             { print }
             /(program|PROGRAM) .*;/ {
-                print "var"
-                printf "%s", ENVIRON["INSERT_TEXT"]
+                printf "var%s\n", ENVIRON["INSERT_TEXT"]
             }
         ' $test_file > $GEN_DIR/$filename
     fi
@@ -68,7 +186,7 @@ for test_file in inputs/*.txt; do
 	expected_output=$GEN_DIR/${file_stem}.exp
 	actual_output=$GEN_DIR/${file_stem}.out
 
-    compiler_output=compiler_output.txt
+    compiler_output="$GEN_DIR/$file_stem"-compiler_output.txt
 	touch $compiler_output
 	fpc $GEN_DIR/$filename > $compiler_output 2>&1
 
