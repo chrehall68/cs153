@@ -162,6 +162,12 @@ for test_file in inputs/*.txt; do
         map_get "var_map_" $var_name
         var_type=$ret
 
+        # default to Integer if no type is found
+        # this can happen if a variable is assigned to itself
+        if [ -z $var_type ]; then
+            var_type="Integer"
+        fi
+
         typed_vars="$typed_vars\n    $var_name : $var_type;"
     done
 
