@@ -71,7 +71,6 @@ for test_file in inputs/*.txt; do
             sub(/ : .*/, "", type)
             sub(/^[[:blank:]]*/, "", type)
             
-            # printf "   %s : %s;\n", var_name, type
             printf "%s:%s;", var_name, type
             assignStatement = 0
         }
@@ -96,10 +95,11 @@ for test_file in inputs/*.txt; do
             pending = 1
         }
     ' scan.txt)
-
+    
+    IFS=';' # split ($vars) by semicolon for iteration
+    
     # search for explicit types
-    IFS=';' read -ra LINES <<< "$vars"
-    for decl in "${LINES[@]}"; do
+    for decl in $vars; do
         var_name=$(echo $decl | cut -d ":" -f 1)
         var_type=$(echo $decl | cut -d ":" -f 2)
 
@@ -125,7 +125,7 @@ for test_file in inputs/*.txt; do
     # resolve the type if RHS is a variable
     # occurrence of IDENTIFIER declarations should already be sorted (from the scanner)
     # therefore, we don't need to perform topo-sort or multiple passes
-    for decl in "${LINES[@]}"; do
+    for decl in $vars; do
         var_name=$(echo $decl | cut -d ":" -f 1)
         var_type=$(echo $decl | cut -d ":" -f 2)
 
@@ -156,7 +156,7 @@ for test_file in inputs/*.txt; do
 
     # format the statements for output
     typed_vars=""
-    for decl in "${LINES[@]}"; do
+    for decl in $vars; do
         var_name=$(echo $decl | cut -d ":" -f 1)
 
         map_get "var_map_" $var_name
@@ -166,7 +166,7 @@ for test_file in inputs/*.txt; do
     done
 
     # clear the map
-    for decl in "${LINES[@]}"; do
+    for decl in $vars; do
         var_name=$(echo $decl | cut -d ":" -f 1)
         map_del "var_map_" $var_name
     done
