@@ -1,0 +1,5 @@
+PROGRAM MixedCaseVar;
+BEGIN
+    I := 1;
+    writeln(I:1)
+END.
