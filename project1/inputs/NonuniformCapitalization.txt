@@ -1,0 +1,7 @@
+program NonuniformCapitalization;
+    
+begin
+    asdf := 1;
+    AsDF := asDf + 1;
+    writeln(ASDF)
+end.
