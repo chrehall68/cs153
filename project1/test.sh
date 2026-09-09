@@ -65,6 +65,7 @@ for test_file in inputs/*.txt; do
 
     # find all assignmentment statements
     # the type is greedily chosen
+    # var names are converted to lowercase since pascal ignores capitalization
     vars=$(awk '
         assignStatement && /(INTEGER|REAL|STRING) :/ {
             type = $0
@@ -91,6 +92,7 @@ for test_file in inputs/*.txt; do
         /IDENTIFIER : / {
             var_name = $0
             sub(/[[:blank:]]*IDENTIFIER : /, "", var_name)
+            var_name = tolower(var_name)
             
             pending = 1
         }
@@ -206,7 +208,7 @@ for test_file in inputs/*.txt; do
     java -cp bin:ajs.printutils.jar Simple -execute $test_file > $actual_output 2>&1
     test_status=$?
 	if [ $test_status -ne 0 ]; then
-	    echo "❌ FAIL: bad exit code: $test_status"
+	    echo "❌ FAIL: Interpreter exit code: $test_status"
 		failures=$((failures+1))
 		echo "Interpreter output:"
 		echo "================================================================================"
