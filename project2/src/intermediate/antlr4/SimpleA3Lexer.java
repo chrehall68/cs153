@@ -2,7 +2,6 @@
 
 package intermediate.antlr4;
 
-
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Lexer;

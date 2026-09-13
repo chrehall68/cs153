@@ -2,7 +2,6 @@
 
 package intermediate.antlr4;
 
-
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
