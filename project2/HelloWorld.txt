@@ -1,0 +1,10 @@
+PROGRAM HelloWorld;
+
+BEGIN
+    i := 0;
+    
+    REPEAT
+        i := i + 1;
+        writeln('#', i:1:0, ': Hello,' + ' world!')
+    UNTIL i = 5
+END.
