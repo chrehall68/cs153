@@ -39,7 +39,7 @@ repeatStatement     : REPEAT statementList UNTIL expression ;
 caseStatement   : CASE expression OF selectBranch ( ';' selectBranch)* (';')? END ;
 selectBranch    : selectConstants ':' statement ;
 selectConstants : selectConstant ( ',' selectConstant )* ;
-selectConstant  : stringConstant | ( ('+' | '-')? ( unsignedConstant | identifier ) ) ;
+selectConstant  : stringConstant | ( sign? ( unsignedConstant | identifier ) ) ;
 
 writeStatement   : WRITE writeArguments ;
 writelnStatement : WRITELN writeArguments? ;

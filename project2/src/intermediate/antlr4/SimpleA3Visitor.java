@@ -1,4 +1,4 @@
-// Generated from SimpleA3.g4 by ANTLR 4.13.2
+// Generated from ./SimpleA3.g4 by ANTLR 4.13.2
 
     package intermediate.antlr4;
     import intermediate.symtab.SymtabEntry;
@@ -79,6 +79,30 @@ public interface SimpleA3Visitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitRepeatStatement(SimpleA3Parser.RepeatStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SimpleA3Parser#caseStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCaseStatement(SimpleA3Parser.CaseStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SimpleA3Parser#selectBranch}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSelectBranch(SimpleA3Parser.SelectBranchContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SimpleA3Parser#selectConstants}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSelectConstants(SimpleA3Parser.SelectConstantsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SimpleA3Parser#selectConstant}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSelectConstant(SimpleA3Parser.SelectConstantContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SimpleA3Parser#writeStatement}.
 	 * @param ctx the parse tree

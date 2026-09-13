@@ -6,6 +6,8 @@ import intermediate.antlr4.SimpleA3Parser.*;
 import intermediate.antlr4.SimpleA3BaseVisitor;
 import intermediate.symtab.*;
 
+import java.util.HashSet;
+
 public class Executor extends SimpleA3BaseVisitor<Object>
 {
     @Override 
@@ -16,7 +18,7 @@ public class Executor extends SimpleA3BaseVisitor<Object>
         
         // Evaluate the right-hand-side expression;
         Double value = (Double) visit(expressionCtx);
-        
+
         // Store the value into the variable's symbol table entry.
         SymtabEntry variableEntry = variableCtx.entry;
         variableEntry.setValue(value);
@@ -99,8 +101,7 @@ public class Executor extends SimpleA3BaseVisitor<Object>
                 else
                 {
                     format.append(".");
-                    
-                    PrecisionContext precisionCtx = formatCtx.precision();
+                    PrecisionContext precisionCtx = formatCtx == null ? null : formatCtx.precision();
                     String precisionText = precisionCtx != null
                             ? precisionCtx.integerConstant().getText()
                             : "0";
@@ -279,5 +280,39 @@ public class Executor extends SimpleA3BaseVisitor<Object>
     {
         System.out.printf("\n*** RUNTIME ERROR at line %03d: %s\n",
                           ctx.getStart().getLine(), message);
+    }
+
+    @Override
+	public Object visitCaseStatement(CaseStatementContext ctx){
+        Object switchedValue = visitExpression(ctx.expression());
+        for (var branch : ctx.selectBranch()){
+            var constants = branch.selectConstants();
+            HashSet<Object> values = new HashSet<>();
+            for (var selectConstant : constants.selectConstant()){
+                if (selectConstant.stringConstant() != null){
+                    values.add(visit(selectConstant.stringConstant()));
+                } else {
+                    // must be a numeric value
+                    SignContext signContext = selectConstant.sign();
+                    boolean positive = signContext == null || signContext.getText().equals("+");
+                    Object value;
+                    if (selectConstant.identifier() != null){
+                        value = selectConstant.identifier().entry.getValue();
+                    } else{
+                        value = visit(selectConstant.unsignedConstant());
+                    }
+                    if (!positive){
+                        value = -(double) value;
+                    }
+                    values.add(value);
+                }
+            }
+            // now that we have the values, check membership
+            if (values.contains(switchedValue)){
+                return visit(branch.statement());
+            }
+        }
+
+        return null;
     }
 }
