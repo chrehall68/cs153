@@ -114,7 +114,11 @@ public class Executor extends SimpleA3BaseVisitor<Object> {
         double value2 = (Double) visit(simpleCtx2);
 
         if (op.equals("=")) return value1 == value2;
+        else if (op.equals("<>")) return value1 != value2;
         else if (op.equals("<")) return value1 < value2;
+        else if (op.equals("<=")) return value1 <= value2;
+        else if (op.equals(">")) return value1 > value2;
+        else if (op.equals(">=")) return value1 >= value2;
 
         return null;
     }
@@ -220,7 +224,7 @@ public class Executor extends SimpleA3BaseVisitor<Object> {
 
     @Override
     public Object visitFactorParenthesized(FactorParenthesizedContext ctx) {
-        return (Double) visit(ctx.expression());
+        return visit(ctx.expression());
     }
 
     /**
