@@ -1,0 +1,9 @@
+PROGRAM TestCaseFail5;
+
+BEGIN
+    writeln('Testing that undeclared variables should not be accepted');
+    CASE 4 OF
+        1,2,-3,-4,'hi': writeln('Failed 1');
+        j: writeln('Failed 2')
+    END;
+END.
