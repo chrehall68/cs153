@@ -24,6 +24,7 @@ statement : compoundStatement
           | repeatStatement
           | writeStatement
           | writelnStatement
+          | caseStatement
           | emptyStatement
           ;
 
@@ -34,6 +35,11 @@ statementList     : statement ( ';' statement )* ;
 
 assignmentStatement : variable ':=' expression ;
 repeatStatement     : REPEAT statementList UNTIL expression ;
+
+caseStatement   : CASE expression OF selectBranch ( ';' selectBranch)* (';')? END ;
+selectBranch    : selectConstants ':' statement ;
+selectConstants : selectConstant ( ',' selectConstant )* ;
+selectConstant  : stringConstant | ( ('+' | '-')? ( unsignedConstant | identifier ) ) ;
 
 writeStatement   : WRITE writeArguments ;
 writelnStatement : WRITELN writeArguments? ;
@@ -97,6 +103,8 @@ REPEAT    : R E P E A T ;
 UNTIL     : U N T I L ;
 WRITE     : W R I T E ;
 WRITELN   : W R I T E L N ;
+CASE      : C A S E ;
+OF        : O F ;
 
 IDENTIFIER : LETTER ( LETTER | DIGIT )*;
 INTEGER    : DIGITS ;
