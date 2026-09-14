@@ -22,6 +22,7 @@ identifier      locals [ SymtabEntry entry = null ]
 statement : compoundStatement
           | assignmentStatement
           | repeatStatement
+          | whileStatement
           | writeStatement
           | writelnStatement
           | caseStatement
@@ -36,6 +37,7 @@ statementList     : statement ( ';' statement )* ;
 
 assignmentStatement : variable ':=' expression ;
 repeatStatement     : REPEAT statementList UNTIL expression ;
+whileStatement      : WHILE expression DO statement ;
 
 caseStatement   : CASE expression OF selectBranch ( ';' selectBranch)* (';')? END ;
 selectBranch    : selectConstants ':' statement ;
@@ -104,6 +106,7 @@ OR        : O R ;
 NOT       : N O T ;
 REPEAT    : R E P E A T ;
 UNTIL     : U N T I L ;
+WHILE     : W H I L E ;
 WRITE     : W R I T E ;
 WRITELN   : W R I T E L N ;
 CASE      : C A S E ;
