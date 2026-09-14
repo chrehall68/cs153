@@ -25,6 +25,7 @@ statement : compoundStatement
           | writeStatement
           | writelnStatement
           | caseStatement
+          | forStatement
           | emptyStatement
           ;
 
@@ -40,6 +41,8 @@ caseStatement   : CASE expression OF selectBranch ( ';' selectBranch)* (';')? EN
 selectBranch    : selectConstants ':' statement ;
 selectConstants : selectConstant ( ',' selectConstant )* ;
 selectConstant  : stringConstant | ( sign? ( unsignedConstant | identifier ) ) ;
+
+forStatement : FOR assignmentStatement (TO | DOWNTO) expression DO statement ;
 
 writeStatement   : WRITE writeArguments ;
 writelnStatement : WRITELN writeArguments? ;
@@ -104,6 +107,10 @@ UNTIL     : U N T I L ;
 WRITE     : W R I T E ;
 WRITELN   : W R I T E L N ;
 CASE      : C A S E ;
+FOR       : F O R ;
+TO        : T O ;
+DOWNTO    : D O W N T O ;
+DO        : D O ;
 OF        : O F ;
 
 IDENTIFIER : LETTER ( LETTER | DIGIT )*;
@@ -158,4 +165,3 @@ fragment STRING_CHAR : QUOTE QUOTE  // two consecutive quotes
                      | CHARACTER_CHAR 
                      ;
 fragment COMMENT_CHAR : ~'}' ;      // any character except }
-                     
