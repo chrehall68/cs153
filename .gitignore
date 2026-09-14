@@ -3,6 +3,5 @@
 .idea
 *.iml
 project1/generated_tests/
-project1/compiler_output.txt
 project1/scan.txt
 project2/src/intermediate/antlr4

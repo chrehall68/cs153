@@ -239,6 +239,37 @@ public class Executor extends SimpleA3BaseVisitor<Object> {
     }
 
     @Override
+    public Object visitForStatement(ForStatementContext ctx) {
+        // end expression evaluation must come before the assignment visit to avoid
+        // evaluating this expression with side effects of visiting the first assignment
+        Double last = (Double) visit(ctx.expression());
+
+        visit(ctx.assignmentStatement());
+
+        AssignmentStatementContext assignStat = ctx.assignmentStatement();
+        VariableContext iterator = assignStat.variable();
+        SymtabEntry counter = iterator.entry;
+
+        StatementContext body = ctx.statement();
+
+        if (ctx.TO() != null) {
+            while (counter.getValue() <= last) {
+                visit(body);
+                counter.setValue(counter.getValue() + 1);
+            }
+        }
+
+        if (ctx.DOWNTO() != null) {
+            while (counter.getValue() >= last) {
+                visit(body);
+                counter.setValue(counter.getValue() - 1);
+            }
+        }
+
+        return null;
+    }
+
+    @Override
     public Object visitCaseStatement(CaseStatementContext ctx) {
         Object switchedValue = visitExpression(ctx.expression());
         for (var branch : ctx.selectBranch()) {

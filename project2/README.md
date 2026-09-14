@@ -9,5 +9,6 @@ java -cp ./antlr-4.13.2-complete.jar:./bin SimpleA3 <input_file>
 ```
 
 To generate antlr files:
-```shell
-java -jar ./antlr-4.13.2-complete.jar -o ./src/intermediate/antlr4/ -visitor ./SimpleA3.g4 ```
+```sh
+java -jar ./antlr-4.13.2-complete.jar -o ./src/intermediate/antlr4/ -visitor ./SimpleA3.g4
+```
