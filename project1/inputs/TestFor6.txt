@@ -1,0 +1,8 @@
+program TestFor6;
+    
+begin
+    for i := 1 to 10-i do begin
+        j := 10*i + 1;
+        writeln(j);
+    end;
+end.
