@@ -38,6 +38,15 @@ public class Executor extends SimpleA3BaseVisitor<Object> {
     }
 
     @Override
+    public Object visitWhileStatement(WhileStatementContext ctx) {
+        while ((Boolean) visit(ctx.expression())) {
+            visit(ctx.statement());
+        }
+
+        return null;
+    }
+
+    @Override
     public Object visitWritelnStatement(WritelnStatementContext ctx) {
         visitChildren(ctx);
         System.out.println();
