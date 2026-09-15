@@ -248,7 +248,7 @@ public class Executor extends SimpleA3BaseVisitor<Object> {
 
     @Override
     public Object visitFactorNot(FactorNotContext ctx) {
-        return !((Boolean)visit(ctx.factor()));
+        return !((Boolean) visit(ctx.factor()));
     }
 
     /**
