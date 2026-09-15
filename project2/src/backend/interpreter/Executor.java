@@ -47,6 +47,16 @@ public class Executor extends SimpleA3BaseVisitor<Object> {
     }
 
     @Override
+    public Object visitIfStatement(IfStatementContext ctx) {
+        if ((Boolean) visit(ctx.expression())) {
+            visit(ctx.statement(0));
+        } else if (ctx.ELSE() != null) {
+            visit(ctx.statement(1));
+        }
+        return null;
+    }
+
+    @Override
     public Object visitWritelnStatement(WritelnStatementContext ctx) {
         visitChildren(ctx);
         System.out.println();
@@ -234,6 +244,11 @@ public class Executor extends SimpleA3BaseVisitor<Object> {
     @Override
     public Object visitFactorParenthesized(FactorParenthesizedContext ctx) {
         return visit(ctx.expression());
+    }
+
+    @Override
+    public Object visitFactorNot(FactorNotContext ctx) {
+        return !((Boolean) visit(ctx.factor()));
     }
 
     /**
