@@ -1,16 +1,15 @@
 package intermediate.symtab;
 
-import java.util.ArrayList;
-
-import intermediate.type.*;
-
 import static intermediate.symtab.SymtabEntry.Kind.*;
 import static intermediate.type.Typespec_P2.Form.*;
 
-public class Predefined
-{
+import intermediate.type.*;
+
+import java.util.ArrayList;
+
+public class Predefined {
     private static Symtab symtab;
-    
+
     public static Typespec_P2 integerType;
     public static Typespec_P2 realType;
     public static Typespec_P2 booleanType;
@@ -18,16 +17,14 @@ public class Predefined
     public static Typespec_P2 stringType;
     public static Typespec_P2 undefinedType;
 
-    public static void initialize(Symtab symtab)
-    {
+    public static void initialize(Symtab symtab) {
         Predefined.symtab = symtab;
-        
+
         initializeTypes();
         initializeConstants();
     }
 
-    private static void initializeTypes()
-    {
+    private static void initializeTypes() {
         SymtabEntry integerEntry = symtab.enter("integer", TYPE);
         integerType = new Typespec_P2(SCALAR);
         integerType.setIdentifier(integerEntry);
@@ -56,20 +53,16 @@ public class Predefined
         undefinedType = new Typespec_P2(UNKNOWN);
     }
 
-    private static void initializeConstants()
-    {
-        SymtabEntry falseEntry = 
-                    symtab.enter("false", ENUMERATED_CONSTANT);
+    private static void initializeConstants() {
+        SymtabEntry falseEntry = symtab.enter("false", ENUMERATED_CONSTANT);
         falseEntry.setTypespec(booleanType);
         falseEntry.setValue(0);
 
-        SymtabEntry trueEntry = 
-                    symtab.enter("true", ENUMERATED_CONSTANT);
+        SymtabEntry trueEntry = symtab.enter("true", ENUMERATED_CONSTANT);
         trueEntry.setTypespec(booleanType);
         trueEntry.setValue(1);
 
-        ArrayList<SymtabEntry> constants = 
-                            booleanType.getEnumeratedConstants();
+        ArrayList<SymtabEntry> constants = booleanType.getEnumeratedConstants();
         constants.add(falseEntry);
         constants.add(trueEntry);
     }

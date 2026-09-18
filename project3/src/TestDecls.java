@@ -1,10 +1,22 @@
-public class TestDecls
-{
+public class TestDecls {
     private static final int MINUSFIVE = -5;
     private static final int TEN = 10;
 
-    private static enum greek {ALPHA, BETA, GAMMA};
-    private static enum days {MON, TUE, WED, THU, FRI, SAT, SUN};
+    private static enum greek {
+        ALPHA,
+        BETA,
+        GAMMA
+    };
+
+    private static enum days {
+        MON,
+        TUE,
+        WED,
+        THU,
+        FRI,
+        SAT,
+        SUN
+    };
 
     private static greek g;
     private static int m;
@@ -27,8 +39,7 @@ public class TestDecls
     private static String us4;
     private static String us5[][] = new String[21][5];
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         System.out.println("Done!");
     }
 }
