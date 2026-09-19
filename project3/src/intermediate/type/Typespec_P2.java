@@ -38,6 +38,7 @@ public class Typespec_P2 {
         private Typespec_P2 elementType;
         private int elementCount;
     }
+
     private class SetInfo implements TypeInfo {
         private Typespec_P2 elementType;
     }
@@ -171,7 +172,8 @@ public class Typespec_P2 {
     public Typespec_P2 getSetElementType() {
         return info != null ? ((SetInfo) info).elementType : Predefined.undefinedType;
     }
+
     public void setSetElementType(Typespec_P2 elementType) {
-        ((SetInfo)info).elementType = elementType;
+        ((SetInfo) info).elementType = elementType;
     }
 }

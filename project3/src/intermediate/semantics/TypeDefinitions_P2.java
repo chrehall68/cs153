@@ -8,6 +8,7 @@ import intermediate.antlr4.Pcl_P2Parser.*;
 import intermediate.symtab.Predefined;
 import intermediate.symtab.SymtabEntry;
 import intermediate.type.Typespec_P2;
+
 import java.util.ArrayList;
 
 public class TypeDefinitions_P2 extends Semantics_P2 {
@@ -229,7 +230,7 @@ public class TypeDefinitions_P2 extends Semantics_P2 {
         Typespec_P2 setTypespec = new Typespec_P2(SET);
         ctx.typespec = setTypespec;
         Typespec_P2 elementType = (Typespec_P2) visit(ctx.indexType());
-        if (!elementType.isOrdinal()){
+        if (!elementType.isOrdinal()) {
             // yes, this is very similar to INVALID_ORDINAL_TYPE
             // however, it has a slightly different meaning since it's for sets
             error.flag(INVALID_SET_ELEMENT_TYPE, ctx.indexType());
@@ -239,5 +240,4 @@ public class TypeDefinitions_P2 extends Semantics_P2 {
         }
         return setTypespec;
     }
-
 }
