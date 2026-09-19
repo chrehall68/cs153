@@ -201,6 +201,21 @@ public class CrossReferencer {
                     break;
                 }
 
+            case SET:
+            {
+                Typespec_P2 elementType = typespec.getSetElementType();
+
+                System.out.println(INDENT + "--- ELEMENT TYPE ---");
+                printTypespec(elementType);
+
+                // Print the element type details only if the type is unnamed.
+                if (elementType.getIdentifier() == null) {
+                    printTypespecDetail(elementType);
+                }
+
+                break;
+            }
+
             default:
                 break;
         }

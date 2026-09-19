@@ -72,6 +72,8 @@ public class VariableDeclarations_P2 extends Converter_P2 {
                 return typeNameTable.get(pascalTypeName);
 
             case ENUMERATED:
+                // TODO - this seems wrong. This means that enumerated types that
+                // are declared anonymously don't get emitted
                 return pascalTypeName != null ? pascalTypeName : "int";
 
             case SUBRANGE:
@@ -98,6 +100,22 @@ public class VariableDeclarations_P2 extends Converter_P2 {
                 } else {
                     return "int";
                 }
+            case SET:
+                Typespec_P2 setElementType = pascalType.getSetElementType();
+                System.out.println("for " + pascalType);
+                System.out.println(setElementType);
+                String innerTypeName  = javaTypeName(setElementType);
+                // if (setElementType.getIdentifier() != null){
+                //     // named type
+                //     // as long as it's not something that's predefined, then this type
+                //     // will have already been emitted?
+                //     System.out.println("Inner has an identifier" + setElementType.getIdentifier());
+                // } else {
+                //     System.out.println("Inner HAS NO identifier" + setElementType.getIdentifier());
+                //     // the ordinal type was declared right there
+                //     // in which case we need to be careful about what type it is
+                // }
+                return "HashSet<" + innerTypeName + ">";
 
             default:
                 return "*unknown*";

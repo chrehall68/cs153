@@ -10,6 +10,10 @@ VAR
     unnamed2 : set OF weekdays;
     unnamed3 : SET OF days;
     unnamed4 : SET OF (THING);
+    unnamed5 : SET OF 1..20;
+    unnamed6 : SET OF MON..THU;
+    arr1 : ARRAY [1..10] OF (S, Y, Z, X);
+
 
 
 BEGIN

@@ -169,7 +169,7 @@ public class Typespec_P2 {
     }
 
     public Typespec_P2 getSetElementType() {
-        return info == null ? ((SetInfo) info).elementType : Predefined.undefinedType;
+        return info != null ? ((SetInfo) info).elementType : Predefined.undefinedType;
     }
     public void setSetElementType(Typespec_P2 elementType) {
         ((SetInfo)info).elementType = elementType;
