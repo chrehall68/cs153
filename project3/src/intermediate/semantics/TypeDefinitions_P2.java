@@ -8,7 +8,6 @@ import intermediate.antlr4.Pcl_P2Parser.*;
 import intermediate.symtab.Predefined;
 import intermediate.symtab.SymtabEntry;
 import intermediate.type.Typespec_P2;
-
 import java.util.ArrayList;
 
 public class TypeDefinitions_P2 extends Semantics_P2 {
@@ -222,4 +221,23 @@ public class TypeDefinitions_P2 extends Semantics_P2 {
             return Predefined.undefinedType;
         }
     }
+
+    Typespec_P2 setType(SetTypeContext ctx) {
+        // no need for different set type for packed sets
+        // because those can be implemented as just hash sets
+        // (there's nothing in the reference saying that they MUST be the bit-packed version)
+        Typespec_P2 setTypespec = new Typespec_P2(SET);
+        ctx.typespec = setTypespec;
+        Typespec_P2 elementType = (Typespec_P2) visit(ctx.indexType());
+        if (!elementType.isOrdinal()){
+            // yes, this is very similar to INVALID_ORDINAL_TYPE
+            // however, it has a slightly different meaning since it's for sets
+            error.flag(INVALID_SET_ELEMENT_TYPE, ctx.indexType());
+            setTypespec.setSetElementType(Predefined.undefinedType);
+        } else {
+            setTypespec.setSetElementType(elementType);
+        }
+        return setTypespec;
+    }
+
 }

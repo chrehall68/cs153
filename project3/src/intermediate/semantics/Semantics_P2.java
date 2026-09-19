@@ -119,6 +119,9 @@ public class Semantics_P2 extends Pcl_P2BaseVisitor<Object> {
     }
 
     @Override
+    public Object visitSetType(SetTypeContext ctx) {return typeDefinitions.setType(ctx);}
+
+    @Override
     public Object visitVariableDeclarations(VariableDeclarationsContext ctx) {
         return variableDeclarations.variableDeclarations(ctx);
     }
