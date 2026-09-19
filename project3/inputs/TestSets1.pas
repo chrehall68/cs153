@@ -9,7 +9,18 @@ TYPE
     set4 = SET OF inner2;
     set5 = SET OF (D,E,F);
 
+    days = (MON, TUE, WED, THU, FRI, SAT, SUN);
+    weekdays = MON..FRI;
+
 VAR
+    unnamed1 : pAcKed SEt OF sr1;
+    unnamed2 : set OF weekdays;
+    unnamed3 : SET OF days;
+    unnamed4 : SET OF (THING);
+    unnamed5 : SET OF 1..20;
+    unnamed6 : SET OF MON..THU;
+    unnamed7 : SET OF char;
+
     named1 : set1;
     named2 : set2;
     named3 : set3;

@@ -102,8 +102,8 @@ public class VariableDeclarations_P2 extends Converter_P2 {
                 }
             case SET:
                 Typespec_P2 setElementType = pascalType.getSetElementType();
-                System.out.println("for " + pascalType);
-                System.out.println(setElementType);
+                // System.out.println("for " + pascalType);
+                // System.out.println(setElementType);
                 String innerTypeName = javaTypeName(setElementType);
                 // if (setElementType.getIdentifier() != null){
                 //     // named type
