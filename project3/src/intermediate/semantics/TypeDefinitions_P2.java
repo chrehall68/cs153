@@ -230,9 +230,9 @@ public class TypeDefinitions_P2 extends Semantics_P2 {
         Typespec_P2 setTypespec = new Typespec_P2(SET);
         ctx.typespec = setTypespec;
         Typespec_P2 elementType = (Typespec_P2) visit(ctx.indexType());
-        if (!elementType.isOrdinal()) {
-            // yes, this is very similar to INVALID_ORDINAL_TYPE
-            // however, it has a slightly different meaning since it's for sets
+        if (elementType == null || elementType == Predefined.undefinedType) {
+            setTypespec.setSetElementType(Predefined.undefinedType);
+        } else if (!elementType.isOrdinal()) {
             error.flag(INVALID_SET_ELEMENT_TYPE, ctx.indexType());
             setTypespec.setSetElementType(Predefined.undefinedType);
         } else {

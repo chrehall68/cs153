@@ -72,7 +72,8 @@ public class Typespec_P2 {
                 break;
             case SET:
                 info = new SetInfo();
-                ((SetInfo) info).elementType = null;
+                ((SetInfo) info).elementType = Predefined.undefinedType;
+                break;
 
             default:
                 break;
@@ -170,7 +171,9 @@ public class Typespec_P2 {
     }
 
     public Typespec_P2 getSetElementType() {
-        return info != null ? ((SetInfo) info).elementType : Predefined.undefinedType;
+        if (info == null) return Predefined.undefinedType;
+        Typespec_P2 elementType = ((SetInfo) info).elementType;
+        return elementType != null ? elementType : Predefined.undefinedType;
     }
 
     public void setSetElementType(Typespec_P2 elementType) {

@@ -209,7 +209,7 @@ public class CrossReferencer {
                     printTypespec(elementType);
 
                     // Print the element type details only if the type is unnamed.
-                    if (elementType.getIdentifier() == null) {
+                    if (elementType != null && elementType.getIdentifier() == null) {
                         printTypespecDetail(elementType);
                     }
 
