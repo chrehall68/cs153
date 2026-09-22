@@ -201,6 +201,30 @@ public class CrossReferencer {
                     break;
                 }
 
+            case HASHTABLE:
+                {
+                    Typespec_P2 keyType = typespec.getHashtableKeyType();
+                    Typespec_P2 elementType = typespec.getHashtableElementType();
+
+                    System.out.println(INDENT + "--- KEY TYPE ---");
+                    printTypespec(keyType);
+
+                    // Print the key type details only if the type is unnamed.
+                    if ((keyType != null) && (keyType.getIdentifier() == null)) {
+                        printTypespecDetail(keyType);
+                    }
+
+                    System.out.println(INDENT + "--- ELEMENT TYPE ---");
+                    printTypespec(elementType);
+
+                    // Print the element type details only if the type is unnamed.
+                    if ((elementType != null) && (elementType.getIdentifier() == null)) {
+                        printTypespecDetail(elementType);
+                    }
+
+                    break;
+                }
+
             default:
                 break;
         }

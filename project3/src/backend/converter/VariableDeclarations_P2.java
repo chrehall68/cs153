@@ -62,6 +62,10 @@ public class VariableDeclarations_P2 extends Converter_P2 {
     }
 
     private String javaTypeName(Typespec_P2 pascalType) {
+        if (pascalType == null) {
+            return "Object";
+        }
+
         Form form = pascalType.getForm();
         SymtabEntry typeEntry = pascalType.getIdentifier();
         String pascalTypeName = typeEntry != null ? typeEntry.getName() : null;
@@ -99,8 +103,59 @@ public class VariableDeclarations_P2 extends Converter_P2 {
                     return "int";
                 }
 
+            case HASHTABLE:
+                return "HashMap<"
+                        + javaGenericTypeName(pascalType.getHashtableKeyType())
+                        + ", "
+                        + javaGenericTypeName(pascalType.getHashtableElementType())
+                        + ">";
+
             default:
-                return "*unknown*";
+                return "Object";
+        }
+    }
+
+    private String javaGenericTypeName(Typespec_P2 pascalType) {
+        if (pascalType == null) {
+            return "Object";
+        }
+
+        if (pascalType.getForm() == Form.ARRAY) {
+            int dimensions = 0;
+            Typespec_P2 baseType = pascalType;
+
+            while (baseType.getForm() == Form.ARRAY) {
+                dimensions++;
+                baseType = baseType.getArrayElementType();
+            }
+
+            String baseName = javaTypeName(baseType);
+            StringBuilder brackets = new StringBuilder();
+
+            for (int i = 0; i < dimensions; i++) {
+                brackets.append("[]");
+            }
+
+            return baseName + brackets.toString();
+        }
+
+        String typeName = javaTypeName(pascalType);
+
+        if (typeName == null) {
+            return "Object";
+        }
+
+        switch (typeName) {
+            case "int":
+                return "Integer";
+            case "double":
+                return "Double";
+            case "boolean":
+                return "Boolean";
+            case "char":
+                return "Character";
+            default:
+                return typeName;
         }
     }
 }

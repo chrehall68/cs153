@@ -13,6 +13,7 @@ public class SemanticErrorHandler {
         INVALID_SUBRANGE_CONSTANT("Invalid subrange constant"),
         INVALID_INDEX_TYPE("Index type must be ordinal"),
         INVALID_PACKED_ARRAY("Can only pack arrays of char"),
+        INVALID_HASHTABLE_KEY_TYPE("The hashtable key type must be ordinal"),
         ;
 
         private String message;

@@ -44,4 +44,9 @@ public class TypeDefinitions_P2 extends Converter_P2 {
         code.emitEnd("};");
         return null;
     }
+
+    Object hashtableType(HashtableTypeContext ctx) {
+        // Hashtable types are represented directly in variable declarations.
+        return null;
+    }
 }
