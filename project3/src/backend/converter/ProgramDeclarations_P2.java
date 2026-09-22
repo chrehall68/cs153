@@ -6,6 +6,8 @@ public class ProgramDeclarations_P2 extends Converter_P2 {
     Object program(ProgramContext ctx) {
         code.emitLine("import java.util.HashSet;");
         code.emitLine();
+        code.emitLine("import java.util.HashMap;");
+        code.emitLine();
         code.emitLine("public class " + programName);
         code.emitLine("{");
         code.indent();

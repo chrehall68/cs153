@@ -190,6 +190,34 @@ public class TypeDefinitions_P2 extends Semantics_P2 {
         return ctx.typespec;
     }
 
+    Typespec_P2 hashtableType(HashtableTypeContext ctx) {
+        Typespec_P2 hashtableTypespec = new Typespec_P2(HASHTABLE);
+        ctx.typespec = hashtableTypespec;
+
+        // Defensive: malformed hashtables (missing key/value after syntax
+        // recovery) may have fewer than two typeSpecification children,
+        // and visit() may return null. Fall back to undefinedType so that
+        // later passes never see null.
+        int n = ctx.typeSpecification().size();
+        Typespec_P2 keyType = (n > 0) ? (Typespec_P2) visit(ctx.typeSpecification(0)) : null;
+        Typespec_P2 elementType = (n > 1) ? (Typespec_P2) visit(ctx.typeSpecification(1)) : null;
+
+        if (keyType == null) {
+            keyType = Predefined.undefinedType;
+        } else if (!keyType.isOrdinal()) {
+            error.flag(INVALID_HASHTABLE_KEY_TYPE, ctx.typeSpecification(0));
+            keyType = Predefined.undefinedType;
+        }
+
+        if (elementType == null) {
+            elementType = Predefined.undefinedType;
+        }
+
+        hashtableTypespec.setHashtableKeyType(keyType);
+        hashtableTypespec.setHashtableElementType(elementType);
+        return hashtableTypespec;
+    }
+
     private int elementCount(Typespec_P2 typespec) {
         int count = 0;
 

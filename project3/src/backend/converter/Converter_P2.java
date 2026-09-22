@@ -58,6 +58,11 @@ public class Converter_P2 extends Pcl_P2BaseVisitor<Object> {
     }
 
     @Override
+    public Object visitHashtableType(HashtableTypeContext ctx) {
+        return typeDefinitions.hashtableType(ctx);
+    }
+
+    @Override
     public Object visitVariableDeclarations(VariableDeclarationsContext ctx) {
         return variableDeclarations.variableDeclarations(ctx);
     }

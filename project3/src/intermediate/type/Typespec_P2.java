@@ -14,6 +14,7 @@ public class Typespec_P2 {
         ARRAY,
         RECORD,
         SET,
+        HASHTABLE,
         UNKNOWN;
 
         public String toString() {
@@ -40,6 +41,11 @@ public class Typespec_P2 {
     }
 
     private class SetInfo implements TypeInfo {
+        private Typespec_P2 elementType;
+    }
+
+    private class HashtableInfo implements TypeInfo {
+        private Typespec_P2 keyType;
         private Typespec_P2 elementType;
     }
 
@@ -73,6 +79,12 @@ public class Typespec_P2 {
             case SET:
                 info = new SetInfo();
                 ((SetInfo) info).elementType = Predefined.undefinedType;
+                break;
+
+            case HASHTABLE:
+                info = new HashtableInfo();
+                ((HashtableInfo) info).keyType = null;
+                ((HashtableInfo) info).elementType = null;
                 break;
 
             default:
@@ -178,5 +190,21 @@ public class Typespec_P2 {
 
     public void setSetElementType(Typespec_P2 elementType) {
         ((SetInfo) info).elementType = elementType;
+    }
+
+    public Typespec_P2 getHashtableKeyType() {
+        return ((HashtableInfo) info).keyType;
+    }
+
+    public void setHashtableKeyType(Typespec_P2 keyType) {
+        ((HashtableInfo) info).keyType = keyType;
+    }
+
+    public Typespec_P2 getHashtableElementType() {
+        return ((HashtableInfo) info).elementType;
+    }
+
+    public void setHashtableElementType(Typespec_P2 elementType) {
+        ((HashtableInfo) info).elementType = elementType;
     }
 }
