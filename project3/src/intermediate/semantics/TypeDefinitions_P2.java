@@ -250,4 +250,22 @@ public class TypeDefinitions_P2 extends Semantics_P2 {
             return Predefined.undefinedType;
         }
     }
+
+    Typespec_P2 setType(SetTypeContext ctx) {
+        // no need for different set type for packed sets
+        // because those can be implemented as just hash sets
+        // (there's nothing in the reference saying that they MUST be the bit-packed version)
+        Typespec_P2 setTypespec = new Typespec_P2(SET);
+        ctx.typespec = setTypespec;
+        Typespec_P2 elementType = (Typespec_P2) visit(ctx.indexType());
+        if (elementType == null || elementType == Predefined.undefinedType) {
+            setTypespec.setSetElementType(Predefined.undefinedType);
+        } else if (!elementType.isOrdinal()) {
+            error.flag(INVALID_SET_ELEMENT_TYPE, ctx.indexType());
+            setTypespec.setSetElementType(Predefined.undefinedType);
+        } else {
+            setTypespec.setSetElementType(elementType);
+        }
+        return setTypespec;
+    }
 }

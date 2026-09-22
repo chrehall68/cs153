@@ -102,6 +102,10 @@ public class VariableDeclarations_P2 extends Converter_P2 {
                 } else {
                     return "int";
                 }
+            case SET:
+                Typespec_P2 setElementType = pascalType.getSetElementType();
+                String innerTypeName = javaGenericTypeName(setElementType);
+                return "HashSet<" + innerTypeName + ">";
 
             case HASHTABLE:
                 return "HashMap<"

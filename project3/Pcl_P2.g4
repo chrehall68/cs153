@@ -98,6 +98,7 @@ structuredType        locals [ Typespec_P2 typespec = null ]
     : arrayType 
     | hashtableType
     | recordType
+    | setType
     ;
 
 enumeratedType        locals [ Typespec_P2 typespec = null ] 
@@ -109,10 +110,16 @@ subrangeType          locals [ Typespec_P2 typespec = null ]
 arrayType             locals [ Typespec_P2 typespec = null ] 
     : PACKED? ARRAY '[' dimensionList ']' OF elmtType ;
 
+// indexType since ordinalType could include typeIdentifier
+// see page 16 in the manual
+setType               locals [ Typespec_P2 typespec = null ]
+    : PACKED? SET OF indexType;
+
+
 // A hashtable is written as HASHTABLE OF keyType TO elementType.
 hashtableType         locals [ Typespec_P2 typespec = null ]
     : HASHTABLE OF typeSpecification TO typeSpecification ;
-    
+
 dimensionList : indexType ( ',' indexType )* ;
 indexType     : typeIdentifier | ordinalType ;
 elmtType      : typeSpecification;
@@ -133,6 +140,7 @@ CONST     : C O N S T ;
 TYPE      : T Y P E ;
 PACKED    : P A C K E D ;
 ARRAY     : A R R A Y ;
+SET       : S E T ;
 HASHTABLE : H A S H T A B L E ;
 OF        : O F ;
 TO        : T O ;
