@@ -110,9 +110,8 @@ arrayType             locals [ Typespec_P2 typespec = null ]
     : PACKED? ARRAY '[' dimensionList ']' OF elmtType ;
 
 // A hashtable is written as HASHTABLE OF keyType TO elementType.
-// The two-word spelling HASH TABLE is accepted as well.
 hashtableType         locals [ Typespec_P2 typespec = null ]
-    : (HASHTABLE | HASH TABLE) OF typeSpecification TO typeSpecification ;
+    : HASHTABLE OF typeSpecification TO typeSpecification ;
     
 dimensionList : indexType ( ',' indexType )* ;
 indexType     : typeIdentifier | ordinalType ;
@@ -135,8 +134,6 @@ TYPE      : T Y P E ;
 PACKED    : P A C K E D ;
 ARRAY     : A R R A Y ;
 HASHTABLE : H A S H T A B L E ;
-HASH      : H A S H ;
-TABLE     : T A B L E ;
 OF        : O F ;
 TO        : T O ;
 RECORD    : R E C O R D ;

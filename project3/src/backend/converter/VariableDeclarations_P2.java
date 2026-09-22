@@ -62,6 +62,10 @@ public class VariableDeclarations_P2 extends Converter_P2 {
     }
 
     private String javaTypeName(Typespec_P2 pascalType) {
+        if (pascalType == null) {
+            return "Object";
+        }
+
         Form form = pascalType.getForm();
         SymtabEntry typeEntry = pascalType.getIdentifier();
         String pascalTypeName = typeEntry != null ? typeEntry.getName() : null;
@@ -112,6 +116,10 @@ public class VariableDeclarations_P2 extends Converter_P2 {
     }
 
     private String javaGenericTypeName(Typespec_P2 pascalType) {
+        if (pascalType == null) {
+            return "Object";
+        }
+
         if (pascalType.getForm() == Form.ARRAY) {
             int dimensions = 0;
             Typespec_P2 baseType = pascalType;
@@ -132,6 +140,10 @@ public class VariableDeclarations_P2 extends Converter_P2 {
         }
 
         String typeName = javaTypeName(pascalType);
+
+        if (typeName == null) {
+            return "Object";
+        }
 
         switch (typeName) {
             case "int":

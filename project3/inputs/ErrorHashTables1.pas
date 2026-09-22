@@ -2,11 +2,13 @@ PROGRAM ErrorHashTables1;
 
 TYPE
     badRealKey = HASHTABLE OF real TO integer;
+    goodAfterBadKey = HASHTABLE OF integer TO string;
+    badArrayKeyType = HASHTABLE OF ARRAY [1..4] OF char TO integer;
+    goodAfterBadArrayKey = HASHTABLE OF char TO real;
     badElement = HASHTABLE OF integer TO missingType;
-    valueCanBeAnything = HASHTABLE OF integer TO ARRAY [1..4] OF char;
-    nestedValue = HASHTABLE OF char TO HASHTABLE OF boolean TO string;
+    goodAfterBadElement = HASHTABLE OF boolean TO integer;
 
 VAR
-    badArrayKey : HASHTABLE OF ARRAY [1..4] OF char TO integer;
+    goodVar : goodAfterBadKey;
 BEGIN
 END.
