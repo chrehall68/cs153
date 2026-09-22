@@ -112,6 +112,25 @@ public class VariableDeclarations_P2 extends Converter_P2 {
     }
 
     private String javaGenericTypeName(Typespec_P2 pascalType) {
+        if (pascalType.getForm() == Form.ARRAY) {
+            int dimensions = 0;
+            Typespec_P2 baseType = pascalType;
+
+            while (baseType.getForm() == Form.ARRAY) {
+                dimensions++;
+                baseType = baseType.getArrayElementType();
+            }
+
+            String baseName = javaTypeName(baseType);
+            StringBuilder brackets = new StringBuilder();
+
+            for (int i = 0; i < dimensions; i++) {
+                brackets.append("[]");
+            }
+
+            return baseName + brackets.toString();
+        }
+
         String typeName = javaTypeName(pascalType);
 
         switch (typeName) {
