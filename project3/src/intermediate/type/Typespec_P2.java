@@ -13,6 +13,7 @@ public class Typespec_P2 {
         STRING,
         ARRAY,
         RECORD,
+        HASHTABLE,
         UNKNOWN;
 
         public String toString() {
@@ -36,6 +37,11 @@ public class Typespec_P2 {
         private Typespec_P2 indexType;
         private Typespec_P2 elementType;
         private int elementCount;
+    }
+
+    private class HashtableInfo implements TypeInfo {
+        private Typespec_P2 keyType;
+        private Typespec_P2 elementType;
     }
 
     private Form form;
@@ -64,6 +70,12 @@ public class Typespec_P2 {
                 ((ArrayInfo) info).indexType = null;
                 ((ArrayInfo) info).elementType = null;
                 ((ArrayInfo) info).elementCount = 0;
+                break;
+
+            case HASHTABLE:
+                info = new HashtableInfo();
+                ((HashtableInfo) info).keyType = null;
+                ((HashtableInfo) info).elementType = null;
                 break;
 
             default:
@@ -159,5 +171,21 @@ public class Typespec_P2 {
 
     public void setArrayElementCount(int elementCount) {
         ((ArrayInfo) info).elementCount = elementCount;
+    }
+
+    public Typespec_P2 getHashtableKeyType() {
+        return ((HashtableInfo) info).keyType;
+    }
+
+    public void setHashtableKeyType(Typespec_P2 keyType) {
+        ((HashtableInfo) info).keyType = keyType;
+    }
+
+    public Typespec_P2 getHashtableElementType() {
+        return ((HashtableInfo) info).elementType;
+    }
+
+    public void setHashtableElementType(Typespec_P2 elementType) {
+        ((HashtableInfo) info).elementType = elementType;
     }
 }

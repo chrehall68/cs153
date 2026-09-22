@@ -99,8 +99,32 @@ public class VariableDeclarations_P2 extends Converter_P2 {
                     return "int";
                 }
 
+            case HASHTABLE:
+                return "HashMap<"
+                        + javaGenericTypeName(pascalType.getHashtableKeyType())
+                        + ", "
+                        + javaGenericTypeName(pascalType.getHashtableElementType())
+                        + ">";
+
             default:
-                return "*unknown*";
+                return "Object";
+        }
+    }
+
+    private String javaGenericTypeName(Typespec_P2 pascalType) {
+        String typeName = javaTypeName(pascalType);
+
+        switch (typeName) {
+            case "int":
+                return "Integer";
+            case "double":
+                return "Double";
+            case "boolean":
+                return "Boolean";
+            case "char":
+                return "Character";
+            default:
+                return typeName;
         }
     }
 }

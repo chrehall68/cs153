@@ -201,6 +201,18 @@ public class CrossReferencer {
                     break;
                 }
 
+            case HASHTABLE:
+                {
+                    Typespec_P2 keyType = typespec.getHashtableKeyType();
+                    Typespec_P2 elementType = typespec.getHashtableElementType();
+
+                    System.out.println(INDENT + "--- KEY TYPE ---");
+                    printTypespec(keyType);
+                    System.out.println(INDENT + "--- ELEMENT TYPE ---");
+                    printTypespec(elementType);
+                    break;
+                }
+
             default:
                 break;
         }
