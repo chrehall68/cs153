@@ -204,8 +204,7 @@ public class TypeDefinitions_P2 extends Semantics_P2 {
 
         if (keyType == null) {
             keyType = Predefined.undefinedType;
-        }
-        else if (!keyType.isOrdinal()) {
+        } else if (!keyType.isOrdinal()) {
             error.flag(INVALID_HASHTABLE_KEY_TYPE, ctx.typeSpecification(0));
             keyType = Predefined.undefinedType;
         }

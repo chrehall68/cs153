@@ -1,9 +1,12 @@
 import java.util.HashMap;
 
-public class TestHashTables
-{
+public class TestHashTables {
 
-    private static enum color {red, green, blue};
+    private static enum color {
+        red,
+        green,
+        blue
+    };
 
     private static HashMap<Integer, Double> namedscores;
     private static HashMap<Character, String> namednames;
@@ -17,8 +20,7 @@ public class TestHashTables
     private static HashMap<Integer, char[]> arraytable;
     private static HashMap<Integer, double[][]> matrixtable;
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         System.out.println("Done!");
     }
 }
