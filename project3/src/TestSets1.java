@@ -1,12 +1,22 @@
 import java.util.HashSet;
 
-import java.util.HashMap;
+public class TestSets1 {
 
-public class TestSets1
-{
+    private static enum inner2 {
+        A,
+        B,
+        C
+    };
 
-    private static enum inner2 {A, B, C};
-    private static enum days {MON, TUE, WED, THU, FRI, SAT, SUN};
+    private static enum days {
+        MON,
+        TUE,
+        WED,
+        THU,
+        FRI,
+        SAT,
+        SUN
+    };
 
     private static HashSet<Integer> unnamed1;
     private static HashSet<days> unnamed2;
@@ -21,8 +31,7 @@ public class TestSets1
     private static HashSet<inner2> named4;
     private static HashSet<Integer> named5;
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         System.out.println("Done!");
     }
 }
