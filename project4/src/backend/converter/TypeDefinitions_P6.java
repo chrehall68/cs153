@@ -3,8 +3,6 @@ package backend.converter;
 import static intermediate.type.Typespec_P6.Form.*;
 
 import intermediate.antlr4.Pcl_P6Parser.*;
-import intermediate.symtab.Symtab;
-import intermediate.symtab.SymtabEntry;
 import intermediate.type.Typespec_P6;
 import intermediate.type.Typespec_P6.Form;
 
@@ -30,7 +28,7 @@ public class TypeDefinitions_P6 extends Converter_P6 {
 
             visit(typespecCtx);
         }
-        if (form == RECORD){
+        if (form == RECORD) {
             String typeName = typeIdCtx.entry.getName();
             code.emitStart();
             code.emit("private static class " + typeName + "{");

@@ -41,7 +41,8 @@ public class VariableDeclarations_P6 extends Converter_P6 {
         code.emitEnd(";");
         return null;
     }
-    private void record(TypeSpecificationContext typespecCtx){
+
+    private void record(TypeSpecificationContext typespecCtx) {
         Typespec_P6 typespec = typespecCtx.typespec;
         String typeName = javaTypeName(typespec);
 

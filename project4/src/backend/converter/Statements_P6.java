@@ -108,7 +108,11 @@ public class Statements_P6 extends Converter_P6 {
             String arg = (String) visit(exprCtx);
 
             // A string or character without formatting.
-            if ((formatCtx == null) && (isCharType || isStringType) && isSingleton(exprCtx) && !arg.isEmpty() && (arg.charAt(0)=='\'' || arg.charAt(0) == '\"')) {
+            if ((formatCtx == null)
+                    && (isCharType || isStringType)
+                    && isSingleton(exprCtx)
+                    && !arg.isEmpty()
+                    && (arg.charAt(0) == '\'' || arg.charAt(0) == '\"')) {
                 String format = arg.substring(1, arg.length() - 1);
                 formatString.append(format);
             }
