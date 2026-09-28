@@ -1,16 +1,15 @@
 package intermediate.symtab;
 
-import java.util.ArrayList;
-
-import intermediate.type.*;
-
 import static intermediate.symtab.SymtabEntry.Kind.*;
 import static intermediate.type.Typespec_P6.Form.*;
 
-public class Predefined
-{
+import intermediate.type.*;
+
+import java.util.ArrayList;
+
+public class Predefined {
     private static SymtabStack symtabStack;
-    
+
     public static Typespec_P6 integerType;
     public static Typespec_P6 realType;
     public static Typespec_P6 booleanType;
@@ -18,16 +17,14 @@ public class Predefined
     public static Typespec_P6 stringType;
     public static Typespec_P6 undefinedType;
 
-    public static void initialize(SymtabStack symtabStack)
-    {
+    public static void initialize(SymtabStack symtabStack) {
         Predefined.symtabStack = symtabStack;
-        
+
         initializeTypes();
         initializeConstants();
     }
 
-    private static void initializeTypes()
-    {
+    private static void initializeTypes() {
         SymtabEntry integerEntry = symtabStack.enterLocal("integer", TYPE);
         integerType = new Typespec_P6(SCALAR);
         integerType.setIdentifier(integerEntry);
@@ -56,20 +53,16 @@ public class Predefined
         undefinedType = new Typespec_P6(UNKNOWN);
     }
 
-    private static void initializeConstants()
-    {
-        SymtabEntry falseEntry = 
-                    symtabStack.enterLocal("false", ENUMERATED_CONSTANT);
+    private static void initializeConstants() {
+        SymtabEntry falseEntry = symtabStack.enterLocal("false", ENUMERATED_CONSTANT);
         falseEntry.setTypespec(booleanType);
         falseEntry.setValue(0);
 
-        SymtabEntry trueEntry = 
-                    symtabStack.enterLocal("true", ENUMERATED_CONSTANT);
+        SymtabEntry trueEntry = symtabStack.enterLocal("true", ENUMERATED_CONSTANT);
         trueEntry.setTypespec(booleanType);
         trueEntry.setValue(1);
 
-        ArrayList<SymtabEntry> constants = 
-                            booleanType.getEnumeratedConstants();
+        ArrayList<SymtabEntry> constants = booleanType.getEnumeratedConstants();
         constants.add(falseEntry);
         constants.add(trueEntry);
     }

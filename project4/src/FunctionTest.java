@@ -1,9 +1,7 @@
-public class FunctionTest
-{
+public class FunctionTest {
     private static final double PI = 3.1415926;
 
-    static int addem(int p1, int p2, int p3)
-    {
+    static int addem(int p1, int p2, int p3) {
         int addem;
 
         addem = p1 + p2 + p3;
@@ -11,17 +9,15 @@ public class FunctionTest
         return addem;
     }
 
-    static double twopi()
-    {
+    static double twopi() {
         double twopi;
 
-        twopi = 2*PI;
+        twopi = 2 * PI;
 
         return twopi;
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         java.time.Instant _start = java.time.Instant.now();
 
         System.out.printf("addem returned %d\n", addem(1, 2, 3));

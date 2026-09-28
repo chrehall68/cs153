@@ -1,5 +1,4 @@
-public class TestConstDefs
-{
+public class TestConstDefs {
     private static final int ONE = 1;
     private static final int MINUSONE = -ONE;
     private static final int MINUSTWO = -2;
@@ -14,10 +13,8 @@ public class TestConstDefs
     private static final String FRIDAY = "It's Friday!";
     private static final String QUOTED = "A \"quoted\" word";
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         java.time.Instant _start = java.time.Instant.now();
-
 
         java.time.Instant _end = java.time.Instant.now();
         long _elapsed = java.time.Duration.between(_start, _end).toMillis();

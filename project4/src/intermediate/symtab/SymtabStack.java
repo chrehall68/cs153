@@ -1,22 +1,19 @@
 package intermediate.symtab;
 
-import java.util.ArrayList;
-
 import intermediate.symtab.SymtabEntry.Kind;
 
-public class SymtabStack
-    extends ArrayList<Symtab>
-{
-    private static final long serialVersionUID = 0L; 
+import java.util.ArrayList;
 
-    private int currentNestingLevel;   // current scope nesting level
-    private SymtabEntry programEntry;  // entry for the main program id
+public class SymtabStack extends ArrayList<Symtab> {
+    private static final long serialVersionUID = 0L;
+
+    private int currentNestingLevel; // current scope nesting level
+    private SymtabEntry programEntry; // entry for the main program id
 
     /**
      * Constructor.
      */
-    public SymtabStack()
-    {
+    public SymtabStack() {
         this.currentNestingLevel = 0;
         add(new Symtab(currentNestingLevel));
     }
@@ -25,32 +22,39 @@ public class SymtabStack
      * Getter.
      * @return the current nesting level.
      */
-    public int getCurrentNestingLevel() { return currentNestingLevel;  }
+    public int getCurrentNestingLevel() {
+        return currentNestingLevel;
+    }
 
     /**
      * Getter.
      * @return the symbol table entry for the main program identifier.
      */
-    public SymtabEntry getProgramEntry() { return programEntry; }
+    public SymtabEntry getProgramEntry() {
+        return programEntry;
+    }
 
     /**
      * Setter.
      * @param entry the symbol table entry for the main program identifier.
      */
-    public void setProgramEntry(SymtabEntry entry) { this.programEntry = entry; }
+    public void setProgramEntry(SymtabEntry entry) {
+        this.programEntry = entry;
+    }
 
     /**
      * Return the local symbol table which is at the top of the stack.
      * @return the local symbol table.
      */
-    public Symtab getLocalSymtab() { return get(currentNestingLevel); }
+    public Symtab getLocalSymtab() {
+        return get(currentNestingLevel);
+    }
 
     /**
      * Push a new symbol table onto the symbol table stack.
      * @return the pushed symbol table.
      */
-    public Symtab push()
-    {
+    public Symtab push() {
         Symtab symtab = new Symtab(++currentNestingLevel);
         add(symtab);
 
@@ -61,8 +65,7 @@ public class SymtabStack
      * Push a symbol table onto the symbol table stack.
      * @return the pushed symbol table.
      */
-    public Symtab push(Symtab symtab)
-    {
+    public Symtab push(Symtab symtab) {
         ++currentNestingLevel;
         add(symtab);
 
@@ -73,8 +76,7 @@ public class SymtabStack
      * Pop a symbol table off the symbol table stack.
      * @return the popped symbol table.
      */
-    public Symtab pop()
-    {
+    public Symtab pop() {
         Symtab symtab = get(currentNestingLevel);
         remove(currentNestingLevel--);
 
@@ -87,18 +89,16 @@ public class SymtabStack
      * @param kind what kind of entry.
      * @return the new entry.
      */
-    public SymtabEntry enterLocal(String name, Kind kind)
-    {
+    public SymtabEntry enterLocal(String name, Kind kind) {
         return get(currentNestingLevel).enter(name, kind);
     }
-    
+
     /**
      * Remove an entry from the local symbol table.
      * @param name the name of the entry.
      * @return the removed entry.
      */
-    public SymtabEntry removeLocal(String name)
-    {
+    public SymtabEntry removeLocal(String name) {
         return get(currentNestingLevel).remove(name);
     }
 
@@ -107,8 +107,7 @@ public class SymtabStack
      * @param name the name of the entry.
      * @return the entry, or null if it does not exist.
      */
-    public SymtabEntry lookupLocal(String name)
-    {
+    public SymtabEntry lookupLocal(String name) {
         return get(currentNestingLevel).lookup(name);
     }
 
@@ -117,13 +116,11 @@ public class SymtabStack
      * @param name the name of the entry.
      * @return the entry, or null if it does not exist.
      */
-    public SymtabEntry lookup(String name)
-    {
+    public SymtabEntry lookup(String name) {
         SymtabEntry foundEntry = null;
 
         // Search the current and enclosing scopes.
-        for (int i = currentNestingLevel; (i >= 0) && (foundEntry == null); --i)
-        {
+        for (int i = currentNestingLevel; (i >= 0) && (foundEntry == null); --i) {
             foundEntry = get(i).lookup(name);
         }
 
