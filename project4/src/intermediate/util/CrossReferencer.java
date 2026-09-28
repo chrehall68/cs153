@@ -246,6 +246,16 @@ public class CrossReferencer {
                     break;
                 }
 
+            case RECORD:
+                {
+                    // Named records are printed separately by printSymtab().
+                    if (typespec.getIdentifier() == null) {
+                        printRecord(typespec);
+                    }
+
+                    break;
+                }
+
             default:
                 break;
         }
