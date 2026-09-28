@@ -136,7 +136,8 @@ public class Expressions_P6 extends Converter_P6 {
             // Record field.
             else {
                 FieldContext fieldCtx = modCtx.field();
-                String fieldName = fieldCtx.entry.getName();
+                // force record field names to be lowercase since that's the canonical way
+                String fieldName = fieldCtx.entry.getName().toLowerCase();
                 variableName += "." + fieldName;
                 typespec = fieldCtx.typespec;
             }

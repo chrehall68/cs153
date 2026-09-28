@@ -33,12 +33,20 @@ public class VariableDeclarations_P6 extends Converter_P6 {
             code.emit(separator + variableName);
 
             if (typeForm == ARRAY) array(typespecCtx);
+            if (typeForm == RECORD) record(typespecCtx);
 
             separator = ", ";
         }
 
         code.emitEnd(";");
         return null;
+    }
+    private void record(TypeSpecificationContext typespecCtx){
+        Typespec_P6 typespec = typespecCtx.typespec;
+        String typeName = javaTypeName(typespec);
+
+        // initialize objects with the default constructor instead of null
+        code.emit(" = new " + typeName + "()");
     }
 
     private void array(TypeSpecificationContext typespecCtx) {
@@ -50,6 +58,8 @@ public class VariableDeclarations_P6 extends Converter_P6 {
 
         typespec = typespecCtx.typespec;
 
+        // TODO - be careful about arrays of objects since we want those to be initialized
+        // with the default constructor, not as null
         while (typespec.getForm() == ARRAY) {
             int elmtCount = typespec.getArrayElementCount();
             code.emit("[" + elmtCount + "]");

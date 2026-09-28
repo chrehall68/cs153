@@ -3,6 +3,8 @@ package backend.converter;
 import static intermediate.type.Typespec_P6.Form.*;
 
 import intermediate.antlr4.Pcl_P6Parser.*;
+import intermediate.symtab.Symtab;
+import intermediate.symtab.SymtabEntry;
 import intermediate.type.Typespec_P6;
 import intermediate.type.Typespec_P6.Form;
 
@@ -27,6 +29,18 @@ public class TypeDefinitions_P6 extends Converter_P6 {
             code.emit("private static enum " + typeName);
 
             visit(typespecCtx);
+        }
+        if (form == RECORD){
+            String typeName = typeIdCtx.entry.getName();
+            code.emitStart();
+            code.emit("private static class " + typeName + "{");
+            code.indent();
+            recordFields = true;
+            visit(ctx.typeSpecification());
+            recordFields = false;
+            code.dedent();
+            code.emitStart();
+            code.emit("}");
         }
 
         return null;
