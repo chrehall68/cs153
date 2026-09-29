@@ -28,6 +28,18 @@ public class TypeDefinitions_P6 extends Converter_P6 {
 
             visit(typespecCtx);
         }
+        if (form == RECORD) {
+            String typeName = typeIdCtx.entry.getName();
+            code.emitStart();
+            code.emit("private static class " + typeName + "{");
+            code.indent();
+            recordFields = true;
+            visit(ctx.typeSpecification());
+            recordFields = false;
+            code.dedent();
+            code.emitStart();
+            code.emit("}");
+        }
 
         return null;
     }

@@ -61,6 +61,7 @@ public class Program_P6 extends Semantics_P6 {
             parameters = procCtx.parameters();
         }
 
+        // canonical name for functions is lowercase
         routineName = idCtx.IDENTIFIER().getText().toLowerCase();
         SymtabEntry routineEntry = symtabStack.lookupLocal(routineName);
 

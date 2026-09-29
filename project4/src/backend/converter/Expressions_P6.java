@@ -136,6 +136,9 @@ public class Expressions_P6 extends Converter_P6 {
             // Record field.
             else {
                 FieldContext fieldCtx = modCtx.field();
+                // don't need to force it to be lowercase because we treat the entry
+                // (which will be the capitalization on first insertion)
+                // as the canonical name
                 String fieldName = fieldCtx.entry.getName();
                 variableName += "." + fieldName;
                 typespec = fieldCtx.typespec;
