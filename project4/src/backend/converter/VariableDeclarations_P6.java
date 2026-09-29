@@ -29,7 +29,10 @@ public class VariableDeclarations_P6 extends Converter_P6 {
 
         String separator = " ";
         for (IdentifierContext idCtx : varListCtx.identifier()) {
-            String variableName = idCtx.entry.getName().toLowerCase();
+            // removed the .toLowerCase() here since this allows us to easily
+            // treat the entry's name as the canonical name and avoids
+            // cases of us forgetting to .toLowerCase() something, for instance
+            String variableName = idCtx.entry.getName();
             code.emit(separator + variableName);
 
             if (typeForm == ARRAY) array(typespecCtx);

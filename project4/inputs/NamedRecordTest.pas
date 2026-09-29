@@ -23,12 +23,13 @@ TYPE
 
 VAR
     i : integer;
+    oThER : InTEGeR;
     
-    john : PersonRec;
-    mary : PersonRec;
-    team : ARRAY [1..4] OF PersonRec;
+    jOhn : PersonRec;
+    mary : PeRSONrEC;
+    tEaM : ARRAY [1..4] OF personREC;
 
-FUNCTION print(VAR person : PersonRec) : integer;
+FUNCTION PRInt(VAR person : PersonRec) : integer;
 
     VAR
         age  : integer;
@@ -59,39 +60,42 @@ FUNCTION print(VAR person : PersonRec) : integer;
     END;
 
 BEGIN
-    john.firstName := 'John';
-    john.lastName  := 'Doe';
-    john.age := 24;
-    john.address.street := '1680 25th Street';
-    john.address.city   := 'San Pablo';
-    john.address.state  := 'CALIFORNIA';
-    john.address.zip    := '94806';
-    john.phones[0]      := '111-1111';
-    john.phones[1]      := '222-2222';
-    
-    i := print(john);
+    oTHER := 3;
+    OthER := 4;
 
-    mary.firstName := 'Mary';
-    mary.lastName  := 'Jane';
-    mary.age := 22;
-    mary.address.street := '4899 Bela Drive ';
-    mary.address.city   := 'San Jose';
-    mary.address.state  := 'CALIFORNIA';
-    mary.address.zip    := '95129';
-    mary.phones[0]      := '333-3333';
-    mary.phones[1]      := '444-4444';
+    John.firstName := 'John';
+    jOhn.lastName  := 'Doe';
+    joHn.age := 24;
+    johN.address.street := '1680 25th Street';
+    JOhn.address.city   := 'San Pablo';
+    JoHn.address.state  := 'CALIFORNIA';
+    JohN.address.zip    := '94806';
+    jOHn.phones[0]      := '111-1111';
+    jOhN.phones[1]      := '222-2222';
     
-    i := print(mary);
+    i := pRinT(joHN);
+
+    Mary.firstName := 'Mary';
+    mAry.lastName  := 'Jane';
+    maRy.age := 22;
+    marY.address.street := '4899 Bela Drive ';
+    MAry.address.city   := 'San Jose';
+    MaRy.address.state  := 'CALIFORNIA';
+    MarY.address.zip    := '95129';
+    mARy.phones[0]      := '333-3333';
+    mArY.phones[1]      := '444-4444';
     
-    team[3].firstName      := mary.firstName;
-    team[3].lastName       := mary.lastName;
-    team[3].age            := mary.age;
-    team[3].address.street := mary.address.street;
-    team[3].address.city   := mary.address.city;
-    team[3].address.state  := mary.address.state;
-    team[3].address.zip    := mary.address.zip;
+    i := prINT(maRY);
+    
+    teAM[3].firstName      := mary.firstName;
+    tEAm[3].lastName       := mary.lastName;
+    TEam[3].age            := mary.age;
+    Team[3].address.street := mary.address.street;
+    tEam[3].address.city   := mary.address.city;
+    teAm[3].address.state  := mary.address.state;
+    teaM[3].address.zip    := mary.address.zip;
     team[3].phones[0]      := mary.phones[0];
-    team[3].phones[1]      := mary.phones[1];
+    TEAM[3].phones[1]      := mary.phones[1];
     
-    i := print(team[3]);
+    I := PrInT(team[3]);
 END.
