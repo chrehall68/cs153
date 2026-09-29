@@ -31,12 +31,13 @@ public class VariableDeclarations_P6 extends Converter_P6 {
             if (typeForm != RECORD && typeForm != ARRAY) {
                 throw new RuntimeException("Failed");
             }
-            typeName =
-                    "$"
-                            + anonymousClassCount
-                            + varListCtx.identifier().get(0).entry.getName()
-                            + "Class";
+            // $ isn't allowed in pascal variables
+            // therefore this won't collide with any pascal variables
+            // and then since we always increment our count, this won't collide
+            // with anything that we output either
+            String id = "$" + anonymousClassCount  + "$";
             anonymousClassCount++;
+            typeName = id + varListCtx.identifier().get(0).entry.getName() + "Class";
 
             // copied from TypeDefinitions_P6.java
             code.emitStart();
