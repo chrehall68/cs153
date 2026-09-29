@@ -17,7 +17,7 @@ public class VariableDeclarations_P6 extends Semantics_P6 {
 
         for (IdentifierContext idCtx : varListCtx.identifier()) {
             int lineNumber = idCtx.getStart().getLine();
-            String variableName = idCtx.getText();  // canonical name for variables is as written
+            String variableName = idCtx.getText(); // canonical name for variables is as written
             SymtabEntry variableEntry = symtabStack.lookupLocal(variableName);
 
             if (variableEntry == null) {
