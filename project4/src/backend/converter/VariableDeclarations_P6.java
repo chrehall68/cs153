@@ -25,13 +25,17 @@ public class VariableDeclarations_P6 extends Converter_P6 {
         }
 
         code.emitStart();
-        if (typeName == null){
+        if (typeName == null) {
             // should only happen for unnamed records?
             // so we'll name them
-            if (typeForm != RECORD && typeForm != ARRAY){
+            if (typeForm != RECORD && typeForm != ARRAY) {
                 throw new RuntimeException("Failed");
             }
-            typeName = "$" + anonymousClassCount + varListCtx.identifier().get(0).entry.getName() + "Class";
+            typeName =
+                    "$"
+                            + anonymousClassCount
+                            + varListCtx.identifier().get(0).entry.getName()
+                            + "Class";
             anonymousClassCount++;
 
             // copied from TypeDefinitions_P6.java
