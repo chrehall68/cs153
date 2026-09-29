@@ -74,21 +74,21 @@ public class VariableDeclarations_P6 extends Converter_P6 {
         }
 
         String result;
-        if (typespec.getForm() == RECORD){
+        if (typespec.getForm() == RECORD) {
             // special case; because we're converting to Java, we can't just
             // declare a fixed size array because arrays in Java get initialized
             // with the default value of the type, and the default value for any
             // object type is null
             // so instead, we'll manually construct this
             String prevDimension = "new " + typeName + "()";
-            for (int i = dimentionSizes.size()-1; i >= 0; --i){
+            for (int i = dimentionSizes.size() - 1; i >= 0; --i) {
                 StringBuilder curDimension = new StringBuilder();
                 int elmtCount = dimentionSizes.get(i);
 
                 curDimension.append("{");
-                for (int j = 0; j < elmtCount; ++j){
+                for (int j = 0; j < elmtCount; ++j) {
                     curDimension.append(prevDimension);
-                    if (j + 1 < elmtCount){
+                    if (j + 1 < elmtCount) {
                         curDimension.append(", ");
                     }
                 }
@@ -101,8 +101,8 @@ public class VariableDeclarations_P6 extends Converter_P6 {
             // not a special case; just have [ elmtCount ] for each
             StringBuilder builder = new StringBuilder();
             builder.append("new " + typeName);
-            for (int elmtCount : dimentionSizes){
-                builder.append("["+elmtCount+"]");
+            for (int elmtCount : dimentionSizes) {
+                builder.append("[" + elmtCount + "]");
             }
             result = builder.toString();
         }
