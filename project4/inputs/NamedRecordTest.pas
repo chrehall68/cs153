@@ -28,6 +28,7 @@ VAR
     jOhn : PersonRec;
     mary : PeRSONrEC;
     tEaM : ARRAY [1..4] OF personREC;
+    nestedArr : ARRAY [1..2] OF ARRAY [1..3] OF ARRAY [1..4] OF ARRAY [1..5] OF personREC;
 
 FUNCTION PRInt(VAR person : PersonRec) : integer;
 
