@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class VariableDeclarations_P6 extends Converter_P6 {
     boolean first = true;
+    int anonymousClassCount = 0;
 
     Object variableDeclarations(VariableDeclarationsContext ctx) {
         VariableIdentifierListContext varListCtx = ctx.variableIdentifierList();
@@ -24,6 +25,33 @@ public class VariableDeclarations_P6 extends Converter_P6 {
         }
 
         code.emitStart();
+        if (typeName == null) {
+            // should only happen for unnamed records?
+            // so we'll name them
+            if (typeForm != RECORD && typeForm != ARRAY) {
+                throw new RuntimeException("Failed");
+            }
+            // $ isn't allowed in pascal variables
+            // therefore this won't collide with any pascal variables
+            // and then since we always increment our count, this won't collide
+            // with anything that we output either
+            String id = "$" + anonymousClassCount + "$";
+            anonymousClassCount++;
+            typeName = id + varListCtx.identifier().get(0).entry.getName() + "Class";
+
+            // copied from TypeDefinitions_P6.java
+            code.emitStart();
+            code.emit("private static class " + typeName + "{");
+            code.indent();
+            recordFields = true;
+            visit(ctx.typeSpecification());
+            recordFields = false;
+            code.dedent();
+            code.emitStart();
+            code.emit("}");
+            code.emitLine();
+            code.emitStart();
+        }
         if (programVariables && !recordFields) {
             code.emit("private static ");
         }
@@ -37,8 +65,8 @@ public class VariableDeclarations_P6 extends Converter_P6 {
             String variableName = idCtx.entry.getName();
             code.emit(separator + variableName);
 
-            if (typeForm == ARRAY) array(typespecCtx);
-            if (typeForm == RECORD) record(typespecCtx);
+            if (typeForm == ARRAY) array(typeName, typespecCtx);
+            if (typeForm == RECORD) record(typeName);
 
             separator = ", ";
         }
@@ -47,17 +75,13 @@ public class VariableDeclarations_P6 extends Converter_P6 {
         return null;
     }
 
-    private void record(TypeSpecificationContext typespecCtx) {
-        Typespec_P6 typespec = typespecCtx.typespec;
-        String typeName = javaTypeName(typespec);
-
+    private void record(String typeName) {
         // initialize objects with the default constructor instead of null
         code.emit(" = new " + typeName + "()");
     }
 
-    private void array(TypeSpecificationContext typespecCtx) {
+    private void array(String typeName, TypeSpecificationContext typespecCtx) {
         Typespec_P6 typespec = typespecCtx.typespec;
-        String typeName = javaTypeName(typespec);
 
         emitArraySpecifier(typespec);
         code.emit(" = ");
