@@ -9,19 +9,25 @@ PROCEDURE hello;
 PROCEDURE hello1(x:real);
     BEGIN
         writeln(x:10);
+        hello;
     END;
 
 PROCEDURE hello2(x: real; y: real);
     VAR i : REAL;
     BEGIN
         i := x*y;
-        writeln(i:100);
+        writeln(i:10);
+        hello;
+        hello1(0.2);
     END;
 
 PROCEDURE hello3(x: real; y: string; z: boolean);
     BEGIN
         writeln(x:100, y);
         writeln(z);
+        hello;
+        hello1(100);
+        hello2(0.3, 1.12);
     END;
 BEGIN
     hello;
