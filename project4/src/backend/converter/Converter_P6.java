@@ -84,6 +84,9 @@ public class Converter_P6 extends Pcl_P6BaseVisitor<Object> {
 
                     return javaTypeName != null ? javaTypeName : pascalTypeName;
                 } else {
+                    if (elmtType.getForm() == RECORD) {
+                        return null;
+                    }
                     return "int";
                 }
 
