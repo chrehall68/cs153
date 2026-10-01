@@ -22,7 +22,6 @@ TYPE
                  END;
 
 VAR
-    i : integer;
     oThER : InTEGeR;
     
     jOhn : PersonRec;
@@ -30,7 +29,7 @@ VAR
     tEaM : ARRAY [1..4] OF personREC;
     nestedArr : ARRAY [1..2] OF ARRAY [1..3] OF ARRAY [1..4] OF ARRAY [1..5] OF personREC;
 
-FUNCTION PRInt(VAR person : PersonRec) : integer;
+ProcEDURe PRInt(VAR person : PersonRec);
 
     VAR
         age  : integer;
@@ -74,7 +73,7 @@ BEGIN
     jOHn.phones[0]      := '111-1111';
     jOhN.phones[1]      := '222-2222';
     
-    i := pRinT(joHN);
+    pRinT(joHN);
 
     Mary.firstName := 'Mary';
     mAry.lastName  := 'Jane';
@@ -86,7 +85,7 @@ BEGIN
     mARy.phones[0]      := '333-3333';
     mArY.phones[1]      := '444-4444';
     
-    i := prINT(maRY);
+    prINT(maRY);
     
     teAM[3].firstName      := mary.firstName;
     tEAm[3].lastName       := mary.lastName;
@@ -98,5 +97,5 @@ BEGIN
     team[3].phones[0]      := mary.phones[0];
     TEAM[3].phones[1]      := mary.phones[1];
     
-    I := PrInT(team[3]);
+    PrInT(team[3]);
 END.

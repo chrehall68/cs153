@@ -1,0 +1,32 @@
+
+First name: John
+ Last name: Doe
+       Age: 24
+    Street: 1680 25th Street
+      City: San Pablo
+     State: CALIFORNIA
+       ZIP: 94806
+  Phone #1: 111-1111
+  Phone #2: 222-2222
+
+First name: Mary
+ Last name: Jane
+       Age: 22
+    Street: 4899 Bela Drive 
+      City: San Jose
+     State: CALIFORNIA
+       ZIP: 95129
+  Phone #1: 333-3333
+  Phone #2: 444-4444
+
+First name: Mary
+ Last name: Jane
+       Age: 22
+    Street: 4899 Bela Drive 
+      City: San Jose
+     State: CALIFORNIA
+       ZIP: 95129
+  Phone #1: 333-3333
+  Phone #2: 444-4444
+
+[21 milliseconds execution time.]

@@ -250,7 +250,16 @@ public class CrossReferencer {
                 {
                     // Named records are printed separately by printSymtab().
                     if (typespec.getIdentifier() == null) {
+                        // this way, the unnamed record definition
+                        // will always directly follow the field that it belongs to
+                        // that way there's no confusion as to which unnamed record
+                        // a field belongs to
                         printRecord(typespec);
+                        // need this here because, unlike with named records,
+                        // these unnamed records might be followed by more identifiers
+                        // and if we don't put this here, it'll look as if those other identifiers
+                        // are "part of this record" (even when they're not)
+                        System.out.println("--- END RECORD <unnamed> ---");
                     }
 
                     break;
