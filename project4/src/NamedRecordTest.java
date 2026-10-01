@@ -1,27 +1,214 @@
-public class NamedRecordTest
-{
-    private static class AddressRec{
+public class NamedRecordTest {
+    private static class AddressRec {
 
         String street;
         String city;
         String state;
         String zip;
     }
-    private static class PersonRec{
+
+    private static class PersonRec {
         String firstName;
         String lastName;
         int age;
         AddressRec address = new AddressRec();
         String phones[] = new String[2];
     }
+
     private static int oThER;
     private static PersonRec jOhn = new PersonRec();
     private static PersonRec mary = new PersonRec();
-    private static PersonRec tEaM[] = {new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()};
-    private static PersonRec nestedArr[][][][] = {{{{new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}, {new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}, {new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}, {new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}}, {{new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}, {new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}, {new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}, {new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}}, {{new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}, {new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}, {new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}, {new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}}}, {{{new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}, {new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}, {new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}, {new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}}, {{new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}, {new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}, {new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}, {new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}}, {{new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}, {new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}, {new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}, {new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()}}}};
+    private static PersonRec tEaM[] = {
+        new PersonRec(), new PersonRec(), new PersonRec(), new PersonRec()
+    };
+    private static PersonRec nestedArr[][][][] = {
+        {
+            {
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                },
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                },
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                },
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                }
+            },
+            {
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                },
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                },
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                },
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                }
+            },
+            {
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                },
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                },
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                },
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                }
+            }
+        },
+        {
+            {
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                },
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                },
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                },
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                }
+            },
+            {
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                },
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                },
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                },
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                }
+            },
+            {
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                },
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                },
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                },
+                {
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec(),
+                    new PersonRec()
+                }
+            }
+        }
+    };
 
-    static void print(PersonRec person)
-    {
+    static void print(PersonRec person) {
         int age;
         AddressRec addr = new AddressRec();
         String phs[] = new String[2];
@@ -44,8 +231,7 @@ public class NamedRecordTest
         System.out.printf("  Phone #2: %s\n", phs[1]);
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         java.time.Instant _start = java.time.Instant.now();
 
         oThER = 3;
@@ -70,16 +256,16 @@ public class NamedRecordTest
         mary.phones[0] = "333-3333";
         mary.phones[1] = "444-4444";
         print(mary);
-        tEaM[(3)-1].firstName = mary.firstName;
-        tEaM[(3)-1].lastName = mary.lastName;
-        tEaM[(3)-1].age = mary.age;
-        tEaM[(3)-1].address.street = mary.address.street;
-        tEaM[(3)-1].address.city = mary.address.city;
-        tEaM[(3)-1].address.state = mary.address.state;
-        tEaM[(3)-1].address.zip = mary.address.zip;
-        tEaM[(3)-1].phones[0] = mary.phones[0];
-        tEaM[(3)-1].phones[1] = mary.phones[1];
-        print(tEaM[(3)-1]);
+        tEaM[(3) - 1].firstName = mary.firstName;
+        tEaM[(3) - 1].lastName = mary.lastName;
+        tEaM[(3) - 1].age = mary.age;
+        tEaM[(3) - 1].address.street = mary.address.street;
+        tEaM[(3) - 1].address.city = mary.address.city;
+        tEaM[(3) - 1].address.state = mary.address.state;
+        tEaM[(3) - 1].address.zip = mary.address.zip;
+        tEaM[(3) - 1].phones[0] = mary.phones[0];
+        tEaM[(3) - 1].phones[1] = mary.phones[1];
+        print(tEaM[(3) - 1]);
 
         java.time.Instant _end = java.time.Instant.now();
         long _elapsed = java.time.Duration.between(_start, _end).toMillis();
