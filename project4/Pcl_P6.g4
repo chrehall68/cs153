@@ -149,6 +149,7 @@ statement : compoundStatement
           | readStatement
           | readlnStatement
           | emptyStatement
+          | procedureStatement
           ;
 
 assignmentStatement : variable ':=' expression ;
@@ -171,6 +172,10 @@ readlnStatement : READLN readArguments ;
 readArguments   : '(' variable ( ',' variable )* ')' ;
 
 emptyStatement    : /* empty */ ;
+
+procedureStatement : procedureIdentifier ('(' argumentList ')')? ;
+procedureIdentifier             locals [ SymtabEntry entry = null; ]
+                     : identifier ;
 
 // ===========
 // Expressions

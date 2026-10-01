@@ -233,6 +233,11 @@ public class Converter_P6 extends Pcl_P6BaseVisitor<Object> {
         return statements.writeArguments(ctx);
     }
 
+    @Override 
+    public Object visitProcedureStatement(ProcedureStatementContext ctx) {
+        return statements.procedureCall(ctx);
+    }
+
     @Override
     public Object visitExpression(ExpressionContext ctx) {
         return expressions.expression(ctx);

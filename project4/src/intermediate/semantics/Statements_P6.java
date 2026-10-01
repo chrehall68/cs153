@@ -1,10 +1,17 @@
 package intermediate.semantics;
 
 import static intermediate.semantics.SemanticErrorHandler.Code.*;
+import static intermediate.symtab.SymtabEntry.Kind.*;
 import static intermediate.type.TypeChecker.*;
+import static intermediate.type.Typespec_P6.Form.*;
 
 import intermediate.antlr4.Pcl_P6Parser.*;
+import intermediate.symtab.Predefined;
+import intermediate.symtab.Symtab;
+import intermediate.symtab.SymtabEntry;
+import intermediate.symtab.SymtabEntry.Kind;
 import intermediate.type.Typespec_P6;
+import java.util.ArrayList;
 
 public class Statements_P6 extends Semantics_P6 {
     Object assignmentStatement(AssignmentStatementContext ctx) {
@@ -30,6 +37,40 @@ public class Statements_P6 extends Semantics_P6 {
         }
 
         visit(ctx.statementList());
+        return null;
+    }
+
+    Object procedureStatement(ProcedureStatementContext ctx) {
+        ProcedureIdentifierContext procIdenCtx = ctx.procedureIdentifier();
+        IdentifierContext procIdCtx = procIdenCtx.identifier();
+        ArgumentListContext listCtx = ctx.argumentList();
+        String name = procIdenCtx.getText().toLowerCase();
+        SymtabEntry procEntry = symtabStack.lookup(name);
+        boolean badName = false;
+
+        if (procEntry == null) {
+            error.flag(UNDECLARED_IDENTIFIER, procIdenCtx);
+            badName = true;
+        } else if (procEntry.getKind() != PROCEDURE) {
+            error.flag(NAME_MUST_BE_PROCEDURE, procIdenCtx);
+            badName = true;
+        }
+
+        // Bad function name. Do a simple arguments check and then leave.
+        if (badName) {
+            for (ArgumentContext exprCtx : listCtx.argument()) {
+                visit(exprCtx);
+            }
+        }
+
+        // Good function name.
+        else {
+            ArrayList<SymtabEntry> parameters = procEntry.getRoutineParameters();
+            checkCallArguments(listCtx, parameters);
+        }
+
+        procIdenCtx.entry = procIdCtx.entry = procEntry;
+
         return null;
     }
 }

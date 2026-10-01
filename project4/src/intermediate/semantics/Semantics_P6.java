@@ -233,6 +233,11 @@ public class Semantics_P6 extends Pcl_P6BaseVisitor<Object> {
     }
 
     @Override
+    public Object visitProcedureStatement(ProcedureStatementContext ctx) {
+        return statements.procedureStatement(ctx);
+    }
+
+    @Override
     public Object visitFactorFunctionCall(FactorFunctionCallContext ctx) {
         return expressions.factorFunctionCall(ctx);
     }
