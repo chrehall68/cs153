@@ -6,11 +6,9 @@ import static intermediate.type.TypeChecker.*;
 import static intermediate.type.Typespec_P6.Form.*;
 
 import intermediate.antlr4.Pcl_P6Parser.*;
-import intermediate.symtab.Predefined;
-import intermediate.symtab.Symtab;
 import intermediate.symtab.SymtabEntry;
-import intermediate.symtab.SymtabEntry.Kind;
 import intermediate.type.Typespec_P6;
+
 import java.util.ArrayList;
 
 public class Statements_P6 extends Semantics_P6 {
