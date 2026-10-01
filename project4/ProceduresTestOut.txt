@@ -1,0 +1,26 @@
+Hello
+This is the no input pascal program
+         4
+Hello
+This is the no input pascal program
+         8
+Hello
+This is the no input pascal program
+         0
+Hello
+This is the no input pascal program
+                                                                                                   2 why must it be this way
+false
+Hello
+This is the no input pascal program
+       100
+Hello
+This is the no input pascal program
+         0
+Hello
+This is the no input pascal program
+         0
+Hello
+This is the no input pascal program
+
+[23 milliseconds execution time.]

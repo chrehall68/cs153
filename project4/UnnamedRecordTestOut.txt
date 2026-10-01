@@ -1,0 +1,6 @@
+complex1 = 3 + 2i
+complex2 = 1 + 4i
+product  = -5 + 14i
+4
+
+[22 milliseconds execution time.]

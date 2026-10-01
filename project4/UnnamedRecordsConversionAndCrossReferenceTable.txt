@@ -1,0 +1,210 @@
+001 PROGRAM UnnamedRecordTest;
+002 
+003 VAR
+004     complex1 : RECORD re, im : integer END;
+005     complex2 : RECORD re, im : integer END;
+006     product  : RECORD re, im : integer END;
+007     mULtIPLE : array [2..8] OF ARRAY [3..5] OF RECORD a,b,c : integer END;
+008     anonymousInside : RECORD
+009         re, im : integer;
+010         other : RECORD
+011             a, b : integer;
+012             other2 : RECORD
+013                 c, d : integer;
+014                 other3 : RECORD e, f : integer END
+015             END
+016         END
+017     END;
+018 
+019 BEGIN
+020     complex1.re := 3;
+021     complex1.im := 2;
+022     complex2.re := 1;
+023     complex2.im := 4;
+024     
+025     writeln('complex1 = ', complex1.re, ' + ', complex1.im, 'i');
+026     writeln('complex2 = ', complex2.re, ' + ', complex2.im, 'i');
+027     
+028     product.re :=   complex1.re*complex2.re
+029                   - complex1.im*complex2.im;
+030     product.im :=   complex1.re*complex2.im
+031                   + complex1.im*complex2.re;
+032                   
+033     writeln('product  = ', product.re, ' + ', product.im, 'i');
+034 
+035     aNONYMOUsInsIDE.oTHER.OtHER2.othER3.F := 4;
+036     writeln(anonymousinside.other.other2.other3.f);
+037 END.
+
+PASS 1 Syntax:
+There were no syntax errors.
+
+PASS 2 Semantics:
+
+===== CROSS-REFERENCE TABLE =====
+
+*** PROGRAM UnnamedRecordTest ***
+
+Identifier       Line numbers    Type specification
+----------       ------------    ------------------
+anonymousInside  008 035 036
+                                 Identifier kind: variable
+                                 Scope nesting level: 1
+                                 Type form: record, Type id: <unnamed>
+
+--- RECORD <unnamed> ---
+
+Identifier       Line numbers    Type specification
+----------       ------------    ------------------
+im               009
+                                 Identifier kind: record field
+                                 Scope nesting level: 2
+                                 Type form: scalar, Type id: integer
+other            010 035 036
+                                 Identifier kind: record field
+                                 Scope nesting level: 2
+                                 Type form: record, Type id: <unnamed>
+
+--- RECORD <unnamed> ---
+
+Identifier       Line numbers    Type specification
+----------       ------------    ------------------
+a                011
+                                 Identifier kind: record field
+                                 Scope nesting level: 3
+                                 Type form: scalar, Type id: integer
+b                011
+                                 Identifier kind: record field
+                                 Scope nesting level: 3
+                                 Type form: scalar, Type id: integer
+other2           012 035 036
+                                 Identifier kind: record field
+                                 Scope nesting level: 3
+                                 Type form: record, Type id: <unnamed>
+
+--- RECORD <unnamed> ---
+
+Identifier       Line numbers    Type specification
+----------       ------------    ------------------
+c                013
+                                 Identifier kind: record field
+                                 Scope nesting level: 4
+                                 Type form: scalar, Type id: integer
+d                013
+                                 Identifier kind: record field
+                                 Scope nesting level: 4
+                                 Type form: scalar, Type id: integer
+other3           014 035 036
+                                 Identifier kind: record field
+                                 Scope nesting level: 4
+                                 Type form: record, Type id: <unnamed>
+
+--- RECORD <unnamed> ---
+
+Identifier       Line numbers    Type specification
+----------       ------------    ------------------
+e                014
+                                 Identifier kind: record field
+                                 Scope nesting level: 5
+                                 Type form: scalar, Type id: integer
+f                014 035 036
+                                 Identifier kind: record field
+                                 Scope nesting level: 5
+                                 Type form: scalar, Type id: integer
+re               009
+                                 Identifier kind: record field
+                                 Scope nesting level: 2
+                                 Type form: scalar, Type id: integer
+complex1         004 020 021 025 025 028 029 030 031
+                                 Identifier kind: variable
+                                 Scope nesting level: 1
+                                 Type form: record, Type id: <unnamed>
+
+--- RECORD <unnamed> ---
+
+Identifier       Line numbers    Type specification
+----------       ------------    ------------------
+im               004 021 025 029 031
+                                 Identifier kind: record field
+                                 Scope nesting level: 2
+                                 Type form: scalar, Type id: integer
+re               004 020 025 028 030
+                                 Identifier kind: record field
+                                 Scope nesting level: 2
+                                 Type form: scalar, Type id: integer
+complex2         005 022 023 026 026 028 029 030 031
+                                 Identifier kind: variable
+                                 Scope nesting level: 1
+                                 Type form: record, Type id: <unnamed>
+
+--- RECORD <unnamed> ---
+
+Identifier       Line numbers    Type specification
+----------       ------------    ------------------
+im               005 023 026 029 030
+                                 Identifier kind: record field
+                                 Scope nesting level: 2
+                                 Type form: scalar, Type id: integer
+re               005 022 026 028 031
+                                 Identifier kind: record field
+                                 Scope nesting level: 2
+                                 Type form: scalar, Type id: integer
+mULtIPLE         007
+                                 Identifier kind: variable
+                                 Scope nesting level: 1
+                                 Type form: array, Type id: <unnamed>
+                                 --- INDEX TYPE ---
+                                 Type form: subrange, Type id: <unnamed>
+                                 --- Base type ---
+                                 Type form: scalar, Type id: integer
+                                 Range: 2..8
+                                 --- ELEMENT TYPE ---
+                                 Type form: array, Type id: <unnamed>
+                                 7 elements
+                                 --- INDEX TYPE ---
+                                 Type form: subrange, Type id: <unnamed>
+                                 --- Base type ---
+                                 Type form: scalar, Type id: integer
+                                 Range: 3..5
+                                 --- ELEMENT TYPE ---
+                                 Type form: record, Type id: <unnamed>
+                                 3 elements
+
+--- RECORD <unnamed> ---
+
+Identifier       Line numbers    Type specification
+----------       ------------    ------------------
+a                007
+                                 Identifier kind: record field
+                                 Scope nesting level: 2
+                                 Type form: scalar, Type id: integer
+b                007
+                                 Identifier kind: record field
+                                 Scope nesting level: 2
+                                 Type form: scalar, Type id: integer
+c                007
+                                 Identifier kind: record field
+                                 Scope nesting level: 2
+                                 Type form: scalar, Type id: integer
+product          006 028 030 033 033
+                                 Identifier kind: variable
+                                 Scope nesting level: 1
+                                 Type form: record, Type id: <unnamed>
+
+--- RECORD <unnamed> ---
+
+Identifier       Line numbers    Type specification
+----------       ------------    ------------------
+im               006 030 033
+                                 Identifier kind: record field
+                                 Scope nesting level: 2
+                                 Type form: scalar, Type id: integer
+re               006 028 033
+                                 Identifier kind: record field
+                                 Scope nesting level: 2
+                                 Type form: scalar, Type id: integer
+There were no semantic errors.
+
+PASS 3 Conversion:
+
+Object file "UnnamedRecordTest.java" created.
