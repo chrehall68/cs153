@@ -159,6 +159,20 @@ public class Statements_P6 extends Converter_P6 {
         return null;
     }
 
+    Object procedureCall(ProcedureStatementContext ctx) {
+        ProcedureIdentifierContext procNameCtx = ctx.procedureIdentifier();
+        String procedureName = procNameCtx.identifier().entry.getName();
+
+        String text = procedureName + "(";
+
+        if (ctx.argumentList() != null) {
+            text += (String) visit(ctx.argumentList());
+        }
+
+        code.emitLine(text += ");");
+        return null;
+    }
+
     private boolean isSingleton(ExpressionContext exprCtx) {
         if (exprCtx.simpleExpression().size() > 1) return false;
 
