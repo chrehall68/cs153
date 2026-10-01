@@ -111,10 +111,14 @@ f                014 035 036
                                  Identifier kind: record field
                                  Scope nesting level: 5
                                  Type form: scalar, Type id: integer
+--- END RECORD <unnamed> ---
+--- END RECORD <unnamed> ---
+--- END RECORD <unnamed> ---
 re               009
                                  Identifier kind: record field
                                  Scope nesting level: 2
                                  Type form: scalar, Type id: integer
+--- END RECORD <unnamed> ---
 complex1         004 020 021 025 025 028 029 030 031
                                  Identifier kind: variable
                                  Scope nesting level: 1
@@ -132,6 +136,7 @@ re               004 020 025 028 030
                                  Identifier kind: record field
                                  Scope nesting level: 2
                                  Type form: scalar, Type id: integer
+--- END RECORD <unnamed> ---
 complex2         005 022 023 026 026 028 029 030 031
                                  Identifier kind: variable
                                  Scope nesting level: 1
@@ -149,6 +154,7 @@ re               005 022 026 028 031
                                  Identifier kind: record field
                                  Scope nesting level: 2
                                  Type form: scalar, Type id: integer
+--- END RECORD <unnamed> ---
 mULtIPLE         007
                                  Identifier kind: variable
                                  Scope nesting level: 1
@@ -186,6 +192,7 @@ c                007
                                  Identifier kind: record field
                                  Scope nesting level: 2
                                  Type form: scalar, Type id: integer
+--- END RECORD <unnamed> ---
 product          006 028 030 033 033
                                  Identifier kind: variable
                                  Scope nesting level: 1
@@ -203,6 +210,7 @@ re               006 028 033
                                  Identifier kind: record field
                                  Scope nesting level: 2
                                  Type form: scalar, Type id: integer
+--- END RECORD <unnamed> ---
 There were no semantic errors.
 
 PASS 3 Conversion:
