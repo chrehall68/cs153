@@ -46,6 +46,21 @@ public class Statements extends Compiler {
 
     Object ifStatement(IfStatementContext ctx) {
         // Complete this method.
+        Label ifFalseLabel = new Label();
+        Label ifExitLabel = new Label();
+
+        // technically we could generate more concise code
+        // if it's only a true statement
+        // but this works well enough
+        visit(ctx.expression());
+        code.emit(IFEQ, ifFalseLabel);  // ifeq 0 -> if false
+        visit(ctx.trueStatement());
+        code.emit(GOTO, ifExitLabel);
+        code.emitLabel(ifFalseLabel);
+        if (ctx.falseStatement() != null){
+            visit(ctx.falseStatement());
+        }
+        code.emitLabel(ifExitLabel);
 
         return null;
     }
