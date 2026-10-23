@@ -54,11 +54,11 @@ public class Statements extends Compiler {
         // if it's only a true statement
         // but this works well enough
         visit(ctx.expression());
-        code.emit(IFEQ, ifFalseLabel);  // ifeq 0 -> if false
+        code.emit(IFEQ, ifFalseLabel); // ifeq 0 -> if false
         visit(ctx.trueStatement());
         code.emit(GOTO, ifExitLabel);
         code.emitLabel(ifFalseLabel);
-        if (ctx.falseStatement() != null){
+        if (ctx.falseStatement() != null) {
             visit(ctx.falseStatement());
         }
         code.emitLabel(ifExitLabel);
@@ -96,21 +96,21 @@ public class Statements extends Compiler {
         // since lookupSwitch requires sorted labels
         ArrayList<Map.Entry<Label, StatementContext>> labelsAndStatements = new ArrayList<>();
         TreeMap<Integer, Label> labelsToEmit = new TreeMap<>();
-        for (CaseBranchContext branch : ctx.caseBranchList().caseBranch()){
+        for (CaseBranchContext branch : ctx.caseBranchList().caseBranch()) {
             Label statementLabel = new Label();
-            for (CaseConstantContext caseConstant : branch.caseConstantList().caseConstant()){
+            for (CaseConstantContext caseConstant : branch.caseConstantList().caseConstant()) {
                 labelsToEmit.put(caseConstant.value, statementLabel);
             }
             labelsAndStatements.add(Map.entry(statementLabel, branch.statement()));
         }
         // then emit the switch labels in sorted order
         code.emit(LOOKUPSWITCH);
-        for (var pair : labelsToEmit.entrySet()){
+        for (var pair : labelsToEmit.entrySet()) {
             code.emitLabel(pair.getKey(), pair.getValue());
         }
-        code.emitLabel("default", caseEndLabel);  // nothing matched
+        code.emitLabel("default", caseEndLabel); // nothing matched
         // then emit the corresponding statements in arbitrary order
-        for (var pair : labelsAndStatements){
+        for (var pair : labelsAndStatements) {
             code.emitLabel(pair.getKey());
             visit(pair.getValue());
             code.emit(GOTO, caseEndLabel);
