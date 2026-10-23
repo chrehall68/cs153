@@ -10,8 +10,7 @@ package backend.compiler;
 
 import java.util.ArrayList;
 
-public class LocalVariables
-{
+public class LocalVariables {
     // List of booleans to keep track of reserved local variables. The ith
     // element is true if the ith variable is being used, else it is false.
     // The final size of the list is the total number of local variables
@@ -22,8 +21,7 @@ public class LocalVariables
      * Constructor.
      * @param size initially reserve local variables 0 through index.
      */
-    public LocalVariables(int size)
-    {
+    public LocalVariables(int size) {
         reserved = new ArrayList<Boolean>();
 
         for (int i = 0; i < size; ++i) reserved.add(true);
@@ -33,13 +31,10 @@ public class LocalVariables
      * Reserve a local variable.
      * @return the index of the newly reserved variable.
      */
-    public int reserve()
-    {
+    public int reserve() {
         // Search for existing but unreserved local variables.
-        for (int i = 0; i < reserved.size(); ++i) 
-        {
-            if (! reserved.get(i)) 
-            {
+        for (int i = 0; i < reserved.size(); ++i) {
+            if (!reserved.get(i)) {
                 reserved.set(i, true);
                 return i;
             }
@@ -47,7 +42,7 @@ public class LocalVariables
 
         // Reserved a new variable.
         reserved.add(true);
-        
+
         return reserved.size() - 1;
     }
 
@@ -55,11 +50,15 @@ public class LocalVariables
      * Release a local variable that's no longer needed.
      * @param index the index of the variable.
      */
-    public void release(int index) { reserved.set(index, false); }
+    public void release(int index) {
+        reserved.set(index, false);
+    }
 
     /**
      * Return the count of local variables needed by the method.
      * @return the count.
      */
-    public int count() { return reserved.size(); }
+    public int count() {
+        return reserved.size();
+    }
 }

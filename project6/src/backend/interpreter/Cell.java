@@ -8,16 +8,14 @@
  */
 package backend.interpreter;
 
-public class Cell
-{
-    private Object value = null;  // value contained in the memory cell
+public class Cell {
+    private Object value = null; // value contained in the memory cell
 
     /**
      * Constructor.
      * @param value the value for the cell.
      */
-    public Cell(Object value)
-    {
+    public Cell(Object value) {
         this.value = value;
     }
 
@@ -25,11 +23,15 @@ public class Cell
      * Set a new value into the cell.
      * @param newValue the new value.
      */
-    public void setValue(Object newValue) { value = newValue; }
+    public void setValue(Object newValue) {
+        value = newValue;
+    }
 
     /**
      * Get the value in the cell.
      * @return the value.
      */
-    public Object getValue() { return value; }
+    public Object getValue() {
+        return value;
+    }
 }

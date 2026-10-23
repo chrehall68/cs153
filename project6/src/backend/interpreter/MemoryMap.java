@@ -8,19 +8,18 @@
  */
 package backend.interpreter;
 
+import intermediate.symtab.*;
+import intermediate.symtab.SymtabEntry.Kind;
+import intermediate.type.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import intermediate.symtab.*;
-import intermediate.symtab.SymtabEntry.Kind;
-import intermediate.type.*;
-
-public class MemoryMap extends HashMap<String, Cell>
-{
-    private static final long serialVersionUID = 0L; 
+public class MemoryMap extends HashMap<String, Cell> {
+    private static final long serialVersionUID = 0L;
 
     /**
      * Constructor.
@@ -28,37 +27,35 @@ public class MemoryMap extends HashMap<String, Cell>
      * based on the entries in a symbol table.
      * @param symtab the symbol table.
      */
-    public MemoryMap(Symtab symtab)
-    {
-        for (Map.Entry<String, SymtabEntry> symtabEntry : symtab.entrySet())
-        {
+    public MemoryMap(Symtab symtab) {
+        for (Map.Entry<String, SymtabEntry> symtabEntry : symtab.entrySet()) {
             SymtabEntry entry = (SymtabEntry) symtabEntry.getValue();
             Kind kind = entry.getKind();
-            
-            switch (kind)
-            {
+
+            switch (kind) {
                 case VARIABLE:
                 case FUNCTION:
                 case VALUE_PARAMETER:
                 case RECORD_FIELD:
-                {
-                    // Not a reference parameter: Allocate cells for the
-                    //                            value in the hashmap.
-                    String name = entry.getName();
-                    Typespec typespec = entry.getTypespec();
-                    put(name, new Cell(allocateCellValue(typespec)));
-                    break;
-                }
-                    
+                    {
+                        // Not a reference parameter: Allocate cells for the
+                        //                            value in the hashmap.
+                        String name = entry.getName();
+                        Typespec typespec = entry.getTypespec();
+                        put(name, new Cell(allocateCellValue(typespec)));
+                        break;
+                    }
+
                 case REFERENCE_PARAMETER:
-                {
-                    // Reference parameter: Allocate a single cell to hold a 
-                    //                      reference in the hashmap.
-                    String name = entry.getName();
-                    put(name, new Cell(null));
-                }
-                
-                default: break;
+                    {
+                        // Reference parameter: Allocate a single cell to hold a
+                        //                      reference in the hashmap.
+                        String name = entry.getName();
+                        put(name, new Cell(null));
+                    }
+
+                default:
+                    break;
             }
         }
     }
@@ -68,21 +65,24 @@ public class MemoryMap extends HashMap<String, Cell>
      * @param name the name.
      * @return the cell.
      */
-    public Cell getCell(String name) { return get(name); }
-    
+    public Cell getCell(String name) {
+        return get(name);
+    }
+
     /**
      * Replace the memory cell with the given name.
      * @param name the name.
      * @param cell the replacement cell.
      */
-    public void replaceCell(String name, Cell cell) { put(name, cell); }
+    public void replaceCell(String name, Cell cell) {
+        put(name, cell);
+    }
 
     /**
      * Get an arraylist of all the names in the memory map.
      * @return the arraylist.
      */
-    public ArrayList<String> getAllNames()
-    {
+    public ArrayList<String> getAllNames() {
         ArrayList<String> list = new ArrayList<String>();
 
         Set<String> names = keySet();
@@ -97,13 +97,14 @@ public class MemoryMap extends HashMap<String, Cell>
      * @param typespec the data type.
      * @return the allocation.
      */
-    private Object allocateCellValue(Typespec typespec)
-    {
-        switch (typespec.getForm()) 
-        {
-            case ARRAY:  return allocateArrayCells(typespec);
-            case RECORD: return allocateRecordMap(typespec);
-            default:     return null;  // uninitialized scalar value
+    private Object allocateCellValue(Typespec typespec) {
+        switch (typespec.getForm()) {
+            case ARRAY:
+                return allocateArrayCells(typespec);
+            case RECORD:
+                return allocateRecordMap(typespec);
+            default:
+                return null; // uninitialized scalar value
         }
     }
 
@@ -112,14 +113,12 @@ public class MemoryMap extends HashMap<String, Cell>
      * @param typespec the array type.
      * @return the allocation.
      */
-    private Object[] allocateArrayCells(Typespec typespec)
-    {
+    private Object[] allocateArrayCells(Typespec typespec) {
         int elmtCount = typespec.getArrayElementCount();
         Typespec elmtType = typespec.getArrayElementType();
         Cell allocation[] = new Cell[elmtCount];
 
-        for (int i = 0; i < elmtCount; ++i) 
-        {
+        for (int i = 0; i < elmtCount; ++i) {
             allocation[i] = new Cell(allocateCellValue(elmtType));
         }
 
@@ -131,8 +130,7 @@ public class MemoryMap extends HashMap<String, Cell>
      * @param typespec the record type.
      * @return the allocation.
      */
-    private MemoryMap allocateRecordMap(Typespec typespec)
-    {
+    private MemoryMap allocateRecordMap(Typespec typespec) {
         Symtab symtab = (Symtab) typespec.getRecordSymtab();
         MemoryMap memoryMap = new MemoryMap(symtab);
 

@@ -8,8 +8,7 @@
  */
 package backend.compiler;
 
-public enum Directive
-{
+public enum Directive {
     CLASS_PUBLIC(".class public"),
     END_CLASS(".end class"),
     SUPER(".super"),
@@ -31,11 +30,15 @@ public enum Directive
      * Constructor.
      * @param text the text for the directive.
      */
-    Directive(String text) { this.text = text; }
+    Directive(String text) {
+        this.text = text;
+    }
 
     /**
      * Generate the directive string that is emitted.
      * @return the string.
      */
-    public String toString() { return text; }
+    public String toString() {
+        return text;
+    }
 }

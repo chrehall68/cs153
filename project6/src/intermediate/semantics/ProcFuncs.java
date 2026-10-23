@@ -1,6 +1,11 @@
 package intermediate.semantics;
 
-import java.util.ArrayList;
+import static backend.BackendMode.Mode.EXECUTOR;
+
+import static intermediate.semantics.SemanticErrorHandler.Code.*;
+import static intermediate.symtab.SymtabEntry.Kind.*;
+import static intermediate.symtab.SymtabEntry.Routine.*;
+import static intermediate.type.Typespec.Form.*;
 
 import intermediate.antlr4.Pcl_C2Parser.*;
 import intermediate.symtab.Predefined;
@@ -9,17 +14,11 @@ import intermediate.symtab.SymtabEntry;
 import intermediate.symtab.SymtabEntry.Kind;
 import intermediate.type.Typespec;
 
-import static backend.BackendMode.Mode.EXECUTOR;
-import static intermediate.semantics.SemanticErrorHandler.Code.*;
-import static intermediate.symtab.SymtabEntry.Kind.*;
-import static intermediate.symtab.SymtabEntry.Routine.*;
-import static intermediate.type.Typespec.Form.*;
+import java.util.ArrayList;
 
-public class ProcFuncs extends Semantics
-{
+public class ProcFuncs extends Semantics {
     @SuppressWarnings("unchecked")
-    Object procFuncDefinition(ProcFuncDefinitionContext ctx)
-    {
+    Object procFuncDefinition(ProcFuncDefinitionContext ctx) {
         FunctionHeadContext funcCtx = ctx.functionHead();
         ProcedureHeadContext procCtx = ctx.procedureHead();
         IdentifierContext idCtx = null;
@@ -28,13 +27,10 @@ public class ProcFuncs extends Semantics
         Typespec returnTypespec = null;
         String routineName;
 
-        if (functionDefinition)
-        {
+        if (functionDefinition) {
             idCtx = funcCtx.identifier();
             parameters = funcCtx.parameters();
-        } 
-        else
-        {
+        } else {
             idCtx = procCtx.identifier();
             parameters = procCtx.parameters();
         }
@@ -42,15 +38,13 @@ public class ProcFuncs extends Semantics
         routineName = idCtx.IDENTIFIER().getText().toLowerCase();
         SymtabEntry routineEntry = symtabStack.lookupLocal(routineName);
 
-        if (routineEntry != null)
-        {
-            error.flag(REDECLARED_IDENTIFIER, 
-                       ctx.getStart().getLine(), routineName);
+        if (routineEntry != null) {
+            error.flag(REDECLARED_IDENTIFIER, ctx.getStart().getLine(), routineName);
             return null;
         }
 
-        routineEntry = symtabStack.enterLocal(
-                routineName, functionDefinition ? FUNCTION : PROCEDURE);
+        routineEntry =
+                symtabStack.enterLocal(routineName, functionDefinition ? FUNCTION : PROCEDURE);
         routineEntry.setRoutineCode(DECLARED);
         idCtx.entry = routineEntry;
 
@@ -64,54 +58,45 @@ public class ProcFuncs extends Semantics
         Symtab symtab = symtabStack.getLocalSymtab();
         symtab.setOwner(routineEntry);
 
-        if (parameters != null)
-        {
-            ArrayList<SymtabEntry> parameterEntries = 
+        if (parameters != null) {
+            ArrayList<SymtabEntry> parameterEntries =
                     (ArrayList<SymtabEntry>) visit(parameters.parameterDeclarationsList());
             routineEntry.setRoutineParameters(parameterEntries);
 
-            for (SymtabEntry parmEntry : parameterEntries)
-            {
+            for (SymtabEntry parmEntry : parameterEntries) {
                 parmEntry.setSlotNumber(symtab.getNextSlotNumber());
 
-                if (parmEntry.getTypespec() == Predefined.realType)
-                {
+                if (parmEntry.getTypespec() == Predefined.realType) {
                     symtab.getNextSlotNumber();
                 }
             }
         }
 
-        if (functionDefinition)
-        {
+        if (functionDefinition) {
             TypeIdentifierContext typeIdCtx = funcCtx.typeIdentifier();
             visit(typeIdCtx);
             returnTypespec = typeIdCtx.identifier().typespec;
 
-            if (returnTypespec.getForm() != SCALAR)
-            {
+            if (returnTypespec.getForm() != SCALAR) {
                 error.flag(INVALID_RETURN_TYPE, typeIdCtx);
                 returnTypespec = Predefined.integerType;
             }
 
             routineEntry.setTypespec(returnTypespec);
             idCtx.typespec = returnTypespec;
-        } 
-        else
-        {
+        } else {
             idCtx.typespec = null;
         }
 
         visit(ctx.block().declarations());
 
         // Enter the function's associated variable into its symbol table.
-        if (functionDefinition)
-        {
+        if (functionDefinition) {
             SymtabEntry assocVarEntry = symtabStack.enterLocal(routineName, VARIABLE);
             assocVarEntry.setSlotNumber(symtab.getNextSlotNumber());
             assocVarEntry.setTypespec(returnTypespec);
-            
-            if (returnTypespec == Predefined.realType)
-            {
+
+            if (returnTypespec == Predefined.realType) {
                 symtab.getNextSlotNumber();
             }
         }
@@ -124,55 +109,44 @@ public class ProcFuncs extends Semantics
     }
 
     @SuppressWarnings("unchecked")
-    Object parameterDeclarationsList(ParameterDeclarationsListContext ctx)
-    {
+    Object parameterDeclarationsList(ParameterDeclarationsListContext ctx) {
         ArrayList<SymtabEntry> parameterList = new ArrayList<>();
 
         // Loop over the parameter declarations.
-        for (ParameterDeclarationsContext dclCtx : 
-                                        ctx.parameterDeclarations())
-        {
-            ArrayList<SymtabEntry> parameterSublist = 
-                            (ArrayList<SymtabEntry>) visit(dclCtx);
+        for (ParameterDeclarationsContext dclCtx : ctx.parameterDeclarations()) {
+            ArrayList<SymtabEntry> parameterSublist = (ArrayList<SymtabEntry>) visit(dclCtx);
             parameterList.addAll(parameterSublist);
         }
 
         return parameterList;
     }
 
-    Object parameterDeclarations(ParameterDeclarationsContext ctx)
-    {
-        Kind kind = ctx.VAR() != null ? REFERENCE_PARAMETER 
-                                      : VALUE_PARAMETER;
+    Object parameterDeclarations(ParameterDeclarationsContext ctx) {
+        Kind kind = ctx.VAR() != null ? REFERENCE_PARAMETER : VALUE_PARAMETER;
         TypeIdentifierContext typeIdCtx = ctx.typeIdentifier();
 
         Typespec parmTypespec = (Typespec) visit(typeIdCtx);
-//        Typespec parmTypespec = typeIdCtx.identifier().typespec;
+        //        Typespec parmTypespec = typeIdCtx.identifier().typespec;
 
         ArrayList<SymtabEntry> parameterSublist = new ArrayList<>();
 
         // Loop over the parameter identifiers.
         ParameterIdentifierListContext parmListCtx = ctx.parameterIdentifierList();
-        for (IdentifierContext parmIdCtx : parmListCtx.identifier())
-        {
+        for (IdentifierContext parmIdCtx : parmListCtx.identifier()) {
             int lineNumber = parmIdCtx.getStart().getLine();
             String parmName = parmIdCtx.IDENTIFIER().getText().toLowerCase();
             SymtabEntry parmEntry = symtabStack.lookupLocal(parmName);
 
-            if (parmEntry == null)
-            {
+            if (parmEntry == null) {
                 parmEntry = symtabStack.enterLocal(parmName, kind);
                 parmEntry.setTypespec(parmTypespec);
 
-                if (   (kind == REFERENCE_PARAMETER) 
-                    && (mode != EXECUTOR) 
-                    && (parmTypespec.getForm() == SCALAR))
-                {
+                if ((kind == REFERENCE_PARAMETER)
+                        && (mode != EXECUTOR)
+                        && (parmTypespec.getForm() == SCALAR)) {
                     error.flag(INVALID_REFERENCE_PARAMETER, parmIdCtx);
                 }
-            } 
-            else
-            {
+            } else {
                 error.flag(REDECLARED_IDENTIFIER, parmIdCtx);
             }
 
