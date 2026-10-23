@@ -19,7 +19,7 @@ public class Statements extends Compiler
 {
     Object statement(StatementContext ctx) 
     {
-        if (   (ctx.compoundStatement() == null) 
+        if ((ctx.compoundStatement() == null)
             && (ctx.emptyStatement() == null))
         {
             code.emitComment(ctx);
