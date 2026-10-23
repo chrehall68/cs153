@@ -8,16 +8,14 @@
  */
 package backend.compiler;
 
-public class LocalStack
-{
-    private int size;     // current stack size
-    private int maxSize;  // maximum attained stack size
+public class LocalStack {
+    private int size; // current stack size
+    private int maxSize; // maximum attained stack size
 
     /**
      * Constructor
      */
-    public LocalStack()
-    {
+    public LocalStack() {
         this.size = 0;
         this.maxSize = 0;
     }
@@ -26,14 +24,15 @@ public class LocalStack
      * Get the current stack size.
      * @return the size.
      */
-    public int getSize() { return this.size; }
+    public int getSize() {
+        return this.size;
+    }
 
     /**
      * Increase the stack size by a given amount.
      * @param amount the amount to increase.
      */
-    public void increase(int amount)
-    {
+    public void increase(int amount) {
         size += amount;
         maxSize = Math.max(maxSize, size);
     }
@@ -42,9 +41,8 @@ public class LocalStack
      * Decrease the stack size by a given amount.
      * @param amount the amount to decrease.
      */
-    public void decrease(int amount) 
-    { 
-        size -= amount; 
+    public void decrease(int amount) {
+        size -= amount;
         if (size < 0) size = 0;
     }
 
@@ -52,5 +50,7 @@ public class LocalStack
      * Return the maximum attained stack size.
      * @return the maximum size.
      */
-    public int capacity() { return maxSize; }
+    public int capacity() {
+        return maxSize;
+    }
 }

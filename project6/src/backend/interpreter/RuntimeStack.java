@@ -10,17 +10,15 @@ package backend.interpreter;
 
 import java.util.ArrayList;
 
-public class RuntimeStack extends ArrayList<StackFrame>
-{
-    private static final long serialVersionUID = 0L; 
+public class RuntimeStack extends ArrayList<StackFrame> {
+    private static final long serialVersionUID = 0L;
 
-    private RuntimeDisplay display;  // runtime display
+    private RuntimeDisplay display; // runtime display
 
     /**
      * Constructor.
      */
-    public RuntimeStack()
-    {
+    public RuntimeStack() {
         display = new RuntimeDisplay();
     }
 
@@ -29,8 +27,7 @@ public class RuntimeStack extends ArrayList<StackFrame>
      * @param nestingLevel the nesting level.
      * @return the stack frame.
      */
-    public StackFrame getTopmost(int nestingLevel)
-    {
+    public StackFrame getTopmost(int nestingLevel) {
         return display.getStackFrame(nestingLevel);
     }
 
@@ -38,8 +35,7 @@ public class RuntimeStack extends ArrayList<StackFrame>
      * Get the current nesting level.
      * @return the current level.
      */
-    public int currentNestingLevel()
-    {
+    public int currentNestingLevel() {
         int topIndex = size() - 1;
         return topIndex >= 0 ? get(topIndex).getNestingLevel() : -1;
     }
@@ -48,8 +44,7 @@ public class RuntimeStack extends ArrayList<StackFrame>
      * Push a stack frame onto the stack for a routine being called.
      * @param frame the stack frame to push.
      */
-    public void push(StackFrame frame)
-    {
+    public void push(StackFrame frame) {
         int nestingLevel = frame.getNestingLevel();
 
         add(frame);
@@ -59,8 +54,7 @@ public class RuntimeStack extends ArrayList<StackFrame>
     /**
      * Pop a stack frame off the stack for a returning routine.
      */
-    public void pop()
-    {
+    public void pop() {
         display.returnUpdate(currentNestingLevel());
         remove(size() - 1);
     }
