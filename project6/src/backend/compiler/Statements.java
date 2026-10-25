@@ -67,7 +67,18 @@ public class Statements extends Compiler {
     }
 
     Object whileStatement(WhileStatementContext ctx) {
-        // Complete this method.
+        Label loopTopLabel = new Label();
+        Label loopExitLabel = new Label();
+
+        code.emitLabel(loopTopLabel);
+
+        visit(ctx.expression());
+        code.emit(IFEQ, loopExitLabel);
+
+        visit(ctx.statement());
+        code.emit(GOTO, loopTopLabel);
+
+        code.emitLabel(loopExitLabel);
 
         return null;
     }
