@@ -158,7 +158,7 @@ public class Statements extends Compiler {
 
         code.emitLoadValue(varEntry);
         code.emitLoadConstant(1);
-        if(ctx.TO() != null) {
+        if (ctx.TO() != null) {
             code.emit(IADD);
         } else {
             code.emit(ISUB);
