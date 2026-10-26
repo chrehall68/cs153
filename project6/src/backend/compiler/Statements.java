@@ -11,6 +11,8 @@ import intermediate.type.Typespec;
 import intermediate.type.Typespec.Form;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Statements extends Compiler {
     Object statement(StatementContext ctx) {
@@ -45,7 +47,21 @@ public class Statements extends Compiler {
     }
 
     Object ifStatement(IfStatementContext ctx) {
-        // Complete this method.
+        Label ifFalseLabel = new Label();
+        Label ifExitLabel = new Label();
+
+        // technically we could generate more concise code
+        // if it's only a true statement
+        // but this works well enough
+        visit(ctx.expression());
+        code.emit(IFEQ, ifFalseLabel); // ifeq 0 -> if false
+        visit(ctx.trueStatement());
+        code.emit(GOTO, ifExitLabel);
+        code.emitLabel(ifFalseLabel);
+        if (ctx.falseStatement() != null) {
+            visit(ctx.falseStatement());
+        }
+        code.emitLabel(ifExitLabel);
 
         return null;
     }
@@ -73,8 +89,34 @@ public class Statements extends Compiler {
     }
 
     Object caseStatement(CaseStatementContext ctx) {
-        // Complete this method.
+        // just visit the statement and then find the matching statement
+        Label caseEndLabel = new Label();
+        visit(ctx.expression());
+        // first gather the branches in sorted order
+        // since lookupSwitch requires sorted labels
+        ArrayList<Map.Entry<Label, StatementContext>> labelsAndStatements = new ArrayList<>();
+        TreeMap<Integer, Label> labelsToEmit = new TreeMap<>();
+        for (CaseBranchContext branch : ctx.caseBranchList().caseBranch()) {
+            Label statementLabel = new Label();
+            for (CaseConstantContext caseConstant : branch.caseConstantList().caseConstant()) {
+                labelsToEmit.put(caseConstant.value, statementLabel);
+            }
+            labelsAndStatements.add(Map.entry(statementLabel, branch.statement()));
+        }
+        // then emit the switch labels in sorted order
+        code.emit(LOOKUPSWITCH);
+        for (var pair : labelsToEmit.entrySet()) {
+            code.emitLabel(pair.getKey(), pair.getValue());
+        }
+        code.emitLabel("default", caseEndLabel); // nothing matched
+        // then emit the corresponding statements in arbitrary order
+        for (var pair : labelsAndStatements) {
+            code.emitLabel(pair.getKey());
+            visit(pair.getValue());
+            code.emit(GOTO, caseEndLabel);
+        }
 
+        code.emitLabel(caseEndLabel);
         return null;
     }
 
