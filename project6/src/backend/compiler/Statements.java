@@ -132,8 +132,42 @@ public class Statements extends Compiler {
     }
 
     Object forStatement(ForStatementContext ctx) {
-        // Complete this method.
+        Label loopTopLabel = new Label();
+        Label loopExitLabel = new Label();
 
+        VariableContext variableCtx = ctx.variable();
+        ExpressionContext startExprCtx = ctx.expression().get(0);
+        SymtabEntry varEntry = variableCtx.entry;
+        Typespec varTypespec = variableCtx.typespec;
+        Typespec startExprType = startExprCtx.typespec;
+
+        // Emit code to evaluate the expression.
+        visit(startExprCtx);
+
+        // Emit code to store the expression value into the target variable.
+        // The target variable has no subscripts or fields.
+        code.emitStoreValue(varEntry, varEntry.getTypespec());
+
+        code.emitLabel(loopTopLabel);
+
+        visit(ctx.expression().get(1)); // end is loaded
+        code.emitLoadValue(varEntry); // variable is loaded
+        code.emit(IF_ICMPEQ, loopExitLabel);
+
+        visit(ctx.statement());
+
+        code.emitLoadValue(varEntry);
+        code.emitLoadConstant(1);
+        if (ctx.TO() != null) {
+            code.emit(IADD);
+        } else {
+            code.emit(ISUB);
+        }
+        code.emitStoreValue(varEntry, varEntry.getTypespec());
+
+        code.emit(GOTO, loopTopLabel);
+
+        code.emitLabel(loopExitLabel);
         return null;
     }
 
