@@ -168,6 +168,7 @@ public class Statements extends Compiler {
         code.emit(GOTO, loopTopLabel);
 
         code.emitLabel(loopExitLabel);
+        visit(ctx.statement());
         return null;
     }
 
